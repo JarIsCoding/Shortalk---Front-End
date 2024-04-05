@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bigCardBg{
+    background-color: white;
+    border-color: blue;
+    border-top-width: 20px;
+    width: 500px;
+    height: 500px;
+}
+
+.inputSize{
+    width: 350px;
+    height: 50px;
+    border-radius: 0px;
+}

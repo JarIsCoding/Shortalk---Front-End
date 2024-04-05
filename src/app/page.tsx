@@ -10,8 +10,6 @@ export default function Home() {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
-  const [switchBool, setSwitchBool] = useState<boolean>(true)
-
   const router = useRouter()
 
   const handleSubmit = async () => {
@@ -29,7 +27,7 @@ export default function Home() {
     //CORS issue with this cannot get url in fetch correctly need to figure out
     if (token.token !== null) {
       localStorage.setItem("Token", token.token)
-      getLoggedInUserData(username)
+      // getLoggedInUserData(username)
       router.push('/pages/homePage')
     } else {
       alert("Login Failed")
@@ -37,47 +35,33 @@ export default function Home() {
 
   }
 
-  const handleCreateNamePass = () => {
-    alert('ilive')
-  }
-
   return (
     <div className='grid grid-flow-row justify-center pt-52'>
-      <form className="flex max-w-md flex-col gap-4">
+      <div className='bigCardBg rounded-md flex justify-center pt-12'>
+        <form className="flex max-w-md flex-col gap-4">
 
-        {/* Top Text */}
-        <div className='text-center'>
-          {switchBool ? 'Login' : 'Email'}
-        </div>
-
-        {/* Username and password Input Field */}
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="username" />
+          {/* Top Text */}
+          <div className='text-center'>
+            Login
           </div>
-          <TextInput id="username" type="text" placeholder={switchBool ? 'Username' : 'Email'} onChange={(e) => setUsername(e.target.value)} required />
-        </div>
-        <div className={switchBool ? 'block' : 'hidden'}>
-          <div className="mb-2 block">
-            <Label htmlFor="password1" />
-          </div>
-          <TextInput id="password1" type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} required />
-        </div>
 
-        {/* This onclick changes the switchbool based on if it is true/false*/}
-        <p onClick={() => { switchBool === false ? setSwitchBool(true) : setSwitchBool(false) }}>
-          {switchBool ? 'New to WWC? Create an profile!' : 'Already got an account?'}
-        </p>
+          {/* Username and password Input Field */}
+          <TextInput id="username" type="text" placeholder='Username' className='inputSize' onChange={(e) => setUsername(e.target.value)} required />
+          <TextInput id="password1" type="password" placeholder='Password' className='inputSize' onChange={(e) => setPassword(e.target.value)} required />
 
-        <p onClick={() => { router.push('/homePage'); setUsername('Guest') }} className='text-center'>
-          {switchBool ? `Or sign in as a guest` : ''}
-        </p>
+          <p onClick={() => router.push('/pages/signUpPage')} className='text-center'>
+            'New to WWC? Create an profile!'
+          </p>
 
-        {/* Check if switchbool true then use different functions for different pages */}
-        <Button onClick={switchBool === true ? handleSubmit : handleCreateNamePass}>
-          {switchBool ? 'Login' : 'Continue'}
-        </Button>
-      </form>
+          <p onClick={() => { router.push('/pages/homePage'); setUsername('Guest') }} className='text-center'>
+            Or sign in as a guest
+          </p>
+
+          <Button onClick={handleSubmit}>
+            'Login'
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }
