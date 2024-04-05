@@ -4,7 +4,7 @@ import React from 'react'
 
 const NavBarComponent = () => {
   return (
-    <div>NavBarComponent</div>
+    <div className=''>NavBarComponent</div>
   )
 }
 

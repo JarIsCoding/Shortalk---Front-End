@@ -2,9 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'LuckiestGuy';
+    src: url('../fonts/LuckiestGuy-Regular.ttf');
+  }
+
+@font-face {
+    font-family: 'RobotoBold';
+    src: url('../fonts/Roboto-Bold.ttf');
+  }
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf');
+  }
+  
 .bigCardBg{
     background-color: white;
-    border-color: blue;
+    border-color: #00529E;
     border-top-width: 20px;
     width: 500px;
     height: 500px;
@@ -19,4 +34,8 @@
 .loginBtn{
     width: 200px;
     height: 50px;
+}
+
+.vh{
+    height: 100vh;
 }
