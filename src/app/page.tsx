@@ -3,7 +3,7 @@
 import { Button, Label, TextInput } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { createAccount, getLoggedInUserData, login } from '../../utils/Dataservices';
+import { createAccount, getLoggedInUserData, login } from '../utils/Dataservices';
 import { IToken } from '@/Interfaces/Interfaces';
 
 export default function Home() {
@@ -30,7 +30,7 @@ export default function Home() {
     if (token.token !== null) {
       localStorage.setItem("Token", token.token)
       getLoggedInUserData(username)
-      router.push('/homePage')
+      router.push('/pages/homePage')
     } else {
       alert("Login Failed")
     }
