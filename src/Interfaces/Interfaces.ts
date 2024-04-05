@@ -14,3 +14,8 @@ export interface IUserData {
     id: number
     username: string
 }
+
+//Below is used for component props
+export interface INavBar {
+    title: string
+}
