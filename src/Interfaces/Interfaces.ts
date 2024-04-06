@@ -29,3 +29,8 @@ export interface IStatusBar {
     OnePointWord: string | null
     ThreePointWord: string | null
 }
+
+export interface ICard {
+    top: string
+    bottom: string
+}
