@@ -20,20 +20,16 @@ export default function Home() {
       password: password
     }
 
-    if (password || username === '') {
-      setWrongText('Incorrect password or username')
-    }
+    let token: IToken | string = await login(userData)
 
-    let token: IToken = await login(userData)
-
-    console.log(token)
-
-    if (token.token !== null) {
-      localStorage.setItem("Token", token.token)
-      // getLoggedInUserData(username)
-      router.push('/pages/homePage')
+    if (typeof token !== "string") {
+      if (token.token !== null) {
+        localStorage.setItem("Token", token.token)
+        // getLoggedInUserData(username)
+        router.push('/pages/homePage')
+      }
     } else {
-      setWrongText("Incorrect username or password");
+      setWrongText(token)
     }
 
   }
@@ -59,7 +55,7 @@ export default function Home() {
             {/* Username and password Input Field */}
             <input id="username" type="text" placeholder='Username' className='inputSize rounded-none' onChange={(e) => setUsername(e.target.value)} required />
             <input id="password1" type="password" placeholder='Password' className='inputSize rounded-none' onChange={(e) => setPassword(e.target.value)} required />
-            <p>
+            <p className='text-end text-red-600'>
               {wrongText}
             </p>
 
