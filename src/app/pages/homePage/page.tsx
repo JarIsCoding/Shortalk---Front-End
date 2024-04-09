@@ -1,28 +1,36 @@
 'use client'
 import NavBar from '@/app/components/NavBar'
 import React from 'react'
-import { Button } from "flowbite-react";
+import Image from 'next/image';
+import { Button} from "flowbite-react";
+import FriendsPic from '@/app/assets/FriendsPic.png'
+import RulesPic from '@/app/assets/RulesPic.png'
 
 
 const homePage = () => {
   return (
 
-    <div className='bg-lblue min-h-screen w-full Bg relative'>
-    {/* Check if user is guest or signed in */}
-    {/* Title */}
-    <div className='relative'>
-      <NavBar title='Welcome LEMONSQUIRT23'/>   
-      <div className="absolute top-0 right-0 mr-4 mt-4">
-        {/* Add your images here */}
-        <img src="path_to_your_image" alt="Image 1" className="w-10 h-10 mr-2" />
-        <img src="path_to_your_image" alt="Image 2" className="w-10 h-10" />
-      </div>     
-    </div>
-
+<div className='bg-lblue min-h-screen w-full Bg relative'>
+  {/* Check if user is guest or signed in */}
+  {/* Title */}
+  <div className='relative'>
+    <NavBar title='Welcome LEMONSQUIRT23'/>   
+    <div className="absolute top-6 right-0 mr-10 mt-4 flex">
+      {/*Pictures*/}
+      <div className="mr-5">
+        <Image src={RulesPic} alt="RulesPicture" className="w-35px h-30px rulesNav" />
+      </div>
+      <div>
+        <Image src={FriendsPic} alt="FriendsPicture" className="w-35px h-30px friendsNav"/>
+      </div>
+    </div>     
+  </div>
 
     <div className='mt-4'>
       {/* Tilted SHORTALK */}
+      <div className='pulse'>
       <h1 className='font-LuckiestGuy text-dblue px-10 h-[100px] text-5xl -rotate-12 pl-96 shortOut'>SHORTALK</h1>
+      </div>
     {/* Buttons */}
       <Button size="" className='w-[450px] h-[130px] mx-auto my-4 bg-dblue'>
         <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Create A Room</p>
@@ -39,10 +47,5 @@ const homePage = () => {
     </div>
     )
   }
-
-  // .shortOut{
-  //   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  //   padding-top: 23px;
-  //     }
 
 export default homePage
