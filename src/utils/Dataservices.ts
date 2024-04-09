@@ -9,14 +9,14 @@ export const createAccount = async (createdUser: IUserInfo) => {
     const res = await fetch(url + '/User/AddUser', {
         method: 'POST',
         headers: {
-            'Content-Type' : 'application/json'
+            'Content-Type': 'application/json'
         },
-        body:JSON.stringify(createdUser)
+        body: JSON.stringify(createdUser)
     })
 
-    if(!res.ok){
+    if (!res.ok) {
         const message = "An error has occured " + res.status;
-        throw new Error(message); 
+        throw new Error(message);
     }
 
     const data = await res.json();
@@ -27,14 +27,14 @@ export const login = async (loginUser: IUserInfo) => {
     const res = await fetch(url + '/User/Login', {
         method: 'POST',
         headers: {
-            'Content-Type' : 'application/json'
+            'Content-Type': 'application/json'
         },
-        body:JSON.stringify(loginUser)
+        body: JSON.stringify(loginUser)
     })
 
-    if(!res.ok){
+    if (!res.ok) {
         const message = "An error has occured " + res.status;
-        throw new Error(message); 
+        throw new Error(message);
     }
 
     const data: IToken = await res.json();
@@ -43,7 +43,7 @@ export const login = async (loginUser: IUserInfo) => {
 }
 
 export const getLoggedInUserData = async (username: string) => {
-    const res = await fetch (url + 'User/GetUserByUsername' + username)
+    const res = await fetch(url + 'User/GetUserByUsername' + username)
     const data = await res.json()
     userData = data;
 }
@@ -57,7 +57,10 @@ export const checkToken = () => {
 
     let lsData = localStorage.getItem('Token')
 
-    if(lsData !== null) {
+    if (lsData != null) {
         result = true
     }
+
+    console.log(result)
+    return result
 }

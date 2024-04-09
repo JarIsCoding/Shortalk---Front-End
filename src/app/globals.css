@@ -16,3 +16,26 @@
     font-family: 'Roboto';
     src: url('../fonts/Roboto-Regular.ttf');
   }
+  
+.bigCardBg{
+    background-color: white;
+    border-color: #00529E;
+    border-top-width: 20px;
+    width: 500px;
+    height: 500px;
+}
+
+.inputSize{
+    width: 350px;
+    height: 50px;
+    border-radius: 0px;
+}
+
+.loginBtn{
+    width: 200px;
+    height: 50px;
+}
+
+.vh{
+    height: 100vh;
+}
