@@ -15,7 +15,7 @@ const homePage = () => {
 
     <div className='mt-4'>
       {/* Tilted SHORTALK */}
-      <h1 className='font-LuckiestGuy text-dblue px-10 h-[100px] text-4xl -rotate-12 pl-96 shortOut'>SHORTALK</h1>
+      <h1 className='font-LuckiestGuy text-dblue px-10 h-[100px] text-5xl -rotate-12 pl-96 shortOut'>SHORTALK</h1>
     {/* Buttons */}
       <Button size="" className='w-[450px] h-[150px] mx-auto my-4 bg-dblue'>
         <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Create A Room</p>
