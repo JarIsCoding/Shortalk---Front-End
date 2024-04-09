@@ -15,14 +15,14 @@ const homePage = () => {
   {/* Title */}
   <div className='relative'>
     <NavBar title='Welcome LEMONSQUIRT23'/>   
-    <div className="absolute top-6 right-0 mr-10 mt-4 flex">
-      {/*Pictures*/}
-      <div className="mr-5">
-        <Image src={RulesPic} alt="RulesPicture" className="w-35px h-30px rulesNav" />
-      </div>
-      <div>
+    <div className="absolute top-6 right-0 mr-10 flex">
+      {/*NavBar Icons/Buttons*/}
+      <Button className="bg-clear">
+        <Image src={RulesPic} alt="RulesPicture" className="w-35px h-30px rulesNav"/>
+      </Button>
+      <Button className='bg-clear '>
         <Image src={FriendsPic} alt="FriendsPicture" className="w-35px h-30px friendsNav"/>
-      </div>
+      </Button>
     </div>     
   </div>
 
