@@ -33,8 +33,8 @@ export const login = async (loginUser: IUserInfo) => {
     })
 
     if (!res.ok) {
-        const message = "An error has occured " + res.status;
-        throw new Error(message);
+        const message = "Username or Password is incorrect"
+        return message
     }
 
     const data: IToken = await res.json();
