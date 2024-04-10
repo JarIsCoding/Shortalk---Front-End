@@ -54,7 +54,7 @@ const homePage = () => {
       </Button>
 
       <Button size="xl" className='w-[450px] h-[130px] justify-items-center mx-auto my-4 bg-dblue'>
-        <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Pass N' Play</p>
+      <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Pass N{"'"} Play</p>
       </Button>
       </div>
     </div>
