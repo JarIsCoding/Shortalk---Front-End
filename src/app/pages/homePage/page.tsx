@@ -3,7 +3,7 @@
 import NavBar from '@/app/components/NavBar'
 import React, { useState } from 'react'
 import Image from 'next/image';
-import { Button} from "flowbite-react";
+import { Button } from "flowbite-react";
 import FriendsPic from '@/app/assets/FriendsPic.png'
 import RulesPic from '@/app/assets/RulesPic.png'
 import FriendsTab from '@/app/components/FriendsTab';

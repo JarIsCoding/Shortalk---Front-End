@@ -3,7 +3,7 @@
 import { createAccount } from '@/utils/Dataservices';
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import { useState } from 'react';
 
 const signUpPage = () => {
 
