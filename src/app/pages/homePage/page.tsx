@@ -8,7 +8,7 @@ import FriendsPic from '@/app/assets/FriendsPic.png'
 import RulesPic from '@/app/assets/RulesPic.png'
 import FriendsTab from '@/app/components/FriendsTab';
 
-const homePage = () => {
+const HomePage = () => {
 
   const [isFriendsOn, setIsFriendsOn] = useState<boolean>(true);
 
@@ -62,4 +62,4 @@ const homePage = () => {
     )
   }
 
-export default homePage
+export default HomePage

@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-const friendAddPage = () => {
+const FriendAddPage = () => {
     return (
         <div className='flex justify-center pt-56'>
             <div className='cardBorder bg-white w-[500px] h-[400px] rounded-lg'>
@@ -17,4 +17,4 @@ const friendAddPage = () => {
     )
 }
 
-export default friendAddPage
+export default FriendAddPage

@@ -9,7 +9,7 @@ import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-const gamePage = () => {
+const GamePage = () => {
 
     //Change these bools to see inputs/buttons
     const [guesser, setGuesser] = useState<boolean>(false)
@@ -124,4 +124,4 @@ const gamePage = () => {
     )
 }
 
-export default gamePage
+export default GamePage
