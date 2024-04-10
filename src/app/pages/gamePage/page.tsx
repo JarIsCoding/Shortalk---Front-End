@@ -1,4 +1,4 @@
-"Use client"
+"use client"
 
 import BuzzBtn from '@/app/components/BuzzBtn'
 import Card from '@/app/components/Card'
