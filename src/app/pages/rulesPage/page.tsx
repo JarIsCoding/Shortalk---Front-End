@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import SmallCard from '@/app/components/SmallCard'
 import NavBar from '@/app/components/NavBar'

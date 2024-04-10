@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { createAccount } from '@/utils/Dataservices';
 import { Button } from 'flowbite-react';

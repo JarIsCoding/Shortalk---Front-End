@@ -1,4 +1,4 @@
-'use client';
+"use client"
 
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
