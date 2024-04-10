@@ -1,27 +1,40 @@
 "use client"
 
 import NavBar from '@/app/components/NavBar'
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image';
 import { Button} from "flowbite-react";
 import FriendsPic from '@/app/assets/FriendsPic.png'
 import RulesPic from '@/app/assets/RulesPic.png'
-
+import FriendsTab from '@/app/components/FriendsTab';
 
 const homePage = () => {
+
+  const [isFriendsOn, setIsFriendsOn] = useState<boolean>(true);
+
+  const handleClick = () => {
+    setIsFriendsOn(!isFriendsOn);
+  }
+
   return (
 
 <div className='bg-lblue min-h-screen w-full Bg relative'>
+
+  {
+    isFriendsOn && <FriendsTab/>
+  }
+  
   {/* Check if user is guest or signed in */}
   {/* Title */}
   <div className='relative'>
     <NavBar title='Welcome LEMONSQUIRT23'/>   
+    \
     <div className="absolute top-6 right-0 mr-10 flex">
       {/*NavBar Icons/Buttons*/}
-      <Button className="bg-clear">
+      <Button onClick={() => handleClick} className="bg-clear">
         <Image src={RulesPic} alt="RulesPicture" className="w-35px h-30px rulesNav"/>
       </Button>
-      <Button className='bg-clear '>
+      <Button onClick={() => handleClick} className='bg-clear '>
         <Image src={FriendsPic} alt="FriendsPicture" className="w-35px h-30px friendsNav"/>
       </Button>
     </div>     
@@ -42,7 +55,7 @@ const homePage = () => {
       </Button>
 
       <Button size="xl" className='w-[450px] h-[130px] justify-items-center mx-auto my-4 bg-dblue'>
-        <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Pass N' Play</p>
+      <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Pass N{"'"} Play</p>
       </Button>
       </div>
     </div>
