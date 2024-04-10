@@ -1,11 +1,11 @@
-'use client'
+"use client"
 
 import { createAccount } from '@/utils/Dataservices';
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import { useState } from 'react';
 
-const signUpPage = () => {
+const SignUpPage = () => {
 
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')  
@@ -69,4 +69,4 @@ const signUpPage = () => {
     )
 }
 
-export default signUpPage
+export default SignUpPage

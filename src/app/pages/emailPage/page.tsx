@@ -1,8 +1,8 @@
-'use client'
+"use client"
 
 import React from 'react'
 
-const emailPage = () => {
+const EmailPage = () => {
   return (
     <div>
       This is the email page
@@ -10,4 +10,4 @@ const emailPage = () => {
   )
 }
 
-export default emailPage
+export default EmailPage

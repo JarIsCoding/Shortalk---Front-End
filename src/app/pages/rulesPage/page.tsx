@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import SmallCard from '@/app/components/SmallCard'
 import NavBar from '@/app/components/NavBar'
@@ -6,7 +6,7 @@ import React from 'react'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 
-const rulesPage = () => {
+const RulesPage = () => {
 
     const router = useRouter()
 
@@ -61,4 +61,4 @@ const rulesPage = () => {
     )
 }
 
-export default rulesPage
+export default RulesPage
