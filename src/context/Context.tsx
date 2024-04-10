@@ -9,6 +9,12 @@ import { createContext, useContext, useState } from "react"
 //First lets define our context
 
 interface IContextValue {
+    // roundTime: number
+    // numberOfRounds: number
+    // numberOfPeople: number
+    // Team1Name: string
+    // Team2Name: string
+
     // tip: number | undefined
     // setTip: (tip: number | undefined) => void
     // bill: number
