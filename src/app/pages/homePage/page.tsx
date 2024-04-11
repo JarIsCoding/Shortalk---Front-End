@@ -30,7 +30,7 @@ const HomePage = () => {
 
     <div className='bg-lblue min-h-screen w-full Bg relative'>
 
-      <div className={`${isFriendsOn ? 'block' : 'hidden'}`}>
+      <div className={`absolute right-0 pt-24 ${isFriendsOn ? 'block' : 'hidden'}`}>
         <FriendsTab />
       </div>
 
@@ -38,7 +38,6 @@ const HomePage = () => {
       {/* Title */}
       <div className='relative'>
         <NavBar title={'Welcome ' + userData.username + ' !'} />
-        \
         <div className="absolute top-6 right-0 mr-10 flex">
           {/*NavBar Icons/Buttons*/}
           <Button onClick={() => router.push('rulesPage')} className="bg-clear">
