@@ -29,7 +29,7 @@ export default function Home() {
     if (typeof token !== "string") {
       if (token.token !== null) {
         localStorage.setItem("Token", token.token)
-        getLoggedInUserData(username)
+        // getLoggedInUserData(username)
         router.push('/pages/homePage')
       }
     } else {

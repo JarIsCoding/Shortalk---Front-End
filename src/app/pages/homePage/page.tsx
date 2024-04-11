@@ -41,7 +41,7 @@ const HomePage = () => {
         \
         <div className="absolute top-6 right-0 mr-10 flex">
           {/*NavBar Icons/Buttons*/}
-          <Button className="bg-clear">
+          <Button onClick={() => router.push('rulesPage')} className="bg-clear">
             <Image src={RulesPic} alt="RulesPicture" className="w-35px h-30px rulesNav" />
           </Button>
           <Button onClick={() => {isFriendsOn ? setIsFriendsOn(false) : setIsFriendsOn(true)}} className={`bg-clear`}>
