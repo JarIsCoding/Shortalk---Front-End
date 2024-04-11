@@ -11,7 +11,7 @@ const RulesPage = () => {
     const router = useRouter()
 
     return (
-        <div className=''>
+        <div className='cursor-default'>
             <NavBar title='ShorTalk Rules' />
 
             <div className='grid grid-cols-3 pt-5'>
@@ -50,7 +50,7 @@ const RulesPage = () => {
                 <li className='py-1'>
                     The game ends when everyone has had the chance to be <span className='font-bold text-dgreen'>Speaker</span> for the <br /> number of rounds designated in the game lobby room.
                 </li>
-                <div className=''>
+                <div className='cursor-pointer pb-10 mb-10'>
                     <Button className='absolute bottom-0 right-3 px-16 py-2 me-7 bg-dblue' onClick={() => { router.push('/pages/homePage') }}>
                         <p className='text-[36px]'>Back to Home</p>
                     </Button>

@@ -28,7 +28,7 @@ const SignUpPage = () => {
             <div className='grid grid-flow-row justify-center'>
 
                 <div className='py-14 text-center'>
-                    <p className='text-[48px] font-LuckiestGuy tracking-widest text-dblue'>
+                    <p className='text-[48px] font-LuckiestGuy tracking-widest text-dblue cursor-default'>
                         CREATE YOUR USERNAME <br /> AND PASSWORD
                     </p>
                 </div>
@@ -38,18 +38,18 @@ const SignUpPage = () => {
                         <form className="flex max-w-md flex-col ">
 
                             {/* Username and password Input Field */}
-                            <p className='text-center text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray'>
+                            <p className='text-center text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
                                 USERNAME
                             </p>
                             <input id="username" type="text" placeholder='Username' className='inputSize rounded-none' onChange={(e) => setUsername(e.target.value)} required />
                             
-                            <p className='text-center  text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray'>
+                            <p className='text-center  text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
                                 PASSWORD
                             </p>
                             <input id="password1" type="password" placeholder='Password' className='inputSize rounded-none' onChange={(e) => setPassword(e.target.value)} required />
-                            <p className='text-center'>More than one syllable reccomended</p>
+                            <p className='text-center cursor-default'>More than one syllable reccomended</p>
 
-                            <p onClick={() => router.push('/')} className='text-center pt-5'>
+                            <p onClick={() => router.push('/')} className='text-center pt-5 cursor-pointer underline'>
                                 Already have an account?
                             </p>
 
