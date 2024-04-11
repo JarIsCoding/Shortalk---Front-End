@@ -7,13 +7,23 @@ import { Button } from "flowbite-react";
 import FriendsPic from '@/app/assets/FriendsPic.png'
 import RulesPic from '@/app/assets/RulesPic.png'
 import FriendsTab from '@/app/components/FriendsTab';
+import { useAppContext } from '@/context/Context';
+import { useRouter } from 'next/navigation';
 
 const HomePage = () => {
+
+  const router = useRouter()
+
+  const { userData, setUserData} = useAppContext();
 
   const [isFriendsOn, setIsFriendsOn] = useState<boolean>(false);
 
   const handleClick = () => {
     setIsFriendsOn(!isFriendsOn);
+  }
+
+  const handlePassAndPlayClick = () => {
+    router.push('/pages/passAndPlayLobby')
   }
 
   return (
@@ -27,7 +37,7 @@ const HomePage = () => {
       {/* Check if user is guest or signed in */}
       {/* Title */}
       <div className='relative'>
-        <NavBar title='Welcome LEMONSQUIRT23' />
+        <NavBar title={'Welcome ' + userData.username + ' !'} />
         \
         <div className="absolute top-6 right-0 mr-10 flex">
           {/*NavBar Icons/Buttons*/}
@@ -54,7 +64,7 @@ const HomePage = () => {
           <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Join A Room</p>
         </Button>
 
-        <Button size="xl" className='w-[450px] h-[130px] justify-items-center mx-auto my-4 bg-dblue'>
+        <Button onClick={handlePassAndPlayClick} size="xl" className='w-[450px] h-[130px] justify-items-center mx-auto my-4 bg-dblue'>
           <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Pass N{"'"} Play</p>
         </Button>
       </div>
