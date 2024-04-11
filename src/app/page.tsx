@@ -2,7 +2,7 @@
 
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getLoggedInUserData, login } from '../utils/Dataservices';
 import { IToken } from '@/Interfaces/Interfaces';
 import { useAppContext } from '@/context/Context';
@@ -18,11 +18,6 @@ export default function Home() {
   const router = useRouter()
 
   const handleSubmit = async () => {
-
-    setUserData({
-      username: username,
-      password: password
-    })
 
     let token: IToken | string = await login(userData)
 
@@ -45,6 +40,14 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    setUserData({
+      username: username,
+      password: password
+    })
+
+  }, [password, username])
+
   return (
     <div className='bg-lblue vh'>
       <div className='grid grid-flow-row justify-center pb-20'>
@@ -64,8 +67,16 @@ export default function Home() {
             </div>
 
             {/* Username and password Input Field */}
-            <input id="username" type="text" placeholder='Username' className='inputSize rounded-none' onChange={(e) => setUsername(e.target.value)} onKeyDown={handleKeyDown} required />
-            <input id="password1" type="password" placeholder='Password' className='inputSize rounded-none' onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown} required />
+            <input id="username" type="text" placeholder='Username' className='inputSize rounded-none' 
+            onChange={(e) => setUsername(e.target.value)} 
+            onKeyDown={handleKeyDown} 
+            required />
+
+            <input id="password1" type="password" placeholder='Password' className='inputSize rounded-none' 
+            onChange={(e) => setPassword(e.target.value)} 
+            onKeyDown={handleKeyDown} 
+            required />
+
             <p className='text-end text-red-600'>
               {wrongText}
             </p>
