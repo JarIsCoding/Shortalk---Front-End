@@ -5,8 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { login } from '../utils/Dataservices';
 import { IToken } from '@/Interfaces/Interfaces';
+import { useAppContext } from '@/context/Context';
 
 export default function Home() {
+
+  const { userData, setUserData} = useAppContext();
+
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [wrongText, setWrongText] = useState<string>('')
@@ -15,10 +19,10 @@ export default function Home() {
 
   const handleSubmit = async () => {
 
-    let userData = {
+    setUserData({
       username: username,
       password: password
-    }
+    })
 
     let token: IToken | string = await login(userData)
 
