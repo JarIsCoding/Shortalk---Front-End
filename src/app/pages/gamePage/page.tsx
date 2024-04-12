@@ -69,7 +69,7 @@ const GamePage = () => {
 
             <div className=''>
                 <div className='p-5 pt-10'>
-                    <StatusBar time='0:00' teamName='Team' roundNumber={0} roundTotal={0} role='Guesser' OnePointWord='Word' ThreePointWord='Word' />
+                    <StatusBar time={0} teamName='Team' roundNumber={0} roundTotal={0} role='Guesser' OnePointWord='Word' ThreePointWord='Word' Speaker={null} />
                 </div>
                 <div className='grid grid-cols-3 gap-5 px-5 pb-5'>
 

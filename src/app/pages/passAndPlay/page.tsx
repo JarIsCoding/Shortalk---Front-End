@@ -10,7 +10,7 @@ import ThreePointBtn from '@/app/components/ThreePointBtn'
 import { useAppContext } from '@/context/Context'
 import React from 'react'
 
-const page = () => {
+const PassAndPlayPage = () => {
 
   const {roundTime, numberOfRounds, Team1Name, Team2Name, team, speaker} = useAppContext();
 
@@ -40,4 +40,4 @@ const page = () => {
   )
 }
 
-export default page
+export default PassAndPlayPage
