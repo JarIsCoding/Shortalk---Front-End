@@ -49,3 +49,8 @@ export interface IName {
 export interface IStartButton {
     isReady: boolean
 }
+
+export interface ICardData {
+    Top: string
+    Bottom: string[]
+}

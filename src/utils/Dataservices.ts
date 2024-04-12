@@ -1,4 +1,4 @@
-import { IToken, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
+import { ICard, ICardData, IToken, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
 import { Context } from "@/context/Context"
 
 
@@ -64,4 +64,18 @@ export const checkToken = () => {
 
     console.log(result)
     return result
+}
+
+export const getCard = async () => {
+    const promise = await fetch('../words.json');
+    const data:Promise<ICardData[]> = promise.json();
+
+
+    let randNum = Math.random()*(await data).length;
+
+    let coinflip = Math.round(Math.random());
+
+    // let card: ICard = 
+
+    return data
 }

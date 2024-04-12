@@ -10,9 +10,14 @@ const IntermissionPnpPage = () => {
 
   const router = useRouter()
 
-  const {speaker, team} = useAppContext();
+  const {setCard, speaker, team} = useAppContext();
 
   const [openModal, setOpenModal] = useState(false)
+
+  const handleClick = () => {
+
+    router.push('/pages/passAndPlay')
+  }
 
   return (
     <div>
@@ -47,7 +52,7 @@ const IntermissionPnpPage = () => {
         </Modal.Body>
       </Modal>
 
-      <div className='pb-80 pt-64 w-screen cursor-pointer' onClick={() => router.push('/pages/passAndPlay')}>
+      <div className='pb-80 pt-64 w-screen cursor-pointer' onClick={handleClick}>
         <p className='flex justify-center font-LuckiestGuy text-dblue text-[48px] tracking-widest'>
           {"Team\u00A0"}<span>{team}</span>{"'s Turn"}
         </p>

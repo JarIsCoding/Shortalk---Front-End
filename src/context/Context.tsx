@@ -1,6 +1,6 @@
 'use client'
 
-import { IUserData, IUserInfo } from "@/Interfaces/Interfaces"
+import { ICard, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
 import { createContext, useContext, useState } from "react"
 
 // Creating Context
@@ -43,6 +43,18 @@ interface IContextValue {
 
     team: string
     setTeam: (speaker: string) => void
+
+    BuzzWords: ICard[]
+    setBuzzWords: (BuzzWords: ICard[]) => void
+
+    OnePointWords: ICard[]
+    setOnePointWords: (OnePointWords: ICard[]) => void
+
+    ThreePointWords: ICard[]
+    setThreePointWords: (ThreePointWords: ICard[]) => void
+
+    card: ICard
+    setCard: (card: ICard) => void
 }
 
 // {} as IContextValue is just giving placeholder values
@@ -60,11 +72,17 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [Team1NameList, setTeam1NameList] = useState<string[]>([]);
     const [Team2NameList, setTeam2NameList] = useState<string[]>([]);
     const [shuffle, setShuffle] = useState<boolean>(false)
-    const [speaker, setSpeaker] =useState<string>('Joe')
-    const [team, setTeam] =useState<string>('Pizza')
+    const [speaker, setSpeaker] =useState<string>('Guest')
+    const [team, setTeam] =useState<string>('No Name')
+
+    const [BuzzWords, setBuzzWords] = useState<ICard []>([])
+    const [OnePointWords, setOnePointWords] = useState<ICard []>([])
+    const [ThreePointWords, setThreePointWords] = useState<ICard []>([]) 
+
+    const [card, setCard] = useState<ICard>({} as ICard)
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard}}>
             {children}
         </Context.Provider>
     )
