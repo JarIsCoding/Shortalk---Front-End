@@ -4,7 +4,7 @@ import React from 'react'
 const FriendsTab = () => {
 
   const { userData, setUserData } = useAppContext();
-
+  
   return (
     <div className='Friends w-[300px] min-h-screen text-white text-[20px]'>
       <div className='mx-3'>
