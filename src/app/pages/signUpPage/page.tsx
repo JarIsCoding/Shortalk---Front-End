@@ -22,13 +22,17 @@ const SignUpPage = () => {
             password: password
         }
 
-        const isCreated = await createAccount(userData);
-
-        if (isCreated) {
-            setCreatedText("User created successfully!");
-            setSuccess(true)
+        if(password !== ''){
+            const isCreated = await createAccount(userData);
+            if (isCreated) {
+                setCreatedText("User created successfully!");
+                setSuccess(true)
+            } else {
+                setCreatedText("Failed to create user. Please try again.");
+                setSuccess(false)
+            }
         } else {
-            setCreatedText("Failed to create user. Please try again.");
+            setCreatedText("Please enter a password!");
             setSuccess(false)
         }
     }
@@ -64,7 +68,7 @@ const SignUpPage = () => {
                             </p>
 
                             <div className='flex justify-center pt-8 p-0 m-0'>
-                                <Button onClick={() => {handleSubmit(); setOpenModal(true)}} className='loginBtn p-0 m-0 bg-dblue'>
+                                <Button onClick={() => { handleSubmit(); setOpenModal(true) }} className='loginBtn p-0 m-0 bg-dblue'>
                                     <p className='text-[20px] text-center font-LuckiestGuy tracking-wider'>
                                         Create Account
                                     </p>
@@ -82,7 +86,7 @@ const SignUpPage = () => {
                                             <Button className='bg-dblue' onClick={() => { setOpenModal(false); router.push('/') }}>
                                                 Go to Login!
                                             </Button>
-                                            <Button color="gray" className={`${ success ? 'hidden' : 'block'}`} onClick={() => setOpenModal(false)}>
+                                            <Button color="gray" className={`${success ? 'hidden' : 'block'}`} onClick={() => setOpenModal(false)}>
                                                 Try again?
                                             </Button>
                                         </div>
