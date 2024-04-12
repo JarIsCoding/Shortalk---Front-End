@@ -21,16 +21,31 @@ export interface INavBar {
 }
 
 export interface IStatusBar {
-    time: string | null
+    time: number
     teamName: string | null
     roundNumber: number | null
     roundTotal: number | null
     role: string | null
     OnePointWord: string | null
     ThreePointWord: string | null
+    Speaker: string | null
 }
 
 export interface ICard {
     top: string
     bottom: string
+}
+
+export interface ITeamListPNP {
+    teamNumber: number
+}
+
+export interface IName {
+    id: number
+    name: string
+    teamNumber: number
+}
+
+export interface IStartButton {
+    isReady: boolean
 }

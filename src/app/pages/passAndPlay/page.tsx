@@ -7,21 +7,26 @@ import OnePointBtn from '@/app/components/OnePointBtn'
 import SkipBtn from '@/app/components/SkipBtn'
 import StatusBar from '@/app/components/StatusBar'
 import ThreePointBtn from '@/app/components/ThreePointBtn'
+import { useAppContext } from '@/context/Context'
 import React from 'react'
 
 const page = () => {
+
+  const {roundTime, numberOfRounds, Team1Name, Team2Name, team, speaker} = useAppContext();
+
   return (
     <div className=' bg-lblue h-screen'>
       <NavBar title='Pass And Play'/>
       <div className=' px-10 flex flex-col items-center space-y-5 mt-10'>
           <StatusBar 
-              time='1:30'
-              teamName='1'
+              time={roundTime}
+              teamName={team}
               roundNumber={1}
-              roundTotal={2}
+              roundTotal={numberOfRounds}
               role={null}
               OnePointWord={null}
               ThreePointWord={null}
+              Speaker={speaker}
           />
           <Card top={'Code'} bottom={'Codestack'}/>
           <div className=' w-full px-40 flex justify-between'>
