@@ -2,6 +2,7 @@
 
 import NavBar from '@/app/components/NavBar'
 import { useAppContext } from '@/context/Context'
+import { getCard } from '@/utils/Dataservices'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -14,8 +15,9 @@ const IntermissionPnpPage = () => {
 
   const [openModal, setOpenModal] = useState(false)
 
-  const handleClick = () => {
-
+  const handleClick = async () => {
+    let card = await getCard()
+    setCard(card);
     router.push('/pages/passAndPlay')
   }
 
