@@ -1,6 +1,7 @@
 'use client'
 
 import NavBar from '@/app/components/NavBar'
+import { useAppContext } from '@/context/Context'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -8,6 +9,8 @@ import React, { useState } from 'react'
 const IntermissionPnpPage = () => {
 
   const router = useRouter()
+
+  const {speaker, team} = useAppContext();
 
   const [openModal, setOpenModal] = useState(false)
 
@@ -44,9 +47,12 @@ const IntermissionPnpPage = () => {
         </Modal.Body>
       </Modal>
 
-      <div className='pb-80 pt-64 w-screen' onClick={() => router.push('/pages/gamePage')}>
+      <div className='pb-80 pt-64 w-screen cursor-pointer' onClick={() => router.push('/pages/passAndPlay')}>
         <p className='flex justify-center font-LuckiestGuy text-dblue text-[48px] tracking-widest'>
-          Up Next: <span>Name here</span>
+          {"Team\u00A0"}<span>{team}</span>{"'s Turn"}
+        </p>
+        <p className='flex justify-center font-LuckiestGuy text-dblue text-[48px] tracking-widest'>
+          {"Speaker:\u00A0"}<span>{speaker}</span>
         </p>
         <p className='flex justify-center font-LuckiestGuy text-dblue text-[40px] tracking-widest pt-14'>
           Click anywhere to start

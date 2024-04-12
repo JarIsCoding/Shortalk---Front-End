@@ -6,3 +6,9 @@ export function shuffleArray(array: string[]): string[] {
     }
     return newArray;
 }
+
+export function formatTime(seconds: number): string {
+    const m = Math.floor(seconds / 60).toString().padStart(1, '0'); // Calculate minutes
+    const ss = (seconds % 60).toString().padStart(2, '0'); // Calculate seconds
+    return `${m}:${ss}`; // Return formatted time
+}
