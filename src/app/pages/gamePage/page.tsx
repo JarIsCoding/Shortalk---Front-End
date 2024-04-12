@@ -24,10 +24,6 @@ const GamePage = () => {
 
     const [openModal, setOpenModal] = useState(false);
 
-    const handleLeaveCheck = () => {
-
-    }
-
     // if(guesser){
     //     setRole('Guesser')
     // } else if(speaker){
