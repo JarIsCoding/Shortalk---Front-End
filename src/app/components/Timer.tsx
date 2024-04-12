@@ -1,3 +1,4 @@
+import { useAppContext } from '@/context/Context';
 import React, { useEffect, useState } from 'react';
 
 interface TimerProps {
@@ -5,6 +6,9 @@ interface TimerProps {
 }
 
 const Timer = ({ initialTime }: TimerProps) => {
+
+  const {isTimeUp, setIsTimeUp} = useAppContext();
+
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
@@ -13,7 +17,9 @@ const Timer = ({ initialTime }: TimerProps) => {
         setTime((prevTime) => prevTime - 1);
       }
     }, 1000);
-
+    if(time == 0){
+      setIsTimeUp(true)
+    }
     return () => clearInterval(timer);
   }, [time]);
 

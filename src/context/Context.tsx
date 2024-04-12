@@ -55,6 +55,9 @@ interface IContextValue {
 
     card: ICard
     setCard: (card: ICard) => void
+
+    isTimeUp: boolean
+    setIsTimeUp: (isTimeUp: boolean) => void 
 }
 
 // {} as IContextValue is just giving placeholder values
@@ -80,9 +83,11 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [ThreePointWords, setThreePointWords] = useState<ICard []>([]) 
 
     const [card, setCard] = useState<ICard>({} as ICard)
+    
+    const [isTimeUp, setIsTimeUp] = useState<boolean>(false)
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp}}>
             {children}
         </Context.Provider>
     )

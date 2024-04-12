@@ -67,6 +67,10 @@ const HomePage = () => {
           <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Pass N{"'"} Play</p>
         </Button>
       </div>
+
+      <p className='text-[35px] text-center font-LuckiestGuy text-dblue pt-10'>
+        Online Currently not working! Please play Pass and play for now. <br /> Sorry for the inconvinence!
+      </p>
     </div>
   )
 }

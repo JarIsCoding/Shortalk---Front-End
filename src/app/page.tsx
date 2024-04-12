@@ -9,7 +9,7 @@ import { useAppContext } from '@/context/Context';
 
 export default function Home() {
 
-  const { userData, setUserData} = useAppContext();
+  const { userData, setUserData } = useAppContext();
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -19,18 +19,21 @@ export default function Home() {
 
   const handleSubmit = async () => {
 
-    let token: IToken | string = await login(userData)
+    if (username !== '' || password !== '') {
+      let token: IToken | string = await login(userData)
 
-    if (typeof token !== "string") {
-      if (token.token !== null) {
-        localStorage.setItem("Token", token.token)
-        // getLoggedInUserData(username)
-        router.push('/pages/homePage')
+      if (typeof token !== "string") {
+        if (token.token !== null) {
+          localStorage.setItem("Token", token.token)
+          // getLoggedInUserData(username)
+          router.push('/pages/homePage')
+        }
+      } else {
+        setWrongText(token)
       }
-    } else {
-      setWrongText(token)
+    }else{
+      setWrongText("Please fill out all fields.")
     }
-
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -67,15 +70,15 @@ export default function Home() {
             </div>
 
             {/* Username and password Input Field */}
-            <input id="username" type="text" placeholder='Username' className='inputSize rounded-none' 
-            onChange={(e) => setUsername(e.target.value)} 
-            onKeyDown={handleKeyDown} 
-            required />
+            <input id="username" type="text" placeholder='Username' className='inputSize rounded-none'
+              onChange={(e) => setUsername(e.target.value)}
+              onKeyDown={handleKeyDown}
+              required />
 
-            <input id="password1" type="password" placeholder='Password' className='inputSize rounded-none' 
-            onChange={(e) => setPassword(e.target.value)} 
-            onKeyDown={handleKeyDown} 
-            required />
+            <input id="password1" type="password" placeholder='Password' className='inputSize rounded-none'
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
+              required />
 
             <p className='text-end text-red-600'>
               {wrongText}

@@ -9,16 +9,30 @@ import StatusBar from '@/app/components/StatusBar'
 import ThreePointBtn from '@/app/components/ThreePointBtn'
 import { useAppContext } from '@/context/Context'
 import { getCard } from '@/utils/Dataservices'
-import React from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
 
 const PassAndPlayPage = () => {
 
-  const { roundTime, numberOfRounds, Team1Name, Team2Name, team, speaker, card, setCard } = useAppContext();
+  const { roundTime, numberOfRounds, Team1Name, Team2Name, team, speaker, card, setCard, isTimeUp, setIsTimeUp } = useAppContext();
 
   const getNextCard = () => {
     let card = getCard();
     setCard(card);
   }
+
+  const router = useRouter()
+
+  if(isTimeUp){
+    router.push('/pages/finalScorePnpPage')
+  }
+
+  useEffect(() => {
+    if(isTimeUp){
+      setIsTimeUp(false);
+      router.push('/pages/finalScorePnpPage')
+    }
+  },[isTimeUp])
 
     return (
       <div className=' bg-lblue h-screen'>
