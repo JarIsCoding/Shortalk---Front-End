@@ -28,6 +28,15 @@ interface IContextValue {
 
     Team2Name: string
     setTeam2Name: (Team2Name: string) => void
+
+    Team1NameList: string[]
+    setTeam1NameList: (Team1NameList: string[]) => void
+
+    Team2NameList: string[]
+    setTeam2NameList: (Team2NameList: string[]) => void
+    
+    shuffle: boolean
+    setShuffle: (shuffle: boolean) => void
 }
 
 // {} as IContextValue is just giving placeholder values
@@ -40,11 +49,14 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [roundTime, setRoundTime] = useState<number>(0);
     const [numberOfRounds, setNumberOfRounds] = useState<number>(0);
     const [numberOfPeople, setNumberOfPeople] = useState<number>(0);
-    const [Team1Name, setTeam1Name] = useState<string>('1');
-    const [Team2Name, setTeam2Name] = useState<string>('2');
+    const [Team1Name, setTeam1Name] = useState<string>('');
+    const [Team2Name, setTeam2Name] = useState<string>('');
+    const [Team1NameList, setTeam1NameList] = useState<string[]>([]);
+    const [Team2NameList, setTeam2NameList] = useState<string[]>([]);
+    const [shuffle, setShuffle] = useState<boolean>(false)
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle}}>
             {children}
         </Context.Provider>
     )

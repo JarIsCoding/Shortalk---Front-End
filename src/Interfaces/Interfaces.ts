@@ -34,3 +34,17 @@ export interface ICard {
     top: string
     bottom: string
 }
+
+export interface ITeamListPNP {
+    teamNumber: number
+}
+
+export interface IName {
+    id: number
+    name: string
+    teamNumber: number
+}
+
+export interface IStartButton {
+    isReady: boolean
+}
