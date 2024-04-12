@@ -24,9 +24,7 @@ const Timer = ({ initialTime }: TimerProps) => {
   };
 
   return (
-    <div>
-      <h1>{formatTime(time)}</h1>
-    </div>
+    <div>{"Time: " + formatTime(time)}</div>
   );
 };
 
