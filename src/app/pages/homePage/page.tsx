@@ -27,8 +27,7 @@ const HomePage = () => {
       {/* Check if user is guest or signed in */}
       {/* Title */}
       <div className='relative'>
-        <NavBar title='Welcome LEMONSQUIRT23' />
-        \
+        <NavBar title='Welcome LEMONSQUIRT23'/>
         <div className="absolute top-6 right-0 mr-10 flex">
           {/*NavBar Icons/Buttons*/}
           <Button className="bg-clear">
