@@ -12,7 +12,7 @@ import React from 'react'
 
 const PassAndPlayPage = () => {
 
-  const {roundTime, numberOfRounds, Team1Name, Team2Name, team, speaker} = useAppContext();
+  const {roundTime, numberOfRounds, Team1Name, Team2Name, team, speaker, card} = useAppContext();
 
   return (
     <div className=' bg-lblue h-screen'>
@@ -28,7 +28,7 @@ const PassAndPlayPage = () => {
               ThreePointWord={null}
               Speaker={speaker}
           />
-          <Card top={'Code'} bottom={'Codestack'}/>
+          <Card top={card.top} bottom={card.bottom}/>
           <div className=' w-full px-40 flex justify-between'>
             <BuzzBtn/>
             <SkipBtn/>
