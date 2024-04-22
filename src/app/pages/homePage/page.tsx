@@ -55,7 +55,7 @@ const HomePage = () => {
           <h1 className='font-LuckiestGuy text-dblue px-10 h-[100px] text-5xl -rotate-12 pl-96 shortOut w-[90%]'>SHORTALK</h1>
         </div>
         {/* Buttons */}
-        <Button size="" className='w-[450px] h-[130px] mx-auto my-4 bg-dblue'>
+        <Button onClick={() => router.push('/pages/createRoom')} size="" className='w-[450px] h-[130px] mx-auto my-4 bg-dblue'>
           <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Create A Room</p>
         </Button>
 

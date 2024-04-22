@@ -1,9 +1,13 @@
 import { useAppContext } from '@/context/Context';
+import { Button } from 'flowbite-react';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 const FriendsTab = () => {
 
   const { userData, setUserData } = useAppContext();
+
+  const router = useRouter()
   
   return (
     <div className='Friends w-[300px] min-h-screen text-white text-[20px]'>
@@ -26,6 +30,14 @@ const FriendsTab = () => {
 
       <div className='mx-3'>
         <p className='underline py-2 tracking-widest'>Pending</p>
+      </div>
+
+      <div className='absolute bottom-8 w-[100%] flex justify-center'>
+        <Button className='bg-dblue w-[200px] h-[50px]' onClick={() => router.push('/pages/friendAddPage')}>
+          <p className='text-[16px]'>
+            Add a Friend
+          </p>
+        </Button>
       </div>
     </div>
 
