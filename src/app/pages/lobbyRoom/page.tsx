@@ -36,7 +36,7 @@ const HomePage = () => {
       {/* Check if user is guest or signed in */}
       {/* Title */}
       <div className='relative'>
-        <NavBar title={'Welcome ' + userData.username + ' !'} />
+        <NavBar title={'Room ID' + userData.username + ' !'} />
         <div className="absolute top-6 right-0 mr-10 flex">
           {/*NavBar Icons/Buttons*/}
           <Button onClick={() => router.push('rulesPage')} className="bg-clear">
@@ -54,11 +54,11 @@ const HomePage = () => {
           <h1 className='font-LuckiestGuy text-dblue px-10 h-[100px] text-5xl -rotate-12 pl-96 shortOut w-[90%]'>SHORTALK</h1>
         </div>
         {/* Buttons */}
-        <Button onClick={() => router.push('/pages/createRoom')} size="" className='w-[450px] h-[130px] mx-auto my-4 bg-dblue'>
+        <Button size="" className='w-[450px] h-[130px] mx-auto my-4 bg-dblue'>
           <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Create A Room</p>
         </Button>
 
-        <Button onClick={() => router.push('/pages/joinRoom')} size="xl" className='w-[450px] h-[130px] justify-center mx-auto my-5 bg-dblue'>
+        <Button size="xl" className='w-[450px] h-[130px] justify-center mx-auto my-5 bg-dblue'>
           <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Join A Room</p>
         </Button>
 
@@ -66,10 +66,6 @@ const HomePage = () => {
           <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Pass N{"'"} Play</p>
         </Button>
       </div>
-
-      <p className='text-[35px] text-center font-LuckiestGuy text-dblue pt-10'>
-        Online Currently not working! Please play Pass and play for now. <br /> Sorry for the inconvinence!
-      </p>
     </div>
   )
 }

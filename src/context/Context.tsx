@@ -63,7 +63,10 @@ interface IContextValue {
     setIsTimeUp: (isTimeUp: boolean) => void 
 
     isGameOver: boolean
-    setIsGameOver: (isTimeUp: boolean) => void 
+    setIsGameOver: (isGameOver: boolean) => void 
+
+    turnNumber: number
+    setTurnNumber: (turnNumber: number) => void
 }
 
 // {} as IContextValue is just giving placeholder values
@@ -75,6 +78,7 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [userData, setUserData] = useState<IUserInfo>({} as IUserInfo);
     const [roundTime, setRoundTime] = useState<number>(90);
     const [numberOfRounds, setNumberOfRounds] = useState<number>(1);
+    const [turnNumber, setTurnNumber] = useState<number>(1);
     const [numberOfTurns, setNumberOfTurns] = useState<number>(0);
     const [numberOfPeople, setNumberOfPeople] = useState<number>(0);
     const [Team1Name, setTeam1Name] = useState<string>('');
@@ -95,7 +99,7 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [isGameOver, setIsGameOver] = useState<boolean>(false)
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber}}>
             {children}
         </Context.Provider>
     )
