@@ -14,6 +14,7 @@ const CreateRoom = () => {
         if(roomName === ''){
             setWarnText('Please enter a room name.')
         } else {
+            console.log(roomName)
             router.push('/pages/passAndPlayLobby')
         }
     }
