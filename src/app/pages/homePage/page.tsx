@@ -1,5 +1,4 @@
-"use client"
-
+"use client"  
 import NavBar from '@/app/components/NavBar'
 import React, { useState } from 'react'
 import Image from 'next/image';
