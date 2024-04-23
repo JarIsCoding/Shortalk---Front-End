@@ -50,6 +50,9 @@ interface IContextValue {
     BuzzWords: ICard[]
     setBuzzWords: (BuzzWords: ICard[]) => void
 
+    SkipWords: ICard[]
+    setSkipWords: (BuzzWords: ICard[]) => void
+
     OnePointWords: ICard[]
     setOnePointWords: (OnePointWords: ICard[]) => void
 
@@ -67,6 +70,12 @@ interface IContextValue {
 
     turnNumber: number
     setTurnNumber: (turnNumber: number) => void
+
+    Team1Score: number
+    setTeam1Score: (Team1Score: number) => void
+
+    Team2Score: number
+    setTeam2Score: (Team2Score: number) => void
 }
 
 // {} as IContextValue is just giving placeholder values
@@ -90,8 +99,12 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [team, setTeam] =useState<string>('No Name')
 
     const [BuzzWords, setBuzzWords] = useState<ICard []>([])
+    const [SkipWords, setSkipWords] = useState<ICard []>([])
     const [OnePointWords, setOnePointWords] = useState<ICard []>([])
-    const [ThreePointWords, setThreePointWords] = useState<ICard []>([]) 
+    const [ThreePointWords, setThreePointWords] = useState<ICard []>([])
+    
+    const [Team1Score, setTeam1Score] = useState<number>(0);
+    const [Team2Score, setTeam2Score] = useState<number>(0);
 
     const [card, setCard] = useState<ICard>({} as ICard)
     
@@ -99,7 +112,7 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [isGameOver, setIsGameOver] = useState<boolean>(false)
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords}}>
             {children}
         </Context.Provider>
     )

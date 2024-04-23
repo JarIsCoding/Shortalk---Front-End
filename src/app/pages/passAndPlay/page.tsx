@@ -15,11 +15,31 @@ import React, { useEffect, useState } from 'react'
 
 const PassAndPlayPage = () => {
 
-  const { roundTime, numberOfRounds, Team1Name, Team2Name, team, setTeam, speaker, card, setCard, isTimeUp, setIsTimeUp, turnNumber, setTurnNumber, numberOfTurns, setSpeaker, Team2NameList, Team1NameList } = useAppContext();
+  const { roundTime, numberOfRounds, Team1Name, Team2Name, team, setTeam, speaker, card, setCard, isTimeUp, setIsTimeUp, turnNumber, setTurnNumber, numberOfTurns, setSpeaker, Team2NameList, Team1NameList, setOnePointWords, OnePointWords, setBuzzWords, BuzzWords, setThreePointWords, ThreePointWords, setSkipWords, SkipWords } = useAppContext();
 
   const getNextCard = () => {
     let card = getCard();
     setCard(card);
+  }
+
+  const SkipBtnHandle = () => {
+    setSkipWords([...SkipWords, card]);
+    getNextCard();
+  }
+
+  const BuzzBtnHandle = () => {
+    setBuzzWords([...BuzzWords, card]);
+    getNextCard();
+  }
+
+  const OnePointBtnHandle = () => {
+    setOnePointWords([...OnePointWords, card]);
+    getNextCard();
+  }
+
+  const ThreePointBtnHandle = () => {
+    setThreePointWords([...ThreePointWords, card])
+    getNextCard();
   }
 
   const router = useRouter()
@@ -90,10 +110,10 @@ const PassAndPlayPage = () => {
         />
         <Card top={card.top} bottom={card.bottom} />
         <div className=' w-full px-40 flex justify-between'>
-          <div className=' cursor-pointer' onClick={getNextCard}><BuzzBtn /></div>
-          <div className=' cursor-pointer' onClick={getNextCard}><SkipBtn /></div>
-          <div className=' cursor-pointer' onClick={getNextCard}><OnePointBtn /></div>
-          <div className=' cursor-pointer' onClick={getNextCard}><ThreePointBtn /></div>
+          <div className=' cursor-pointer' onClick={BuzzBtnHandle}><BuzzBtn /></div>
+          <div className=' cursor-pointer' onClick={SkipBtnHandle}><SkipBtn /></div>
+          <div className=' cursor-pointer' onClick={OnePointBtnHandle}><OnePointBtn /></div>
+          <div className=' cursor-pointer' onClick={ThreePointBtnHandle}><ThreePointBtn /></div>
         </div>
       </div>
 
