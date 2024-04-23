@@ -14,7 +14,7 @@ const PassAndPlayLobby = () => {
 
   const router = useRouter();
 
-  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns } = useAppContext();
+  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, setTurnNumber } = useAppContext();
 
   const [isReady, setIsReady] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('')
@@ -57,8 +57,8 @@ const PassAndPlayLobby = () => {
   const handleStartClick = () => {
     if (isReady) {
       let coinflip = Math.round(Math.random());
-      setTeam1NameList(shuffleArray(Team1NameList))
-      setTeam2NameList(shuffleArray(Team2NameList))
+      // setTeam1NameList(shuffleArray(Team1NameList))
+      // setTeam2NameList(shuffleArray(Team2NameList))
       switch (coinflip) {
         case 0:
           setTeam(Team1Name);
@@ -71,7 +71,8 @@ const PassAndPlayLobby = () => {
         default:
           break;
       }
-      setNumberOfTurns(Math.max(Team1NameList.length, Team2NameList.length) * numberOfRounds);
+      setNumberOfTurns(Math.max(Team1NameList.length, Team2NameList.length)* 2 * numberOfRounds);
+      setTurnNumber(1);
       router.push('/pages/intermissionPnpPage')
     }
   }
@@ -96,7 +97,7 @@ const PassAndPlayLobby = () => {
       setMessage('At least 4 players must be playing');
     } else if (differenceInPlayers > 1) {
       setMessage('Teams can only vary by max 1 player')
-    } else if (time < 30) {
+    } else if (time < 5) {
       setMessage('Rounds must take a minimum of 30 seconds')
     } else {
       setMessage('')
