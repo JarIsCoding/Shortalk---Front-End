@@ -13,7 +13,7 @@ const PassAndPlayLobby = () => {
 
   const router = useRouter();
 
-  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker } = useAppContext();
+  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns } = useAppContext();
 
   const [isReady, setIsReady] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('')
@@ -70,6 +70,7 @@ const PassAndPlayLobby = () => {
         default:
           break;
       }
+      setNumberOfTurns(Math.max(Team1NameList.length,Team2NameList.length)*numberOfRounds);
       router.push('/pages/intermissionPnpPage')
     }
   }
