@@ -2,12 +2,14 @@
 
 import ResultsBtn from '@/app/components/ResultsBtn'
 import ScoreTable from '@/app/components/ScoreTable'
+import { useAppContext } from '@/context/Context'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const FinalScorePage = () => {
 
-    const router = useRouter()
+    const { turnNumber, numberOfRounds } = useAppContext();
+    const router = useRouter();
 
     return (
         <div>
@@ -16,9 +18,16 @@ const FinalScorePage = () => {
                 <p className='pt-5'>Round results</p>
             </div>
             <ScoreTable />
-            <div onClick={() => router.push('/pages/passAndPlayLobby')} className='flex justify-center pb-16'>
-                <ResultsBtn />
-            </div>
+            {
+                (turnNumber == numberOfRounds)
+                    ? <div onClick={() => router.push('/pages/passAndPlayLobby')} className='flex justify-center pb-16'>
+                        <ResultsBtn />
+                    </div>
+                    : <div onClick={() => router.push('/pages/passAndPlayLobby')} className='flex justify-center pb-16'>
+                        <ResultsBtn />
+                    </div>
+            }
+
         </div>
     )
 }
