@@ -17,6 +17,7 @@ const FriendAddPage = () => {
             setSuccess(false)
         } else if(friendName === null){
             //make this a function that checks if name is in the database, if not tell user, user not found
+            setSuccess(false)
         } else {
             console.log(friendName)
             setSuccess(true)
