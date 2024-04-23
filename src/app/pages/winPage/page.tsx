@@ -1,13 +1,15 @@
+'use client'
+
 import React from 'react'
 import { useRouter } from 'next/navigation'
 
-const page = () => {
+const WinPage = () => {
 
     const router = useRouter();
-    
+
     return (
         <div>page</div>
     )
 }
 
-export default page
+export default WinPage
