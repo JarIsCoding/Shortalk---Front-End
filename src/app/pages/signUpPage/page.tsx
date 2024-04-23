@@ -1,27 +1,41 @@
 "use client"
 
 import { createAccount } from '@/utils/Dataservices';
-import { Button } from 'flowbite-react';
+import { Button, Modal } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const SignUpPage = () => {
 
     const [username, setUsername] = useState<string>('')
-    const [password, setPassword] = useState<string>('')  
+    const [password, setPassword] = useState<string>('')
+    const [createdText, setCreatedText] = useState<string>('')
+    const [openModal, setOpenModal] = useState(false);
+    const [success, setSuccess] = useState<boolean>(false);
 
     let router = useRouter();
 
     const handleSubmit = async () => {
 
         let userData = {
-          username: username,
-          password: password
+            username: username,
+            password: password
         }
-    
-        createAccount(userData)
-    
-      }
+
+        if(password !== ''){
+            const isCreated = await createAccount(userData);
+            if (isCreated) {
+                setCreatedText("User created successfully!");
+                setSuccess(true)
+            } else {
+                setCreatedText("Failed to create user. Please try again.");
+                setSuccess(false)
+            }
+        } else {
+            setCreatedText("Please enter a password!");
+            setSuccess(false)
+        }
+    }
 
     return (
         <div className='bg-lblue vh'>
@@ -42,7 +56,7 @@ const SignUpPage = () => {
                                 USERNAME
                             </p>
                             <input id="username" type="text" placeholder='Username' className='inputSize rounded-none' onChange={(e) => setUsername(e.target.value)} required />
-                            
+
                             <p className='text-center  text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
                                 PASSWORD
                             </p>
@@ -54,12 +68,31 @@ const SignUpPage = () => {
                             </p>
 
                             <div className='flex justify-center pt-8 p-0 m-0'>
-                                <Button onClick={handleSubmit} className='loginBtn p-0 m-0 bg-dblue'>
+                                <Button onClick={() => { handleSubmit(); setOpenModal(true) }} className='loginBtn p-0 m-0 bg-dblue'>
                                     <p className='text-[20px] text-center font-LuckiestGuy tracking-wider'>
                                         Create Account
                                     </p>
                                 </Button>
                             </div>
+
+                            <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+                                <Modal.Header />
+                                <Modal.Body>
+                                    <div className="text-center">
+                                        <h3 className="mb-5 text-lg font-normal text-black">
+                                            {createdText}
+                                        </h3>
+                                        <div className="flex justify-center gap-4">
+                                            <Button className='bg-dblue' onClick={() => { setOpenModal(false); router.push('/') }}>
+                                                Go to Login!
+                                            </Button>
+                                            <Button color="gray" className={`${success ? 'hidden' : 'block'}`} onClick={() => setOpenModal(false)}>
+                                                Try again?
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </Modal.Body>
+                            </Modal>
 
                         </form>
                     </div>

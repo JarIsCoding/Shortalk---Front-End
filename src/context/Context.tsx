@@ -1,6 +1,6 @@
 'use client'
 
-import { IUserData, IUserInfo } from "@/Interfaces/Interfaces"
+import { ICard, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
 import { createContext, useContext, useState } from "react"
 
 // Creating Context
@@ -19,6 +19,9 @@ interface IContextValue {
 
     numberOfRounds: number
     setNumberOfRounds: (numberOfRounds: number) => void
+
+    numberOfTurns: number
+    setNumberOfTurns: (numberOfRounds: number) => void
 
     numberOfPeople: number
     setNumberOfPeople: (numberOfPeople: number) => void
@@ -43,6 +46,24 @@ interface IContextValue {
 
     team: string
     setTeam: (speaker: string) => void
+
+    BuzzWords: ICard[]
+    setBuzzWords: (BuzzWords: ICard[]) => void
+
+    OnePointWords: ICard[]
+    setOnePointWords: (OnePointWords: ICard[]) => void
+
+    ThreePointWords: ICard[]
+    setThreePointWords: (ThreePointWords: ICard[]) => void
+
+    card: ICard
+    setCard: (card: ICard) => void
+
+    isTimeUp: boolean
+    setIsTimeUp: (isTimeUp: boolean) => void 
+
+    isGameOver: boolean
+    setIsGameOver: (isTimeUp: boolean) => void 
 }
 
 // {} as IContextValue is just giving placeholder values
@@ -54,17 +75,27 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [userData, setUserData] = useState<IUserInfo>({} as IUserInfo);
     const [roundTime, setRoundTime] = useState<number>(90);
     const [numberOfRounds, setNumberOfRounds] = useState<number>(1);
+    const [numberOfTurns, setNumberOfTurns] = useState<number>(0);
     const [numberOfPeople, setNumberOfPeople] = useState<number>(0);
     const [Team1Name, setTeam1Name] = useState<string>('');
     const [Team2Name, setTeam2Name] = useState<string>('');
     const [Team1NameList, setTeam1NameList] = useState<string[]>([]);
     const [Team2NameList, setTeam2NameList] = useState<string[]>([]);
     const [shuffle, setShuffle] = useState<boolean>(false)
-    const [speaker, setSpeaker] =useState<string>('Joe')
-    const [team, setTeam] =useState<string>('Pizza')
+    const [speaker, setSpeaker] =useState<string>('Guest')
+    const [team, setTeam] =useState<string>('No Name')
+
+    const [BuzzWords, setBuzzWords] = useState<ICard []>([])
+    const [OnePointWords, setOnePointWords] = useState<ICard []>([])
+    const [ThreePointWords, setThreePointWords] = useState<ICard []>([]) 
+
+    const [card, setCard] = useState<ICard>({} as ICard)
+    
+    const [isTimeUp, setIsTimeUp] = useState<boolean>(false)
+    const [isGameOver, setIsGameOver] = useState<boolean>(false)
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver}}>
             {children}
         </Context.Provider>
     )
