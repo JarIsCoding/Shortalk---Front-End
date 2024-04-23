@@ -59,7 +59,7 @@ const HomePage = () => {
           <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Create A Room</p>
         </Button>
 
-        <Button size="xl" className='w-[450px] h-[130px] justify-center mx-auto my-5 bg-dblue'>
+        <Button onClick={() => router.push('/pages/joinRoom')} size="xl" className='w-[450px] h-[130px] justify-center mx-auto my-5 bg-dblue'>
           <p className='font-LuckiestGuy text-white px-10 h-[100px] text-4xl flex items-center'>Join A Room</p>
         </Button>
 
