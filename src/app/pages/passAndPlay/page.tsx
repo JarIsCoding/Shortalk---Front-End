@@ -15,7 +15,7 @@ import React, { useEffect, useState } from 'react'
 
 const PassAndPlayPage = () => {
 
-  const { roundTime, numberOfRounds, Team1Name, Team2Name, team, speaker, card, setCard, isTimeUp, setIsTimeUp } = useAppContext();
+  const { roundTime, numberOfRounds, Team1Name, Team2Name, team, setTeam, speaker, card, setCard, isTimeUp, setIsTimeUp, turnNumber, setTurnNumber, numberOfTurns, setSpeaker, Team2NameList, Team1NameList } = useAppContext();
 
   const getNextCard = () => {
     let card = getCard();
@@ -24,14 +24,39 @@ const PassAndPlayPage = () => {
 
   const router = useRouter()
 
-  if (isTimeUp) {
-    router.push('/pages/finalScorePnpPage')
+  const TimerEnd = async () => {
+    setIsTimeUp(false);
+    switch (team) {
+      case Team1Name:
+        setSpeaker(Team2NameList[Math.floor(turnNumber / 2) % Team2NameList.length])
+
+        setTeam(Team2Name);
+        break;
+      case Team2Name:
+        setSpeaker(Team1NameList[Math.floor(turnNumber / 2) % Team1NameList.length])
+        setTeam(Team1Name);
+        break;
+      default:
+        break;
+    }
+    setTurnNumber(turnNumber + 1);
+
   }
 
   useEffect(() => {
+
+    const TimerAwait = async () => {
+      await TimerEnd();
+      if (turnNumber == numberOfTurns) {
+        router.push('/pages/finalScorePnpPage')
+      } else {
+        router.push('/pages/intermissionPnpPage')
+      }
+
+    }
+
     if (isTimeUp) {
-      setIsTimeUp(false);
-      router.push('/pages/finalScorePnpPage')
+      TimerAwait()
     }
   }, [isTimeUp])
 
