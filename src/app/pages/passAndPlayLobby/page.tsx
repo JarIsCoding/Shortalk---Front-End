@@ -111,7 +111,7 @@ const PassAndPlayLobby = () => {
     <div>
       {/* Navbar */}
       <div className='relative'>
-        <NavBar title='ShorTalk' />
+        <NavBar title="Pass N' Play Settings" />
         <div className="absolute top-6 right-0 mr-10 flex">
           <Button onClick={() => setOpenModal(true)} className="bg-clear">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
