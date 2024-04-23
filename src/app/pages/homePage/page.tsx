@@ -51,7 +51,7 @@ const HomePage = () => {
       <div className='mt-4'>
         {/* Tilted SHORTALK */}
         <div className='pulse'>
-          <h1 className='font-LuckiestGuy text-dblue px-10 h-[100px] text-5xl -rotate-12 pl-96 shortOut w-[90%]'>SHORTALK</h1>
+          <h1 className='font-LuckiestGuy text-dblue px-10 h-[100px] text-5xl lg:-rotate-12 lg:pl-96 w-[90%]'>SHORTALK</h1>
         </div>
         {/* Buttons */}
         <Button onClick={() => router.push('/pages/createRoom')} size="" className='w-[450px] h-[130px] mx-auto my-4 bg-dblue'>
