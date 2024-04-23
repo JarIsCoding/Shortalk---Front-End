@@ -50,10 +50,10 @@ const PassAndPlayPage = () => {
           />
           <Card top={card.top} bottom={card.bottom} />
           <div className=' w-full px-40 flex justify-between'>
-            <div onClick={getNextCard}><BuzzBtn /></div>
-            <div onClick={getNextCard}><SkipBtn /></div>
-            <div onClick={getNextCard}><OnePointBtn /></div>
-            <div onClick={getNextCard}><ThreePointBtn /></div>
+            <div className=' cursor-pointer' onClick={getNextCard}><BuzzBtn /></div>
+            <div className=' cursor-pointer' onClick={getNextCard}><SkipBtn /></div>
+            <div className=' cursor-pointer' onClick={getNextCard}><OnePointBtn /></div>
+            <div className=' cursor-pointer' onClick={getNextCard}><ThreePointBtn /></div>
           </div>
         </div>
       </div>
