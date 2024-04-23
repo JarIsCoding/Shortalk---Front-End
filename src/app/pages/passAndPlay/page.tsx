@@ -67,12 +67,12 @@ const PassAndPlayPage = () => {
 
     const TimerAwait = async () => {
       await TimerEnd();
-      if (turnNumber == numberOfTurns) {
-        router.push('/pages/finalScorePnpPage')
-      } else {
-        router.push('/pages/intermissionPnpPage')
-      }
-
+      // if (turnNumber == numberOfTurns) {
+      //   router.push('/pages/finalScorePnpPage')
+      // } else {
+      //   router.push('/pages/intermissionPnpPage')
+      // }
+      router.push('/pages/finalScorePnpPage')
     }
 
     if (isTimeUp) {
