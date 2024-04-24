@@ -1,0 +1,20 @@
+'use client'
+
+import { Button } from 'flowbite-react'
+import { useRouter } from 'next/navigation'
+import React from 'react'
+
+const GoHomeBtn = () => {
+
+    const router = useRouter()
+
+    return (
+        <div className='cursor-pointer pb-10 mb-10'>
+            <Button className='absolute bottom-3 right-3 md:px-16 py-2 md:me-7 bg-dblue' onClick={() => { router.push('/pages/homePage') }}>
+                <p className='text-[36px]'>Back to Home</p>
+            </Button>
+        </div>
+    )
+}
+
+export default GoHomeBtn
