@@ -2,6 +2,7 @@ import { useAppContext } from '@/context/Context';
 import { Button } from 'flowbite-react';
 import { useRouter, usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import BlueArrow from '../assets/BlueArrow.png'
 
 const FriendsTab = () => {
   const [correctRoom, setCorrectRoom] = useState<boolean>(false)
@@ -14,17 +15,17 @@ const FriendsTab = () => {
   const isRoom = usePathname()
 
   const checkPage = () => {
-    if(isRoom === '/pages/homePage'){
+    if (isRoom === '/pages/homePage') {
       setCorrectRoom(true)
     } else {
       setCorrectRoom(false)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     checkPage()
   }, [])
-  
+
   return (
     <div className='Friends w-[300px] min-h-screen text-white text-[20px]'>
       <div className='mx-3'>
@@ -41,24 +42,26 @@ const FriendsTab = () => {
       </div>
 
       {/* Checks if you are in a room, then displays the div need to fill with friend in room data though */}
-      <div className={`mx-3 ${correctRoom? 'hidden' : 'block'}`}>
+      <div className={`mx-3 ${correctRoom ? 'hidden' : 'block'}`}>
         <p className='underline py-2 tracking-widest'>In Room</p>
         <div className='text-end'>
-          
+
         </div>
       </div>
 
       <div className='mx-3'>
         <p className='underline py-2 tracking-widest'>Offline</p>
         <div className='text-end'>
-          
+
         </div>
       </div>
 
       <div className='mx-3'>
         <p className='underline py-2 tracking-widest'>Pending</p>
-        <div className='text-end'>
-          
+        <div onClick={() => router.push('/pages/friendAccept')} className='text-end cursor-pointer hover:text-green-500'>
+          <p>
+            Grog
+          </p>
         </div>
       </div>
 
