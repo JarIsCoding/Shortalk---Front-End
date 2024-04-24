@@ -15,27 +15,19 @@ const ScoreTable = (props: IScoreTableProps) => {
                     </p>
                 </div>
                 <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[430px]'>
-                    <div className='grid grid-cols-2'>
+                    <div className='flex flex-col'>
                         {/* Fill this with data */}
                         {
                             props.skipWords.map((card, id) => {
                                 return (
-                                <div key={id}>
-                                    <p>
-                                        {card.top}
-                                    </p>
-                                </div>
-                                )
-                            })
-                        }
-                        {
-                            props.skipWords.map((card, id) => {
-                                return (
-                                <div className='text-end' key={id}>
-                                    <p>
-                                        {card.bottom}
-                                    </p>
-                                </div>
+                                    <div key={id} className='flex justify-between'>
+                                        <p>
+                                            {card.top}
+                                        </p>
+                                        <p>
+                                            {card.bottom}
+                                        </p>
+                                    </div>
                                 )
                             })
                         }
@@ -55,23 +47,24 @@ const ScoreTable = (props: IScoreTableProps) => {
                     </p>
                 </div>
                 <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[350px]'>
-                    <div className='grid grid-cols-2'>
-                        {/* Fill this with data */}
-                        <div>
-                            <p>
-                                word
-                            </p>
-                        </div>
-                        <div className='text-end'>
-                            <p>
-                                bigword
-                            </p>
-                        </div>
-                    </div>
+                    {
+                        props.buzzWords.map((card, id) => {
+                            return (
+                                <div key={id} className='flex justify-between'>
+                                    <p>
+                                        {card.top}
+                                    </p>
+                                    <p>
+                                        {card.bottom}
+                                    </p>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
                 <div className='border-[2px] border-black px-14 py-2'>
                     <p className='text-red-600 font-LuckiestGuy text-[40px] tracking-widest text-center'>
-                        -1
+                        -{props.buzzWords.length}
                     </p>
                 </div>
             </div>
@@ -83,23 +76,24 @@ const ScoreTable = (props: IScoreTableProps) => {
                     </p>
                 </div>
                 <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[350px]'>
-                    <div className='grid grid-cols-2'>
-                        {/* Fill this with data */}
-                        <div>
-                            <p>
-                                word
-                            </p>
-                        </div>
-                        <div className='text-end'>
-                            <p>
-                                bigword
-                            </p>
-                        </div>
-                    </div>
+                    {
+                        props.onePointWords.map((card, id) => {
+                            return (
+                                <div key={id} className='flex justify-between'>
+                                    <p>
+                                        {card.top}
+                                    </p>
+                                    <p>
+                                        {card.bottom}
+                                    </p>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
                 <div className='border-[2px] border-black px-14 py-2'>
                     <p className='text-green-600 font-LuckiestGuy text-[40px] tracking-widest text-center'>
-                        +1
+                        +{props.onePointWords.length}
                     </p>
                 </div>
             </div>
@@ -111,23 +105,24 @@ const ScoreTable = (props: IScoreTableProps) => {
                     </p>
                 </div>
                 <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[350px]'>
-                    <div className='grid grid-cols-2'>
-                        {/* Fill this with data */}
-                        <div>
-                            <p>
-                                word
-                            </p>
-                        </div>
-                        <div className='text-end'>
-                            <p>
-                                bigword
-                            </p>
-                        </div>
-                    </div>
+                    {
+                        props.threePointWords.map((card, id) => {
+                            return (
+                                <div key={id} className='flex justify-between'>
+                                    <p>
+                                        {card.top}
+                                    </p>
+                                    <p>
+                                        {card.bottom}
+                                    </p>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
                 <div className='border-[2px] border-black px-14 py-2'>
                     <p className='text-purple-600 font-LuckiestGuy text-[40px] tracking-widest text-center'>
-                        +3
+                        +{props.threePointWords.length * 3}
                     </p>
                 </div>
             </div>
