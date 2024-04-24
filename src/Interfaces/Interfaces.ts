@@ -61,3 +61,7 @@ export interface IScoreTableProps {
     onePointWords: ICard[]
     threePointWords: ICard[]
 }
+
+export interface IButton {
+    click: () => void
+}
