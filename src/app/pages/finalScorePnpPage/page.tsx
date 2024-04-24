@@ -1,5 +1,6 @@
 'use client'
 
+import NextTurnBtn from '@/app/components/NextTurnBtn'
 import ResultsBtn from '@/app/components/ResultsBtn'
 import ScoreTable from '@/app/components/ScoreTable'
 import { useAppContext } from '@/context/Context'
@@ -8,8 +9,11 @@ import React from 'react'
 
 const FinalScorePage = () => {
 
-    const { turnNumber, numberOfRounds } = useAppContext();
+    const { turnNumber, numberOfTurns } = useAppContext();
     const router = useRouter();
+
+    console.log("This is the turn number: " + turnNumber)
+    console.log("This is the number of turns: " + numberOfTurns)
 
     return (
         <div>
@@ -19,12 +23,12 @@ const FinalScorePage = () => {
             </div>
             <ScoreTable />
             {
-                (turnNumber == numberOfRounds)
-                    ? <div onClick={() => router.push('/pages/passAndPlayLobby')} className='flex justify-center pb-16'>
+                (turnNumber > numberOfTurns)
+                    ? <div onClick={() => router.push('/pages/winPage')} className='flex justify-center pb-16'>
                         <ResultsBtn />
                     </div>
-                    : <div onClick={() => router.push('/pages/passAndPlayLobby')} className='flex justify-center pb-16'>
-                        <ResultsBtn />
+                    : <div onClick={() => router.push('/pages/intermissionPnpPage')} className='flex justify-center pb-16'>
+                        <NextTurnBtn />
                     </div>
             }
 
