@@ -5,21 +5,34 @@ import { useAppContext } from '@/context/Context'
 import { getCard } from '@/utils/Dataservices'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const IntermissionPnpPage = () => {
 
+  const firstRender = useRef(true);
+
   const router = useRouter()
 
-  const {setCard, speaker, team} = useAppContext();
+  const { card, setCard, speaker, team, turnNumber } = useAppContext();
+
+  console.log(turnNumber);
 
   const [openModal, setOpenModal] = useState(false)
 
   const handleClick = async () => {
     let card = await getCard()
     setCard(card);
-    router.push('/pages/passAndPlay')
   }
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      console.log('here')
+    } else {
+      router.push('/pages/passAndPlay')
+    }
+  },[card])
+
 
   return (
     <div>

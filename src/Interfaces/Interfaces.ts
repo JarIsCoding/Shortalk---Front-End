@@ -54,3 +54,10 @@ export interface ICardData {
     Top: string
     Bottom: string[]
 }
+
+export interface IScoreTableProps {
+    skipWords: ICard[]
+    buzzWords: ICard[]
+    onePointWords: ICard[]
+    threePointWords: ICard[]
+}
