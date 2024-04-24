@@ -11,9 +11,13 @@ import { useAppContext } from '@/context/Context'
 import { getCard } from '@/utils/Dataservices'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const PassAndPlayPage = () => {
+
+  const firstRender1 = useRef(true);
+  const firstRender2 = useRef(true);
+  const firstRender3 = useRef(true);
 
   const { roundTime, numberOfRounds, Team1Name, Team2Name, team, setTeam, speaker, card, setCard, isTimeUp, setIsTimeUp, turnNumber, setTurnNumber, numberOfTurns, setSpeaker, Team2NameList, Team1NameList, setOnePointWords, OnePointWords, setBuzzWords, BuzzWords, setThreePointWords, ThreePointWords, setSkipWords, SkipWords } = useAppContext();
 
@@ -44,41 +48,51 @@ const PassAndPlayPage = () => {
 
   const router = useRouter()
 
-  const TimerEnd = async () => {
-    setIsTimeUp(false);
-    switch (team) {
-      case Team1Name:
-        setSpeaker(Team2NameList[Math.floor(turnNumber / 2) % Team2NameList.length])
-
-        setTeam(Team2Name);
-        break;
-      case Team2Name:
-        setSpeaker(Team1NameList[Math.floor(turnNumber / 2) % Team1NameList.length])
-        setTeam(Team1Name);
-        break;
-      default:
-        break;
+  useEffect(() => {
+    console.log(firstRender1.current)
+    if (firstRender1.current) {
+      firstRender1.current = false;
+    } else {
+      if (isTimeUp) {
+        setIsTimeUp(false);
+        switch (team) {
+          case Team1Name:
+            console.log(turnNumber);
+            setSpeaker(Team2NameList[Math.floor(turnNumber / 2) % Team2NameList.length])
+            setTeam(Team2Name);
+            break;
+          case Team2Name:
+            console.log(turnNumber);
+            setSpeaker(Team1NameList[Math.floor(turnNumber / 2) % Team1NameList.length])
+            setTeam(Team1Name);
+            break;
+          default:
+            break;
+        }
+      }
     }
-    setTurnNumber(turnNumber + 1);
 
-  }
+  }, [isTimeUp])
 
   useEffect(() => {
-
-    const TimerAwait = async () => {
-      await TimerEnd();
-      // if (turnNumber == numberOfTurns) {
-      //   router.push('/pages/finalScorePnpPage')
-      // } else {
-      //   router.push('/pages/intermissionPnpPage')
-      // }
-      router.push('/pages/finalScorePnpPage')
+    console.log(firstRender2.current)
+    if (firstRender2.current) {
+      firstRender2.current = false;
+    } else {
+      setTurnNumber(turnNumber + 1);
     }
 
-    if (isTimeUp) {
-      TimerAwait()
+  }, [speaker])
+
+  useEffect(() => {
+    console.log(firstRender3.current)
+    if (firstRender3.current) {
+      firstRender3.current = false;
+    } else {
+      router.push('/pages/finalScorePnpPage');
     }
-  }, [isTimeUp])
+
+  }, [turnNumber])
 
   const [openModal, setOpenModal] = useState(false);
 

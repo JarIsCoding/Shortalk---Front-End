@@ -1,5 +1,6 @@
 'use client'
 
+import NextTurnBtn from '@/app/components/NextTurnBtn'
 import ResultsBtn from '@/app/components/ResultsBtn'
 import ScoreTable from '@/app/components/ScoreTable'
 import { useAppContext } from '@/context/Context'
@@ -8,8 +9,19 @@ import React from 'react'
 
 const FinalScorePage = () => {
 
-    const { turnNumber, numberOfRounds } = useAppContext();
+    const { turnNumber, numberOfTurns, setSkipWords, SkipWords,setBuzzWords, BuzzWords, setOnePointWords, OnePointWords, setThreePointWords, ThreePointWords } = useAppContext();
     const router = useRouter();
+
+    const clickHandleNextTurn = () => {
+        setSkipWords([]);
+        setBuzzWords([]);
+        setOnePointWords([]);
+        setThreePointWords([]);
+        router.push('/pages/intermissionPnpPage')
+    }
+
+    console.log("This is the turn number: " + turnNumber)
+    console.log("This is the number of turns: " + numberOfTurns)
 
     return (
         <div>
@@ -17,14 +29,19 @@ const FinalScorePage = () => {
                 <p>Times Up!!!</p>
                 <p className='pt-5'>Round results</p>
             </div>
-            <ScoreTable />
+            <ScoreTable 
+            skipWords={SkipWords}
+            buzzWords={BuzzWords}
+            onePointWords={OnePointWords}
+            threePointWords={ThreePointWords}
+            />
             {
-                (turnNumber == numberOfRounds)
-                    ? <div onClick={() => router.push('/pages/passAndPlayLobby')} className='flex justify-center pb-16'>
+                (turnNumber > numberOfTurns)
+                    ? <div onClick={() => router.push('/pages/winPage')} className='flex justify-center pb-16'>
                         <ResultsBtn />
                     </div>
-                    : <div onClick={() => router.push('/pages/passAndPlayLobby')} className='flex justify-center pb-16'>
-                        <ResultsBtn />
+                    : <div onClick={clickHandleNextTurn} className='flex justify-center pb-16'>
+                        <NextTurnBtn />
                     </div>
             }
 
