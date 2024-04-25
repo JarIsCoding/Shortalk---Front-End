@@ -1,5 +1,6 @@
 'use client'
 
+import GoHomeBtn from '@/app/components/GoHomeBtn'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -10,19 +11,25 @@ const JoinRoom = () => {
 
     const router = useRouter()
 
+     //Function telling user it is being joined if it takes longer than usual
+     const successfunc = () => {
+        setWarnText('Success! Please wait, Joining...')
+    }
+
     const handleCreate = () => {
         if(roomName === ''){
             setWarnText('Please enter a room name.')
         } else {
             console.log(roomName)
-            router.push('/pages/passAndPlayLobby')
+            router.push('/pages/lobbyRoom')
+            setTimeout(successfunc, 350)
         }
     }
 
     return (
         <div>
-            <div className='flex justify-center py-20'>
-                <p className='text-dblue font-LuckiestGuy text-[48px] tracking-widest'>JOIN A ROOM</p>
+            <div className='flex justify-center md:py-20 py-12'>
+                <p className='text-dblue font-LuckiestGuy text-[48px] tracking-widest text-center'>JOIN A ROOM</p>
             </div>
 
             <div className='flex justify-center'>
@@ -30,8 +37,8 @@ const JoinRoom = () => {
                     <p className='flex justify-center font-LuckiestGuy text-[32px] text-center tracking-widest text-dgray py-8'>
                         Room Name
                     </p>
-                    <div className='w-[85%] ps-20'>
-                        <input onChange={(e) => setRoomName(e.target.value)} type="text" placeholder='Enter Room Name' className='w-[100%] flex justify-center' />
+                    <div className='flex justify-center'>
+                        <input onChange={(e) => setRoomName(e.target.value)} type="text" placeholder='Enter Room Name' className='w-[75%]' />
                     </div>
                     <div className='text-center p-0'>
                         <p className='text-red-500'>
@@ -40,19 +47,17 @@ const JoinRoom = () => {
                     </div>
                     <div className='p-0 m-0 flex justify-center pt-14'>
 
-                        {/* On click find and join room */}
-                        <Button onClick={handleCreate} className='font-LuckiestGuy text-white bg-dblue w-[200px] h-[50px] p-0 m-0'>
-                            <p className='text-[36px] tracking-widest'>
-                                Join
+                        {/* On click create room */}
+                        <Button onClick={handleCreate} className='font-LuckiestGuy text-white bg-dblue w-[50%] h-[50px] p-0 m-0'>
+                            <p className='sm:text-[36px] text-[28px] tracking-widest'>
+                                JOIN
                             </p>
                         </Button>
 
                     </div>
                 </div>
             </div>
-            <Button className='absolute right-5 bottom-5 px-16 py-2 me-7 bg-dblue cursor-pointer' onClick={() => { router.push('/pages/homePage') }}>
-                <p className='text-[36px]'>Back to Home</p>
-            </Button>
+            <GoHomeBtn />
         </div>
     )
 }
