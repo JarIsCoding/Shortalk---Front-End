@@ -1,4 +1,4 @@
-"use client"  
+"use client"
 import NavBar from '@/app/components/NavBar'
 import React, { useState } from 'react'
 import Image from 'next/image';
@@ -14,7 +14,7 @@ const HomePage = () => {
 
   const router = useRouter()
 
-  const { userData, setUserData} = useAppContext();
+  const { userData, setUserData } = useAppContext();
 
   const [isFriendsOn, setIsFriendsOn] = useState<boolean>(false);
 
@@ -40,12 +40,12 @@ const HomePage = () => {
       {/* Title */}
       <div className='relative'>
         <NavBar title={'Welcome ' + userData.username + ' !'} />
-        <div className="absolute top-6 right-0 mr-10 flex">
+        <div className="absolute top-6 right-0 mr-10 flex z-50">
           {/*NavBar Icons/Buttons*/}
           <Button onClick={() => router.push('rulesPage')} className="bg-clear">
             <Image src={RulesPic} alt="RulesPicture" className="w-35px h-30px rulesNav" />
           </Button>
-          <Button onClick={() => {isFriendsOn ? setIsFriendsOn(false) : setIsFriendsOn(true)}} className={`bg-clear`}>
+          <Button onClick={() => { isFriendsOn ? setIsFriendsOn(false) : setIsFriendsOn(true) }} className={`bg-clear`}>
             <Image src={FriendsPic} alt="FriendsPicture" className="w-35px h-30px friendsNav" />
           </Button>
           <Button onClick={() => setOpenModal(true)} className={`bg-clear p-0`}>
@@ -57,10 +57,10 @@ const HomePage = () => {
       <div className='mt-4'>
         {/* Tilted SHORTALK */}
         <div className='pulse lg:block hidden'>
-          <h1 className='font-LuckiestGuy text-dblue px-10 pt-5 h-[100px] text-5xl lg:-rotate-12 lg:pl-96 w-[80%]'>SHORTALK</h1>
+          <h1 className='font-LuckiestGuy text-dblue px-10 pt-5 h-[100px] text-5xl lg:-rotate-12 lg:pl-96 w-[80%] cursor-default'>SHORTALK</h1>
         </div>
         <div className='pulse lg:hidden block'>
-          <h1 className='font-LuckiestGuy text-dblue px-10 pt-7 h-[100px] text-5xl lg:-rotate-12 lg:pl-96 w-[100%] text-center'>SHORTALK</h1>
+          <h1 className='font-LuckiestGuy text-dblue px-10 pt-7 h-[100px] text-5xl lg:-rotate-12 lg:pl-96 w-[100%] text-center cursor-default'>SHORTALK</h1>
         </div>
         {/* Buttons */}
         <Button onClick={() => router.push('/pages/createRoom')} size="" className='lg:w-[31%] md:w-[50%] w-[80%] h-[130px] mx-auto my-4 bg-dblue'>
@@ -76,29 +76,29 @@ const HomePage = () => {
         </Button>
       </div>
 
-      <p className='text-[35px] text-center font-LuckiestGuy text-dblue pt-10'>
+      <p className='text-[35px] text-center font-LuckiestGuy text-dblue pt-10 cursor-default'>
         Online Currently not working! Please play Pass and play for now. <br /> Sorry for the inconvinence!
       </p>
 
       {/* Modal for logging out */}
       <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
-                <Modal.Header />
-                <Modal.Body>
-                    <div className="text-center">
-                        <h3 className="mb-5 text-lg font-normal text-black">
-                            Are you sure you want to log out?
-                        </h3>
-                        <div className="flex justify-center gap-4">
-                            <Button color="failure" onClick={() => { setOpenModal(false); router.push('/') }}>
-                                {"Yes, I'm sure"}
-                            </Button>
-                            <Button color="gray" onClick={() => setOpenModal(false)}>
-                                No, cancel
-                            </Button>
-                        </div>
-                    </div>
-                </Modal.Body>
-            </Modal>
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <h3 className="mb-5 text-lg font-normal text-black cursor-default">
+              Are you sure you want to log out?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={() => { setOpenModal(false); router.push('/') }}>
+                {"Yes, I'm sure"}
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   )
 }

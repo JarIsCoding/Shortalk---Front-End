@@ -38,7 +38,7 @@ export default function Home() {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      event.preventDefault(); // Prevent form submission
+      event.preventDefault();
       handleSubmit();
     }
   };
@@ -56,7 +56,7 @@ export default function Home() {
       <div className='grid grid-flow-row justify-center pb-20'>
 
         <div className='py-24 text-center'>
-          <p className='text-[48px] font-LuckiestGuy tracking-widest text-dblue'>
+          <p className='text-[48px] font-LuckiestGuy tracking-widest text-dblue cursor-default'>
             SHORTALK
           </p>
         </div>
@@ -65,7 +65,7 @@ export default function Home() {
           <form className="flex max-w-md flex-col gap-4">
 
             {/* Top Text */}
-            <div className='text-center py-7 text-[32px] font-LuckiestGuy tracking-widest text-textGray'>
+            <div className='text-center py-7 text-[32px] font-LuckiestGuy tracking-widest text-textGray cursor-default'>
               Login
             </div>
 
@@ -80,7 +80,7 @@ export default function Home() {
               onKeyDown={handleKeyDown}
               required />
 
-            <p className='text-end text-red-600'>
+            <p className='text-end text-red-600 cursor-default'>
               {wrongText}
             </p>
 

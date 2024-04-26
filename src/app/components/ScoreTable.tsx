@@ -6,7 +6,7 @@ import React from 'react'
 
 const ScoreTable = (props: IScoreTableProps) => {
     return (
-        <div className='flex justify-center py-10'>
+        <div className='flex justify-center py-10 cursor-default'>
 
             <div className='grid grid-cols-1 bg-white'>
                 <div className='border-[2px] border-black px-14 py-2'>

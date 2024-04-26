@@ -22,7 +22,7 @@ const SignUpPage = () => {
             password: password
         }
 
-        if(password !== ''){
+        if (password !== '') {
             const isCreated = await createAccount(userData);
             if (isCreated) {
                 setCreatedText("User created successfully!");
@@ -32,7 +32,7 @@ const SignUpPage = () => {
                 setSuccess(false)
             }
         } else {
-            setCreatedText("Please enter a password!");
+            setCreatedText("Please fill out all fields!");
             setSuccess(false)
         }
     }
