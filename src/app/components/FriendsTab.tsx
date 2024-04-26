@@ -27,15 +27,15 @@ const FriendsTab = () => {
   }, [])
 
   return (
-    <div className='Friends w-[300px] min-h-screen text-white text-[20px]'>
-      <div className='mx-3'>
+    <div className='Friends w-[300px] min-h-screen text-white text-[20px] z-30 relative'>
+      <div className='mx-3 cursor-default'>
         <p className='text-end py-4 font-bold'>{userData.username}</p>
         <p className='text-end pt-2'>Friends</p>
       </div>
       <hr className='opacity-100 mx-2' />
 
       <div className='mx-3'>
-        <p className='underline py-2 tracking-widest font-bold'>Online</p>
+        <p className='underline py-2 tracking-widest font-bold cursor-default'>Online</p>
         <div className='text-end'>
           Adding friends coming soon!
         </div>
@@ -43,21 +43,21 @@ const FriendsTab = () => {
 
       {/* Checks if you are in a room, then displays the div need to fill with friend in room data though */}
       <div className={`mx-3 ${correctRoom ? 'hidden' : 'block'}`}>
-        <p className='underline py-2 tracking-widest'>In Room</p>
+        <p className='underline py-2 tracking-widest cursor-default'>In Room</p>
         <div className='text-end'>
 
         </div>
       </div>
 
       <div className='mx-3'>
-        <p className='underline py-2 tracking-widest'>Offline</p>
+        <p className='underline py-2 tracking-widest cursor-default'>Offline</p>
         <div className='text-end'>
 
         </div>
       </div>
 
       <div className='mx-3'>
-        <p className='underline py-2 tracking-widest'>Pending</p>
+        <p className='underline py-2 tracking-widest cursor-default'>Pending</p>
         <div onClick={() => router.push('/pages/friendAccept')} className='text-end cursor-pointer hover:text-green-500'>
           <p>
             Grog
