@@ -124,8 +124,8 @@ const PassAndPlayPage = () => {
         />
         <Card top={card.top} bottom={card.bottom} />
         <div className=' w-full px-40 flex justify-between'>
+          <div className=' cursor-pointer' onClick={SkipBtnHandle}><SkipBtn /></div>          
           <div className=' cursor-pointer' onClick={BuzzBtnHandle}><BuzzBtn /></div>
-          <div className=' cursor-pointer' onClick={SkipBtnHandle}><SkipBtn /></div>
           <div className=' cursor-pointer' onClick={OnePointBtnHandle}><OnePointBtn /></div>
           <div className=' cursor-pointer' onClick={ThreePointBtnHandle}><ThreePointBtn /></div>
         </div>

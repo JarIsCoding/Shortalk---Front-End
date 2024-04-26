@@ -13,7 +13,10 @@ const FinalScorePage = () => {
     const { turnNumber, numberOfTurns, setSkipWords, SkipWords, setBuzzWords, BuzzWords, setOnePointWords, OnePointWords, setThreePointWords, ThreePointWords, Team1Score, setTeam1Score, Team2Score, setTeam2Score, team, Team1Name, Team2Name } = useAppContext();
     const router = useRouter();
 
-    console.log(team);
+    const clickHandleResultsBtn = () => {
+        router.push('/pages/winPage')
+    }
+
     const clickHandleNextTurn = () => {
 
 
@@ -52,11 +55,11 @@ const FinalScorePage = () => {
             />
             {
                 (turnNumber > numberOfTurns)
-                    ? <div onClick={() => router.push('/pages/winPage')} className='flex justify-center pb-16'>
-                        <ResultsBtn />
+                    ? <div className='flex justify-center pb-16'>
+                        <ResultsBtn click={clickHandleResultsBtn} />
                     </div>
-                    : <div onClick={clickHandleNextTurn} className='flex justify-center pb-16 cursor-pointer'>
-                        <NextTurnBtn />
+                    : <div className='flex justify-center pb-16'>
+                        <NextTurnBtn click={clickHandleNextTurn}/>
                     </div>
             }
 
