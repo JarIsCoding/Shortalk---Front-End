@@ -5,6 +5,7 @@ import NavBar from '@/app/components/NavBar'
 import React from 'react'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
+import GoHomeBtn from '@/app/components/GoHomeBtn'
 
 const RulesPage = () => {
 
@@ -14,9 +15,9 @@ const RulesPage = () => {
         <div className='cursor-default'>
             <NavBar title='ShorTalk Rules' />
 
-            <div className='grid grid-cols-3 pt-5'>
-                <div className='col-span-2'>
-                    <ul className='px-20 list-disc text-[24px]'>
+            <div className='grid lg:grid-cols-3 pt-5'>
+                <div className='lg:col-span-2'>
+                    <ul className='md:px-20 px-8 list-disc text-[24px]'>
                         <li className='py-1 font-bold'>
                             At Least 4 Players are needed to Play (2 players minimum split between 2 Teams)
                         </li>
@@ -27,7 +28,7 @@ const RulesPage = () => {
                             The Team on <span className='font-bold text-dred'>Offense</span> will have one person as the <span className='font-bold text-dgreen'>Speaker</span> and the rest of the team as <span className='font-bold text-dgray'>Guessers</span>
                         </li>
                         <li className='py-1'>
-                            The <span className='font-bold text-dgreen'>Speaker</span> will see a card like the one shown on the right, and begin describing either the top or bottom words on the card using only 1-syllable words and no words contained on the card.
+                            The <span className='font-bold text-dgreen'>Speaker</span> will see a card like the one shown, and begin describing either the top or bottom words on the card using only 1-syllable words and no words contained on the card.
                         </li>
                     </ul>
                 </div>
@@ -37,7 +38,7 @@ const RulesPage = () => {
                 </div>
             </div>
 
-            <ul className='px-20 list-disc text-[24px] relative'>
+            <ul className='md:px-20 px-8 list-disc text-[24px] lg:pb-10 pb-2 relative'>
                 <li className='py-1'>
                     If the <span className='font-bold text-dgreen'>Speaker</span> violates the rules in any way, the <span className='font-bold text-dblue'>Defensive</span> team can hit the “Buzz” button and force the <span className='font-bold text-dred'>Offensive</span> team to lose a point and move on to the next card
                 </li>
@@ -50,11 +51,7 @@ const RulesPage = () => {
                 <li className='py-1'>
                     The game ends when everyone has had the chance to be <span className='font-bold text-dgreen'>Speaker</span> for the <br /> number of rounds designated in the game lobby room.
                 </li>
-                <div className='cursor-pointer pb-10 mb-10'>
-                    <Button className='absolute bottom-0 right-3 px-16 py-2 me-7 bg-dblue' onClick={() => { router.push('/pages/homePage') }}>
-                        <p className='text-[36px]'>Back to Home</p>
-                    </Button>
-                </div>
+                <GoHomeBtn />
             </ul>
 
         </div>
