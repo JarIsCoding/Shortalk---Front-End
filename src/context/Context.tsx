@@ -2,7 +2,7 @@
 
 import { ICard, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
 import { createContext, useContext, useState } from "react"
-
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 // Creating Context
 // Wrapping our app
 // export our Custom Hook
@@ -76,6 +76,9 @@ interface IContextValue {
 
     Team2Score: number
     setTeam2Score: (Team2Score: number) => void
+
+    conn: HubConnection | undefined
+    setConnection: (conn: HubConnection) => void
 }
 
 // {} as IContextValue is just giving placeholder values
@@ -84,7 +87,7 @@ export const Context = createContext<IContextValue>({} as IContextValue);
 // functional component to pass the provided context to our children
 export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>) => {
 
-    const [userData, setUserData] = useState<IUserInfo>({} as IUserInfo);
+    const [userData, setUserData] = useState<IUserInfo>({ username: 'Joe', password: '123'});
     const [roundTime, setRoundTime] = useState<number>(90);
     const [numberOfRounds, setNumberOfRounds] = useState<number>(1);
     const [turnNumber, setTurnNumber] = useState<number>(1);
@@ -111,8 +114,10 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [isTimeUp, setIsTimeUp] = useState<boolean>(false)
     const [isGameOver, setIsGameOver] = useState<boolean>(false)
 
+    const [conn, setConnection] = useState<HubConnection>();
+
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection}}>
             {children}
         </Context.Provider>
     )
