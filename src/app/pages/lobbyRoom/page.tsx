@@ -10,14 +10,10 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import OnlineLobbyFriendsTab from '@/app/components/OnlineLobbyFriendsTab'
 import OnlineTeamName from '@/app/components/OnlineTeamName'
-import AudioPlayer from '@/app/components/AudioPlayer'
-// import MainMenuMusic from './../../assets/MainMenuMusic.mp3'
-// import MainMenuMusic from '@/app/assets/MainMenuMusic'
 
 const HomePage = () => {
   const router = useRouter();
-  // const music = require('@/app/assets/Music/MainMenuMusic.mp3')
-  // const music = require('../../../Music/MainMenuMusic.mp3')
+
   const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns } = useAppContext();
 
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -111,20 +107,7 @@ const HomePage = () => {
 
   const [openModal, setOpenModal] = useState(false);
 
-  const [value,setValue] = useState(1);
 
-  useEffect(()=>{
-    if(value % 2 === 0)
-    play()
-  }, [value])
-
-  
-
-
-  function play(){
-    new Audio().play()
-  }
-  
   // START OF RETURN CODE
   return (
     <div>
@@ -158,16 +141,6 @@ const HomePage = () => {
       </div>
 
 
-      <button onClick={()=>setValue(value+1)}>
-      Play Sound
-      </button>
-
-      <AudioPlayer/>
-
-
-
-
-            {/* Selector Boxes */}
       <div className='flex flex-col items-center space-y-5 pt-20 pr-72'>
 
 
