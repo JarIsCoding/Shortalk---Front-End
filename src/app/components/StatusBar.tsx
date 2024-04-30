@@ -13,10 +13,6 @@ const StatusBar = (props: IStatusBar) => {
         {props.OnePointWord && <div>{"1-Point-Word: " + props.OnePointWord}</div>}
         {props.ThreePointWord && <div>{ "3-Point-Word: " + props.ThreePointWord}</div>}
     </div>
-
-    // Keeping this as a note for myself -jared
-    // <StatusBar time='0:00' teamName='Team' roundNumber={0} roundTotal={0} role='Guesser' OnePointWord='Word' ThreePointWord='Word' />
-    
   )
 }
 

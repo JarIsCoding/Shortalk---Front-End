@@ -71,7 +71,7 @@ const PassAndPlayLobby = () => {
         default:
           break;
       }
-      setNumberOfTurns(Math.max(Team1NameList.length, Team2NameList.length)* 2 * numberOfRounds);
+      setNumberOfTurns(Math.max(Team1NameList.length, Team2NameList.length) * 2 * numberOfRounds);
       setTurnNumber(1);
       router.push('/pages/intermissionPnpPage')
     }
@@ -123,9 +123,11 @@ const PassAndPlayLobby = () => {
       </div>
 
       <div className='flex flex-col items-center space-y-10 pt-20'>
-        <div className='flex flex-row justify-between w-[850px] items-center'>
+        <div className='md:flex md:flex-row md:justify-between gap-5 md:items-center grid grid-cols-1'>
           <TeamListPNP teamNumber={1} />
-          <DiceBtn />
+          <div className='flex justify-center'>
+            <DiceBtn />
+          </div>
           <TeamListPNP teamNumber={2} />
         </div>
         <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
@@ -157,23 +159,23 @@ const PassAndPlayLobby = () => {
 
       {/* Modal for navbar */}
       <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
-                <Modal.Header />
-                <Modal.Body>
-                    <div className="text-center">
-                        <h3 className="mb-5 text-lg font-normal text-black">
-                            Are you sure you want to leave?
-                        </h3>
-                        <div className="flex justify-center gap-4">
-                            <Button color="failure" onClick={() => { setOpenModal(false); router.push('/pages/homePage') }}>
-                                {"Yes, I'm sure"}
-                            </Button>
-                            <Button color="gray" onClick={() => setOpenModal(false)}>
-                                No, cancel
-                            </Button>
-                        </div>
-                    </div>
-                </Modal.Body>
-            </Modal>
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <h3 className="mb-5 text-lg font-normal text-black">
+              Are you sure you want to leave?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={() => { setOpenModal(false); router.push('/pages/homePage') }}>
+                {"Yes, I'm sure"}
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   )
 }
