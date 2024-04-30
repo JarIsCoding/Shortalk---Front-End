@@ -130,15 +130,19 @@ const PassAndPlayLobby = () => {
           </div>
           <TeamListPNP teamNumber={2} />
         </div>
-        <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
-          <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Number of Rounds:</div>
-          <select value={selectedRounds} onChange={(e) => setSelectedRounds(e.target.value)} className=' w-[20%] h-10' name='Rounds' id='Rounds'>
-            {renderOptions(1, maxRounds, false)}
-          </select>
+
+        <div className='md:flex flex-row justify-between whitespace-nowrap items-center sm:w-[400px]'>
+          <div className=' font-LuckiestGuy text-dblue text-3xl md:text-start text-center'>Number of Rounds:</div>
+          <div className='flex justify-center'>
+            <select value={selectedRounds} onChange={(e) => setSelectedRounds(e.target.value)} className='h-10' name='Rounds' id='Rounds'>
+              {renderOptions(1, maxRounds, false)}
+            </select>
+          </div>
         </div>
-        <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
-          <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Time Limit:</div>
-          <div className='w-[30%] flex justify-end space-x-1' >
+
+        <div className='md:flex flex-row justify-between whitespace-nowrap items-center sm:w-[400px]'>
+          <div className=' font-LuckiestGuy text-dblue text-3xl md:text-start text-center'>Time Limit:</div>
+          <div className='w-[100%] flex md:justify-end justify-center space-x-1' >
             <select className='h-10' value={selectedMinutes} onChange={(e) => setSelectedMinutes(e.target.value)}>
               {renderOptions(0, maxMinutes, false)}
             </select>
@@ -152,7 +156,7 @@ const PassAndPlayLobby = () => {
           <StartBtn isReady={isReady} />
         </div>
 
-        <div>
+        <div className='pb-10'>
           <div className=' font-Roboto text-dred'>{message}</div>
         </div>
       </div>
