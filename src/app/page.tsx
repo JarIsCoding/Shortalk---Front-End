@@ -56,7 +56,7 @@ export default function Home() {
       <div className='grid grid-flow-row justify-center pb-20'>
 
         <div className='py-24 text-center'>
-          <p className='text-[48px] font-LuckiestGuy tracking-widest text-dblue cursor-default'>
+          <p className='text-[50px] font-LuckiestGuy tracking-widest text-dblue cursor-default'>
             SHORTALK
           </p>
         </div>

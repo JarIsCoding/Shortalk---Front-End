@@ -65,6 +65,14 @@ const FriendsTab = () => {
         </div>
       </div>
 
+      <div className={`absolute bottom-24 w-[100%] flex justify-center ${correctRoom ? 'hidden' : 'block'}`}>
+        <Button className='bg-dblue w-[200px] h-[50px]' onClick={() => router.push('/pages/friendAddPage')}>
+          <p className='text-[16px]'>
+            Leave Room
+          </p>
+        </Button>
+      </div>
+
       <div className='absolute bottom-8 w-[100%] flex justify-center'>
         <Button className='bg-dblue w-[200px] h-[50px]' onClick={() => router.push('/pages/friendAddPage')}>
           <p className='text-[16px]'>
