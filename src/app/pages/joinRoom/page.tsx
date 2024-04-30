@@ -41,7 +41,7 @@ const JoinRoom = () => {
             })
 
             await conn.start();
-            // await conn.invoke("JoinSpecificLobbyRoom", username, lobbyroom); // Use the correct method signature for invoke
+            await conn.invoke("JoinSpecificLobbyRoom", {username, lobbyroom}); // Use the correct method signature for invoke
 
             setConnection(conn);
             console.log('success')
