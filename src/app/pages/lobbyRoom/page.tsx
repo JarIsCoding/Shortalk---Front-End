@@ -8,8 +8,8 @@ import { shuffleArray } from '@/utils/utils'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import OnlineLobbyFriendsTab from '@/app/components/OnlineLobbyFriendsTab'
 import OnlineTeamName from '@/app/components/OnlineTeamName'
+import FriendsTab from '@/app/components/FriendsTab'
 
 const HomePage = () => {
   const router = useRouter();
@@ -112,8 +112,8 @@ const HomePage = () => {
   return (
   <div>
           {/* Friends Tab */}
-  <div className={`absolute right-0 pt-24`}>
-       <OnlineLobbyFriendsTab />
+  <div className={`absolute right-0 pt-24 `}>
+       <FriendsTab />
    </div>
    
       {/* Navbar */}

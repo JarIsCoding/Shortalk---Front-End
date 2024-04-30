@@ -27,7 +27,7 @@ const FriendsTab = () => {
   }, [])
 
   return (
-    <div className='Friends w-[300px] min-h-screen text-white text-[20px] z-30 relative'>
+    <div className={`Friends w-[300px] text-white text-[20px] z-30 relative ${correctRoom ? 'h-[750px]': 'h-[1000px]'}`}>
       <div className='mx-3 cursor-default'>
         <p className='text-end py-4 font-bold'>{userData.username}</p>
         <p className='text-end pt-2'>Friends</p>
@@ -66,7 +66,7 @@ const FriendsTab = () => {
       </div>
 
       <div className={`absolute bottom-24 w-[100%] flex justify-center ${correctRoom ? 'hidden' : 'block'}`}>
-        <Button className='bg-dblue w-[200px] h-[50px]' onClick={() => router.push('/pages/friendAddPage')}>
+        <Button className='bg-dblue w-[200px] h-[50px]' onClick={() => router.push('/pages/homePage')}>
           <p className='text-[16px]'>
             Leave Room
           </p>
