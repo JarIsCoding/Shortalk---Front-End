@@ -110,7 +110,7 @@ const HomePage = () => {
 
   // START OF RETURN CODE
   return (
-    <div>
+  <div>
           {/* Friends Tab */}
   <div className={`absolute right-0 pt-24`}>
        <OnlineLobbyFriendsTab />
@@ -136,7 +136,7 @@ const HomePage = () => {
         
      </div>
 
-      <div className='flex justify-center mr-72 mb-10'>
+      <div className='flex justify-center mr-72 mb-1'>
         <DiceBtn/>
       </div>
 
@@ -172,6 +172,17 @@ const HomePage = () => {
         </div>
 
       </div>
+
+
+      <div className='w-[1003px] h-[224px] bg-lgray border-[#52576F] border-[20px] ml-16 mt-10'>
+        <div className='h-[70%] overflow-scroll'>
+        <p>admin - Fred has joined the lobby</p>
+        <p>LilBoat - Im coming for your head fred!!!</p>
+        </div>
+      <input type="text" placeholder='Type to Chat' className='w-[930px] h-[38] ml-4'/>
+
+      </div>
+
 
     </div>
   )
