@@ -1,23 +1,68 @@
 'use client'
 
+import { useAppContext } from '@/context/Context'
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const JoinRoom = () => {
+
+    const {userData, conn, setConnection} = useAppContext();
+
+    const [messages, setMessages] = useState<{ username: string, msg: string }[]>([]);
+
     const [roomName, setRoomName] = useState('')
     const [warnText, setWarnText] = useState('')
 
     const router = useRouter()
 
-    const handleCreate = () => {
-        if(roomName === ''){
-            setWarnText('Please enter a room name.')
-        } else {
-            console.log(roomName)
-            router.push('/pages/passAndPlayLobby')
+    const joinRoom = async (username: string, lobbyroom: string) => {
+        try {
+            const conn = new HubConnectionBuilder()
+                .withUrl("https://shortalkapi.azurewebsites.net/lobby")
+                .configureLogging(LogLevel.Information)
+                .build();
+
+                // .withUrl("http://localhost:5151/lobby")
+                // .configureLogging(LogLevel.Information)
+                // .build();
+    
+            // set up handler
+            conn.on("JoinSpecificLobbyRoom", (username: string, msg: string) => { // Specify the types for parameters
+                setMessages(messages => [...messages, { username, msg }])
+                console.log("msg: ", msg);
+            });
+    
+            conn.on("ReceiveSpecificMessage", (username: string, msg: string) => { // Specify the types for parameters
+                setMessages(messages => [...messages, { username, msg }])
+            })
+    
+            await conn.start();
+            // await conn.invoke("JoinSpecificLobbyRoom", username, lobbyroom); // Use the correct method signature for invoke
+    
+            setConnection(conn);
+            console.log('success')
+        } catch (e) {
+            console.log(e);
         }
     }
+
+    const handleCreate = () => {
+        if (roomName === '') {
+            setWarnText('Please enter a room name.')
+        } else {
+            joinRoom(userData.username, roomName);
+        }
+    }
+
+    useEffect(()=>{
+        console.log(conn)
+        if(conn){
+            router.push('/pages/lobbyRoom')
+            
+        }
+    },[conn])
 
     return (
         <div>
