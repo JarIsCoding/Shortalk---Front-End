@@ -10,14 +10,16 @@ import { useRouter } from 'next/navigation'
 import React, { ReactElement, useEffect, useState } from 'react'
 import OnlineTeamName from '@/app/components/OnlineTeamName'
 import FriendsTab from '@/app/components/FriendsTab'
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 
 const LobbyPage = () => {
   const router = useRouter();
 
-  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, conn, userData, lobbyRoomName, messages, setMessages } = useAppContext();
+  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, conn, setConnection, userData, lobbyRoomName } = useAppContext();
 
   const [isReady, setIsReady] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('Hi')
+  const [messages, setMessages] = useState<{ username: string; msg: string; }[]>([]);
 
   const [selectedRounds, setSelectedRounds] = useState('1');
   const [selectedMinutes, setSelectedMinutes] = useState('1');
@@ -26,6 +28,47 @@ const LobbyPage = () => {
   const maxRounds: number = 10;
   const maxMinutes: number = 5;
   const maxSeconds: number = 59;
+
+  const joinRoom = async (username: string, lobbyroom: string) => {
+    try {
+      const conn = new HubConnectionBuilder()
+        .withUrl("https://shortalkapi.azurewebsites.net/lobby")
+        .configureLogging(LogLevel.Information)
+        .build();
+
+      // .withUrl("http://localhost:5151/lobby")
+      // .configureLogging(LogLevel.Information)
+      // .build();
+
+      // set up handler
+      conn.on("JoinSpecificLobbyRoom", (username: string, msg: string) => { // Specify the types for parameters
+        setMessages(messages => [...messages, { username, msg }])
+        console.log("msg: ", msg);
+      });
+
+      conn.on("ReceiveSpecificMessage", (username: string, msg: string) => { // Specify the types for parameters
+        setMessages(messages => [...messages, { username, msg }])
+      })
+
+      await conn.start();
+      await conn.invoke("JoinSpecificLobbyRoom", { username, lobbyroom });
+
+
+      setConnection(conn);
+      console.log('success')
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const sendMessage = async (msg: string) => {
+    console.log(conn)
+    try {
+      conn && await conn.invoke("SendMessage", msg);
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   const renderOptions = (minNum: number, maxNum: number, ifSeconds: boolean) => {
     const renderedOptions = [];
@@ -76,30 +119,12 @@ const LobbyPage = () => {
     }
   }
 
-  const enterRoom = async (username: string, lobbyroom: string) => {
-
-    try {
-      conn && await conn.invoke("JoinSpecificLobbyRoom", { username, lobbyroom });
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  const sendMessage = async (msg:string) => {
-    console.log(conn)
-    try {
-      conn && await conn.invoke("SendMessage", msg);
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      console.log('enter')
       sendMessage(message);
+      setMessage('');
     }
-};
+  };
 
   useEffect(() => {
     if (shuffle) {
@@ -131,13 +156,10 @@ const LobbyPage = () => {
   }, [Team1Name, Team2Name, Team1NameList, Team2NameList, roundTime, selectedMinutes, selectedSeconds, selectedRounds])
 
   useEffect(() => {
-    enterRoom(userData.username, lobbyRoomName)
+    joinRoom(userData.username, lobbyRoomName)
   }, [])
 
   const [openModal, setOpenModal] = useState(false);
-
-
-
 
   // START OF RETURN CODE
   return (
@@ -202,22 +224,16 @@ const LobbyPage = () => {
           <div className='h-[70%] overflow-auto'>
             {
               messages.map((msg, ix) => {
-                return(
+                return (
                   <p key={ix} className=' font-Roboto'> <span className=' font-RobotoBold'>{msg.username}</span> {" - "} <span>{msg.msg}</span> </p>
                 )
               })
 
             }
           </div>
-          <input onChange={(e) => {setMessage(e.target.value)}} onKeyDown={handleKeyDown} type="text" placeholder='Type to Chat' className='w-[930px] h-[38]' />
+          <input onChange={(e) => { setMessage(e.target.value) }} onKeyDown={handleKeyDown} value={message} type="text" placeholder='Type to Chat' className='w-[930px] h-[38]' />
         </div>
-
       </div>
-
-
-
-
-
     </div>
   )
 }

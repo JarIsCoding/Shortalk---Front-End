@@ -19,35 +19,6 @@ const CreateRoom = () => {
 
     const router = useRouter()
 
-    const createRoom = async (username: string, lobbyroom: string) => {
-        try {
-            const conn = new HubConnectionBuilder()
-                .withUrl("https://shortalkapi.azurewebsites.net/lobby")
-                .configureLogging(LogLevel.Information)
-                .build();
-
-            // .withUrl("http://localhost:5151/lobby")
-            // .configureLogging(LogLevel.Information)
-            // .build();
-
-            // set up handler
-            conn.on("JoinSpecificLobbyRoom", (username: string, msg: string) => { // Specify the types for parameters
-                setMessages([...messages, { username, msg }])
-                console.log("msg: ", msg);
-            });
-
-            conn.on("ReceiveSpecificMessage", (username: string, msg: string) => { // Specify the types for parameters
-                setMessages([...messages, { username, msg }])
-            })
-
-            await conn.start();
-
-            setConnection(conn);
-            console.log('success')
-        } catch (e) {
-            console.log(e);
-        }
-    }
 
     //Function telling user it is being made if it takes longer than usual
     const successfunc = () => {
@@ -60,7 +31,7 @@ const CreateRoom = () => {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
         } else {
-            createRoom(userData.username, roomName);
+            router.push('/pages/lobbyRoom')
         }
     }
 
