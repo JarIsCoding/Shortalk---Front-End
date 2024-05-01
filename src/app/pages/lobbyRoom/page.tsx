@@ -221,15 +221,17 @@ const LobbyPage = () => {
         </div>
 
         <div className='w-[1003px] h-[224px] bg-lgray border-[#52576F] border-[20px] p-4'>
-          <div className='h-[70%] overflow-auto'>
-            {
-              messages.map((msg, ix) => {
-                return (
-                  <p key={ix} className=' font-Roboto'> <span className=' font-RobotoBold'>{msg.username}</span> {" - "} <span>{msg.msg}</span> </p>
-                )
-              })
+          <div className='h-[70%] overflow-y-auto flex flex-col-reverse'>
+            <div>
+              {
+                messages.map((msg, ix) => {
+                  return (
+                    <p key={ix} className=' font-Roboto'> <span className=' font-RobotoBold'>{msg.username}</span> {" - "} <span>{msg.msg}</span> </p>
+                  )
+                })
 
-            }
+              }
+            </div>
           </div>
           <input onChange={(e) => { setMessage(e.target.value) }} onKeyDown={handleKeyDown} value={message} type="text" placeholder='Type to Chat' className='w-[930px] h-[38]' />
         </div>
