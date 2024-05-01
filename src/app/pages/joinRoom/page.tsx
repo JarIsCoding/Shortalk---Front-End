@@ -5,11 +5,13 @@ import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import GoHomeBtn from '@/app/components/GoHomeBtn'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const JoinRoom = () => {
 
-    const { userData, conn, setConnection } = useAppContext();
+    const isFirstRender = useRef(true);
+
+    const { userData, conn, setConnection, lobbyRoomName, setLobbyRoomName, } = useAppContext();
 
     const [roomName, setRoomName] = useState('')
     const [warnText, setWarnText] = useState('')
@@ -28,28 +30,24 @@ const JoinRoom = () => {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
         } else {
-            router.push('/pages/lobbyRoom')
-            // joinRoom(userData.username, roomName);
+            setLobbyRoomName(roomName)
         }
     }
-
-    // useEffect(() => {
-    //     console.log(conn)
-    //     if (conn) {
-    //         router.push('/pages/lobbyRoom')
-
-    //         console.log(roomName)
-    //         router.push('/pages/lobbyRoom')
-    //         setTimeout(successfunc, 500)
-    //     }
-    // }, [conn])
-
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             handleCreate();
         }
     };
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+        } else {
+            router.push('/pages/lobbyRoom')
+            setTimeout(successfunc, 500)
+        }
+    }, [lobbyRoomName])
 
     return (
         <div>
