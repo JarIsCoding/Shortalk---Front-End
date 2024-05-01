@@ -18,7 +18,8 @@ const LobbyPage = () => {
   const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, conn, setConnection, userData, lobbyRoomName } = useAppContext();
 
   const [isReady, setIsReady] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('Hi')
+  const [warning, setWarning] = useState<string>('')
+  const [message, setMessage] = useState<string>('')
   const [messages, setMessages] = useState<{ username: string; msg: string; }[]>([]);
 
   const [selectedRounds, setSelectedRounds] = useState('1');
@@ -141,15 +142,15 @@ const LobbyPage = () => {
     setRoundTime(time)
     setIsReady(false);
     if (!(Team1Name && Team2Name)) {
-      setMessage('Give each team a name');
+      setWarning('Give each team a name');
     } else if (numberOfPlayers < 4) {
-      setMessage('At least 4 players must be playing');
+      setWarning('At least 4 players must be playing');
     } else if (differenceInPlayers > 1) {
-      setMessage('Teams can only vary by max 1 player')
+      setWarning('Teams can only vary by max 1 player')
     } else if (time < 30) {
-      setMessage('Rounds must take a minimum of 30 seconds')
+      setWarning('Rounds must take a minimum of 30 seconds')
     } else {
-      setMessage('')
+      setWarning('')
       setIsReady(true);
     }
 
@@ -171,7 +172,7 @@ const LobbyPage = () => {
 
       {/* Navbar */}
       <div className='relative'>
-        <NavBar title="Room ID: TEMPLATEid" />
+        <NavBar title={"Room ID: " + lobbyRoomName} />
         <div className="absolute top-6 right-0 mr-10 flex">
         </div>
       </div>

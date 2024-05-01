@@ -5,9 +5,11 @@ import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import GoHomeBtn from '@/app/components/GoHomeBtn'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const CreateRoom = () => {
+
+    const isFirstRender = useRef(true);
 
     const { userData, conn, setConnection, lobbyRoomName, setLobbyRoomName, messages, setMessages } = useAppContext();
 
@@ -31,7 +33,7 @@ const CreateRoom = () => {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
         } else {
-            router.push('/pages/lobbyRoom')
+            setLobbyRoomName(roomName)
         }
     }
 
@@ -42,18 +44,13 @@ const CreateRoom = () => {
     };
 
     useEffect(() => {
-        console.log(conn)
-        if (conn) {
-            setLobbyRoomName(roomName)
-        }
-    }, [conn])
-
-    useEffect(() => {
-        if (conn) {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+        } else {
             router.push('/pages/lobbyRoom')
             setTimeout(successfunc, 500)
         }
-    },[lobbyRoomName])
+    }, [lobbyRoomName])
 
     return (
         <div>
