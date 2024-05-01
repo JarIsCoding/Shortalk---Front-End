@@ -1,16 +1,24 @@
 'use client'
 
+import { useAppContext } from '@/context/Context'
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import GoHomeBtn from '@/app/components/GoHomeBtn'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const CreateRoom = () => {
+
+    const { userData, conn, setConnection, lobbyRoomName, setLobbyRoomName, messages, setMessages } = useAppContext();
+
+    // const [messages, setMessages] = useState<{ username: string, msg: string }[]>([]);
+
     const [roomName, setRoomName] = useState('')
     const [warnText, setWarnText] = useState('')
     const [successColor, setSuccessColor] = useState<boolean>(false)
 
     const router = useRouter()
+
 
     //Function telling user it is being made if it takes longer than usual
     const successfunc = () => {
@@ -23,17 +31,29 @@ const CreateRoom = () => {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
         } else {
-            console.log(roomName)
             router.push('/pages/lobbyRoom')
-            setTimeout(successfunc, 500)
         }
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-          handleCreate();
+            handleCreate();
         }
-      };
+    };
+
+    useEffect(() => {
+        console.log(conn)
+        if (conn) {
+            setLobbyRoomName(roomName)
+        }
+    }, [conn])
+
+    useEffect(() => {
+        if (conn) {
+            router.push('/pages/lobbyRoom')
+            setTimeout(successfunc, 500)
+        }
+    },[lobbyRoomName])
 
     return (
         <div>
@@ -47,16 +67,16 @@ const CreateRoom = () => {
                         Room Name
                     </p>
                     <div className='flex justify-center'>
-                        <input 
-                        onChange={(e) => setRoomName(e.target.value)} 
-                        onKeyDown={handleKeyDown}
-                        type="text" 
-                        placeholder='Enter Room Name' 
-                        className='w-[75%]' 
+                        <input
+                            onChange={(e) => setRoomName(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            type="text"
+                            placeholder='Enter Room Name'
+                            className='w-[75%]'
                         />
                     </div>
                     <div className='text-center p-0 cursor-default'>
-                        <p className={`${successColor? 'text-green-500' : 'text-red-500'}`}>
+                        <p className={`${successColor ? 'text-green-500' : 'text-red-500'}`}>
                             {warnText}
                         </p>
                     </div>

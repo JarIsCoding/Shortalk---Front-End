@@ -79,6 +79,15 @@ interface IContextValue {
 
     conn: HubConnection | undefined
     setConnection: (conn: HubConnection) => void
+
+    lobbyRoomName: string
+    setLobbyRoomName: (lobbyRoomName: string) => void
+
+    messages: {
+        username: string;
+        msg: string;
+    }[]
+    setMessages: (messages: { username: string; msg: string;}[]) => void
 }
 
 // {} as IContextValue is just giving placeholder values
@@ -115,9 +124,12 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [isGameOver, setIsGameOver] = useState<boolean>(false)
 
     const [conn, setConnection] = useState<HubConnection>();
+    const [lobbyRoomName, setLobbyRoomName] = useState<string>('Pizza');
+
+    const [messages, setMessages] = useState<{ username: string; msg: string;}[]>([]);
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages}}>
             {children}
         </Context.Provider>
     )

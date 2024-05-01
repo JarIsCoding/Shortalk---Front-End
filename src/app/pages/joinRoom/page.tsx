@@ -11,44 +11,11 @@ const JoinRoom = () => {
 
     const { userData, conn, setConnection } = useAppContext();
 
-    const [messages, setMessages] = useState<{ username: string, msg: string }[]>([]);
-
     const [roomName, setRoomName] = useState('')
     const [warnText, setWarnText] = useState('')
     const [successColor, setSuccessColor] = useState<boolean>(false)
 
     const router = useRouter()
-
-    const joinRoom = async (username: string, lobbyroom: string) => {
-        try {
-            const conn = new HubConnectionBuilder()
-                .withUrl("https://shortalkapi.azurewebsites.net/lobby")
-                .configureLogging(LogLevel.Information)
-                .build();
-
-            // .withUrl("http://localhost:5151/lobby")
-            // .configureLogging(LogLevel.Information)
-            // .build();
-
-            // set up handler
-            conn.on("JoinSpecificLobbyRoom", (username: string, msg: string) => { // Specify the types for parameters
-                setMessages(messages => [...messages, { username, msg }])
-                console.log("msg: ", msg);
-            });
-
-            conn.on("ReceiveSpecificMessage", (username: string, msg: string) => { // Specify the types for parameters
-                setMessages(messages => [...messages, { username, msg }])
-            })
-
-            await conn.start();
-            // await conn.invoke("JoinSpecificLobbyRoom", username, lobbyroom); // Use the correct method signature for invoke
-
-            setConnection(conn);
-            console.log('success')
-        } catch (e) {
-            console.log(e);
-        }
-    }
 
     //Function telling user it is being joined if it takes longer than usual
     const successfunc = () => {
@@ -61,20 +28,21 @@ const JoinRoom = () => {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
         } else {
-            joinRoom(userData.username, roomName);
+            router.push('/pages/lobbyRoom')
+            // joinRoom(userData.username, roomName);
         }
     }
 
-    useEffect(() => {
-        console.log(conn)
-        if (conn) {
-            router.push('/pages/lobbyRoom')
+    // useEffect(() => {
+    //     console.log(conn)
+    //     if (conn) {
+    //         router.push('/pages/lobbyRoom')
 
-            console.log(roomName)
-            router.push('/pages/lobbyRoom')
-            setTimeout(successfunc, 500)
-        }
-    }, [conn])
+    //         console.log(roomName)
+    //         router.push('/pages/lobbyRoom')
+    //         setTimeout(successfunc, 500)
+    //     }
+    // }, [conn])
 
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
