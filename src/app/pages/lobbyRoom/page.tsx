@@ -7,17 +7,17 @@ import { useAppContext } from '@/context/Context'
 import { shuffleArray } from '@/utils/utils'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import OnlineTeamName from '@/app/components/OnlineTeamName'
 import FriendsTab from '@/app/components/FriendsTab'
 
-const HomePage = () => {
+const LobbyPage = () => {
   const router = useRouter();
 
-  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns } = useAppContext();
+  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, conn, userData, lobbyRoomName, messages, setMessages } = useAppContext();
 
   const [isReady, setIsReady] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('')
+  const [message, setMessage] = useState<string>('Hi')
 
   const [selectedRounds, setSelectedRounds] = useState('1');
   const [selectedMinutes, setSelectedMinutes] = useState('1');
@@ -76,6 +76,31 @@ const HomePage = () => {
     }
   }
 
+  const enterRoom = async (username: string, lobbyroom: string) => {
+
+    try {
+      conn && await conn.invoke("JoinSpecificLobbyRoom", { username, lobbyroom });
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const sendMessage = async (msg:string) => {
+    console.log(conn)
+    try {
+      conn && await conn.invoke("SendMessage", msg);
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      console.log('enter')
+      sendMessage(message);
+    }
+};
+
   useEffect(() => {
     if (shuffle) {
       setShuffle(false);
@@ -105,7 +130,13 @@ const HomePage = () => {
 
   }, [Team1Name, Team2Name, Team1NameList, Team2NameList, roundTime, selectedMinutes, selectedSeconds, selectedRounds])
 
+  useEffect(() => {
+    enterRoom(userData.username, lobbyRoomName)
+  }, [])
+
   const [openModal, setOpenModal] = useState(false);
+
+
 
 
   // START OF RETURN CODE
@@ -169,10 +200,16 @@ const HomePage = () => {
 
         <div className='w-[1003px] h-[224px] bg-lgray border-[#52576F] border-[20px] p-4'>
           <div className='h-[70%] overflow-auto'>
-            <p>admin - Fred has joined the lobby</p>
-            <p>LilBoat - Im coming for your head fred!!!</p>
+            {
+              messages.map((msg, ix) => {
+                return(
+                  <p key={ix} className=' font-Roboto'> <span className=' font-RobotoBold'>{msg.username}</span> {" - "} <span>{msg.msg}</span> </p>
+                )
+              })
+
+            }
           </div>
-          <input type="text" placeholder='Type to Chat' className='w-[930px] h-[38]' />
+          <input onChange={(e) => {setMessage(e.target.value)}} onKeyDown={handleKeyDown} type="text" placeholder='Type to Chat' className='w-[930px] h-[38]' />
         </div>
 
       </div>
@@ -185,4 +222,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default LobbyPage

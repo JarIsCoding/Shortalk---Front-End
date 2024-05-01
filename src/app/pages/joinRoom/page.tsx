@@ -9,9 +9,7 @@ import React, { useEffect, useState } from 'react'
 
 const JoinRoom = () => {
 
-    const { userData, conn, setConnection } = useAppContext();
-
-    const [messages, setMessages] = useState<{ username: string, msg: string }[]>([]);
+    const { userData, conn, setConnection, messages, setMessages } = useAppContext();
 
     const [roomName, setRoomName] = useState('')
     const [warnText, setWarnText] = useState('')
@@ -32,16 +30,15 @@ const JoinRoom = () => {
 
             // set up handler
             conn.on("JoinSpecificLobbyRoom", (username: string, msg: string) => { // Specify the types for parameters
-                setMessages(messages => [...messages, { username, msg }])
+                setMessages([...messages, { username, msg }])
                 console.log("msg: ", msg);
             });
 
             conn.on("ReceiveSpecificMessage", (username: string, msg: string) => { // Specify the types for parameters
-                setMessages(messages => [...messages, { username, msg }])
+                setMessages([...messages, { username, msg }])
             })
 
             await conn.start();
-            await conn.invoke("JoinSpecificLobbyRoom", {username, lobbyroom}); // Use the correct method signature for invoke
 
             setConnection(conn);
             console.log('success')
