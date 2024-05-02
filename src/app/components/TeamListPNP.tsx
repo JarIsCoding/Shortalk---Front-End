@@ -61,14 +61,12 @@ const TeamListPNP = (props: ITeamListPNP) => {
     }
   }, [teamName])
 
-
-
   return (
     <div className=' space-y-5 sm:w-[350px] w-[300px]'>
       <div className='md:flex flex-row justify-between whitespace-nowrap items-center'>
         <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Team Name</div>
         <div className=''>
-          <input className=' w-full h-7' type="text" name="" id="" onChange={(e) => setTeamName(e.target.value)} />
+          <input className=' w-full h-7' maxLength={16} type="text" name="" id="" onChange={(e) => setTeamName(e.target.value)} />
         </div>
       </div>
 
