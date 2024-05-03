@@ -22,6 +22,10 @@ const LobbyPage = () => {
   const [message, setMessage] = useState<string>('')
   const [messages, setMessages] = useState<{ username: string; msg: string; }[]>([]);
 
+  const [Team1Names, setTeam1Names] = useState<string[]>(Team1NameList);
+
+  const [Team2Names, setTeam2Names] = useState<string[]>(Team2NameList);
+
   const [selectedRounds, setSelectedRounds] = useState('1');
   const [selectedMinutes, setSelectedMinutes] = useState('1');
   const [selectedSeconds, setSelectedSeconds] = useState('0');
@@ -44,6 +48,13 @@ const LobbyPage = () => {
       // set up handler
       conn.on("JoinSpecificLobbyRoom", (username: string, msg: string) => { // Specify the types for parameters
         setMessages(messages => [...messages, { username, msg }])
+        if((Team1Names.length + Team2Names.length)%2 == 0){
+        setTeam1Names(Team1Names => [...Team1Names, msg.split(' ')[0]])          
+        }else{
+        setTeam2Names(Team2Names => [...Team2Names, msg.split(' ')[0]])    
+        }
+
+        console.log(Team1NameList)
         console.log("msg: ", msg);
       });
 
@@ -160,6 +171,14 @@ const LobbyPage = () => {
     joinRoom(userData.username, lobbyRoomName)
   }, [])
 
+  useEffect(()=>{
+    setTeam1NameList(Team1Names)
+  },[Team1Names])
+
+  useEffect(()=>{
+    setTeam2NameList(Team2Names)
+  },[Team2Names])
+
   const [openModal, setOpenModal] = useState(false);
 
   // START OF RETURN CODE
@@ -181,7 +200,7 @@ const LobbyPage = () => {
       <div className='flex flex-col items-center space-y-16 pt-20 pr-72'>
 
         <div className='flex flex-row'>
-          <OnlineTeamName />
+          <OnlineTeamName members={Team1Names} name={Team1Name} />
           <div className=' flex flex-col items-center space-y-10'>
             <Button size="xl" className='w-[230px] h-[50px] bg-dblue mt-5'>
               <p className='font-Roboto text-white px-10 flex items-center'>Toggle Team</p>
@@ -193,7 +212,7 @@ const LobbyPage = () => {
               <StartBtn isReady={isReady} />
             </div>
           </div>
-          <OnlineTeamName />
+          <OnlineTeamName members={Team2NameList} name={Team2Name} />
         </div>
 
         <div className=' flex flex-col items-center space-y-4'>
