@@ -14,7 +14,7 @@ const ScoreTable = (props: IScoreTableProps) => {
                         SKIPPED
                     </p>
                 </div>
-                <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[430px]'>
+                <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[430px] overflow-y-auto removeScrollbar'>
                     <div className='flex flex-col'>
                         {/* Fill this with data */}
                         {
@@ -46,7 +46,7 @@ const ScoreTable = (props: IScoreTableProps) => {
                         -1 POINT
                     </p>
                 </div>
-                <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[350px]'>
+                <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[350px] overflow-y-auto removeScrollbar'>
                     {
                         props.buzzWords.map((card, id) => {
                             return (
@@ -75,7 +75,7 @@ const ScoreTable = (props: IScoreTableProps) => {
                         +1 POINT
                     </p>
                 </div>
-                <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[350px]'>
+                <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[350px] overflow-y-auto removeScrollbar'>
                     {
                         props.onePointWords.map((card, id) => {
                             return (
@@ -104,7 +104,7 @@ const ScoreTable = (props: IScoreTableProps) => {
                         +3 POINT
                     </p>
                 </div>
-                <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[350px]'>
+                <div className='border-[2px] border-t-[1px] border-b-[1px] border-black p-2 text-[20px] h-[350px] overflow-y-auto removeScrollbar'>
                     {
                         props.threePointWords.map((card, id) => {
                             return (

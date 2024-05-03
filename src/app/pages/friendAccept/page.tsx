@@ -12,7 +12,7 @@ const FriendAccept = () => {
     const router = useRouter()
 
     const t = () => {
-        router.push('/pages/homePage')
+        router.back()
     }
 
     const handleYes = () => {
@@ -63,7 +63,9 @@ const FriendAccept = () => {
                     </div>
                 </div>
             </div>
-            <GoHomeBtn />
+            <Button className='absolute right-5 bottom-5 px-16 py-2 me-7 bg-dblue cursor-pointer' onClick={() => { router.back() }}>
+                <p className='text-[36px]'>Go Back</p>
+            </Button>
         </div>
     )
 }

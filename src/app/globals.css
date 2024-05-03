@@ -77,6 +77,10 @@ line-height: 47px;
 letter-spacing: 0.1em;
 }
 
+.removeScrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* WARNING!!!!!!!!!! */
 /* ONLY WICKED CSS BELOW THIS COMMENT */
 /*!

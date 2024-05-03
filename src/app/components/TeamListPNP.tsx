@@ -83,6 +83,7 @@ const TeamListPNP = (props: ITeamListPNP) => {
             onChange={(e) => setName(e.target.value)}
             onKeyDown={handleKeyDown}
             value={name}
+            maxLength={20}
           />
           <div className='flex justify-center'>
             <div className='cursor-pointer rounded-2xl border-2 border-black w-[100%] h-[50px] bg-dblue flex justify-center items-center px-4'

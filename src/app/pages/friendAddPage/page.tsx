@@ -52,8 +52,8 @@ const FriendAddPage = () => {
                     </div>
                 </div>
             </div>
-            <Button className='absolute right-5 bottom-5 px-16 py-2 me-7 bg-dblue cursor-pointer' onClick={() => { router.push('/pages/homePage') }}>
-                <p className='text-[36px]'>Back to Home</p>
+            <Button className='absolute right-5 bottom-5 px-16 py-2 me-7 bg-dblue cursor-pointer' onClick={() => { router.back() }}>
+                <p className='text-[36px]'>Go Back</p>
             </Button>
         </div>
     )
