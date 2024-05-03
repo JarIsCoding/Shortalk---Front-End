@@ -1,7 +1,7 @@
 'use client'
 
 import { ICard, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 // Creating Context
 // Wrapping our app
@@ -96,40 +96,110 @@ export const Context = createContext<IContextValue>({} as IContextValue);
 // functional component to pass the provided context to our children
 export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>) => {
 
-    const [userData, setUserData] = useState<IUserInfo>({ username: 'Joe', password: '123'});
-    const [roundTime, setRoundTime] = useState<number>(90);
-    const [numberOfRounds, setNumberOfRounds] = useState<number>(1);
-    const [turnNumber, setTurnNumber] = useState<number>(1);
-    const [numberOfTurns, setNumberOfTurns] = useState<number>(0);
-    const [numberOfPeople, setNumberOfPeople] = useState<number>(0);
-    const [Team1Name, setTeam1Name] = useState<string>('');
-    const [Team2Name, setTeam2Name] = useState<string>('');
-    const [Team1NameList, setTeam1NameList] = useState<string[]>([]);
-    const [Team2NameList, setTeam2NameList] = useState<string[]>([]);
-    const [shuffle, setShuffle] = useState<boolean>(false)
-    const [speaker, setSpeaker] =useState<string>('Guest')
-    const [team, setTeam] =useState<string>('No Name')
+    // const [userData, setUserData] = useState<IUserInfo>({ username: 'Joe', password: '123'});
+    // const [roundTime, setRoundTime] = useState<number>(90);
+    // const [numberOfRounds, setNumberOfRounds] = useState<number>(1);
+    // const [turnNumber, setTurnNumber] = useState<number>(1);
+    // const [numberOfTurns, setNumberOfTurns] = useState<number>(0);
+    // const [numberOfPeople, setNumberOfPeople] = useState<number>(0);
+    // const [Team1Name, setTeam1Name] = useState<string>('');
+    // const [Team2Name, setTeam2Name] = useState<string>('');
+    // const [Team1NameList, setTeam1NameList] = useState<string[]>([]);
+    // const [Team2NameList, setTeam2NameList] = useState<string[]>([]);
+    // const [shuffle, setShuffle] = useState<boolean>(false)
+    // const [speaker, setSpeaker] =useState<string>('Guest')
+    // const [team, setTeam] =useState<string>('No Name')
+    // const [BuzzWords, setBuzzWords] = useState<ICard []>([])
+    // const [SkipWords, setSkipWords] = useState<ICard []>([])
+    // const [OnePointWords, setOnePointWords] = useState<ICard []>([])
+    // const [ThreePointWords, setThreePointWords] = useState<ICard []>([])
+    // const [Team1Score, setTeam1Score] = useState<number>(0);
+    // const [Team2Score, setTeam2Score] = useState<number>(0);
+    // const [card, setCard] = useState<ICard>({} as ICard)
+    // const [isTimeUp, setIsTimeUp] = useState<boolean>(false)
+    // const [isGameOver, setIsGameOver] = useState<boolean>(false)
+    // const [conn, setConnection] = useState<HubConnection>();
+    // const [lobbyRoomName, setLobbyRoomName] = useState<string>('Pizza');
+    // const [messages, setMessages] = useState<{ username: string; msg: string;}[]>([]);
 
-    const [BuzzWords, setBuzzWords] = useState<ICard []>([])
-    const [SkipWords, setSkipWords] = useState<ICard []>([])
-    const [OnePointWords, setOnePointWords] = useState<ICard []>([])
-    const [ThreePointWords, setThreePointWords] = useState<ICard []>([])
+    const [contextData, setContextData ] = useState<IContextValue>({
+        userData: { username: 'Joe', password: '123' },
+        setUserData: (userData: IUserInfo) => setContextData((prevState: IContextValue) => ({ ...prevState, userData })),
+        roundTime: 90,
+        setRoundTime: (roundTime: number) => setContextData((prevState: IContextValue) => ({ ...prevState, roundTime })),
+        numberOfRounds: 1,
+        setNumberOfRounds: (numberOfRounds: number) => setContextData((prevState: IContextValue) => ({ ...prevState, numberOfRounds })),
+        numberOfTurns: 0,
+        setNumberOfTurns: (numberOfTurns: number) => setContextData((prevState: IContextValue) => ({ ...prevState, numberOfTurns })),
+        numberOfPeople: 0,
+        setNumberOfPeople: (numberOfPeople: number) => setContextData((prevState: IContextValue) => ({ ...prevState, numberOfPeople })),
+        Team1Name: '',
+        setTeam1Name: (Team1Name: string) => setContextData((prevState: IContextValue) => ({ ...prevState, Team1Name })),
+        Team2Name: '',
+        setTeam2Name: (Team2Name: string) => setContextData((prevState: IContextValue) => ({ ...prevState, Team2Name })),
+        Team1NameList: [],
+        setTeam1NameList: (Team1NameList: string[]) => setContextData((prevState: IContextValue) => ({ ...prevState, Team1NameList })),
+        Team2NameList: [],
+        setTeam2NameList: (Team2NameList: string[]) => setContextData((prevState: IContextValue) => ({ ...prevState, Team2NameList })),
+        shuffle: false,
+        setShuffle: (shuffle: boolean) => setContextData((prevState: IContextValue) => ({ ...prevState, shuffle })),
+        speaker: 'Guest',
+        setSpeaker: (speaker: string) => setContextData((prevState: IContextValue) => ({ ...prevState, speaker })),
+        team: 'No Name',
+        setTeam: (team: string) => setContextData((prevState: IContextValue) => ({ ...prevState, team })),
+        BuzzWords: [],
+        setBuzzWords: (BuzzWords: ICard[]) => setContextData((prevState: IContextValue) => ({ ...prevState, BuzzWords })),
+        SkipWords: [],
+        setSkipWords: (SkipWords: ICard[]) => setContextData((prevState: IContextValue) => ({ ...prevState, SkipWords })),
+        OnePointWords: [],
+        setOnePointWords: (OnePointWords: ICard[]) => setContextData((prevState: IContextValue) => ({ ...prevState, OnePointWords })),
+        ThreePointWords: [],
+        setThreePointWords: (ThreePointWords: ICard[]) => setContextData((prevState: IContextValue) => ({ ...prevState, ThreePointWords })),
+        card: {} as ICard,
+        setCard: (card: ICard) => setContextData((prevState: IContextValue) => ({ ...prevState, card })),
+        isTimeUp: false,
+        setIsTimeUp: (isTimeUp: boolean) => setContextData((prevState: IContextValue) => ({ ...prevState, isTimeUp })),
+        isGameOver: false,
+        setIsGameOver: (isGameOver: boolean) => setContextData((prevState: IContextValue) => ({ ...prevState, isGameOver })),
+        turnNumber: 1,
+        setTurnNumber: (turnNumber: number) => setContextData((prevState: IContextValue) => ({ ...prevState, turnNumber })),
+        Team1Score: 0,
+        setTeam1Score: (Team1Score: number) => setContextData((prevState: IContextValue) => ({ ...prevState, Team1Score })),
+        Team2Score: 0,
+        setTeam2Score: (Team2Score: number) => setContextData((prevState: IContextValue) => ({ ...prevState, Team2Score })),
+        conn: undefined,
+        setConnection: (conn: HubConnection) => setContextData((prevState: IContextValue) => ({ ...prevState, conn })),
+        lobbyRoomName: 'Pizza',
+        setLobbyRoomName: (lobbyRoomName: string) => setContextData((prevState: IContextValue) => ({ ...prevState, lobbyRoomName })),
+        messages: [],
+        setMessages: (messages: { username: string; msg: string; }[]) => setContextData((prevState: IContextValue) => ({ ...prevState, messages })),
+    });
     
-    const [Team1Score, setTeam1Score] = useState<number>(0);
-    const [Team2Score, setTeam2Score] = useState<number>(0);
-
-    const [card, setCard] = useState<ICard>({} as ICard)
     
-    const [isTimeUp, setIsTimeUp] = useState<boolean>(false)
-    const [isGameOver, setIsGameOver] = useState<boolean>(false)
 
-    const [conn, setConnection] = useState<HubConnection>();
-    const [lobbyRoomName, setLobbyRoomName] = useState<string>('Pizza');
+    // const [contextData, setContextData] = useState<IContextValue>({userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages});
 
-    const [messages, setMessages] = useState<{ username: string; msg: string;}[]>([]);
+    // Save to session storage whenever contextData changes
+    useEffect(() => {
+        sessionStorage.setItem('contextData', JSON.stringify(contextData));
+    }, [contextData]);
+
+    // Load from session storage when the component mounts
+    useEffect(() => {
+        const savedContextData = sessionStorage.getItem('contextData');
+        if (savedContextData) {
+            setContextData(JSON.parse(savedContextData));
+        }
+    }, []);
+
+    // return(
+    //     <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages}}>
+    //         {children}
+    //     </Context.Provider>
+    // )
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages}}>
+        <Context.Provider value={contextData}>
             {children}
         </Context.Provider>
     )
