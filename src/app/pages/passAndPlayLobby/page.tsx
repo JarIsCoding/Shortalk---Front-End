@@ -93,6 +93,8 @@ const PassAndPlayLobby = () => {
     setIsReady(false);
     if (!(Team1Name && Team2Name)) {
       setMessage('Give each team a name');
+    } else if (Team1Name === Team2Name) {
+      setMessage('Teams names cannot be the same')
     } else if (numberOfPlayers < 4) {
       setMessage('At least 4 players must be playing');
     } else if (differenceInPlayers > 1) {
@@ -126,7 +128,7 @@ const PassAndPlayLobby = () => {
         <div className='md:flex md:flex-row md:justify-between gap-5 md:items-center grid grid-cols-1'>
           <TeamListPNP teamNumber={1} />
           <div className='flex justify-center'>
-            <DiceBtn />
+              <DiceBtn />
           </div>
           <TeamListPNP teamNumber={2} />
         </div>
