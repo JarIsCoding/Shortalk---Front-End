@@ -2,10 +2,11 @@ import React from 'react';
 const AudioPlayer = () => {
     return (
         <div>
-            <audio controls>
-                <source src="/Audio/MainMenuMusic.mp3" type="audio/mp3" />
+            <audio controls autoPlay loop className='w-[1000px] hidden'>
+                <source src="/Audio/MainMenuMusic.mp3"  type="audio/mp3" />
             </audio>
-        </div>
+         </div>
+
     );
-};
+}; 
 export default AudioPlayer;

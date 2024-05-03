@@ -1,6 +1,6 @@
 "use client"
 import NavBar from '@/app/components/NavBar'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image';
 import { Button, Modal } from "flowbite-react";
 import FriendsPic from '@/app/assets/FriendsPic.png'
@@ -9,7 +9,7 @@ import LogoutBtn from '@/app/assets/LogoutBtn2.png'
 import FriendsTab from '@/app/components/FriendsTab';
 import { useAppContext } from '@/context/Context';
 import { useRouter } from 'next/navigation';
-
+import AudioPlayer from '@/app/components/AudioPlayer'
 const HomePage = () => {
 
   const router = useRouter()
@@ -27,6 +27,16 @@ const HomePage = () => {
   const handlePassAndPlayClick = () => {
     router.push('/pages/passAndPlayLobby')
   }
+
+  function play() {
+    try {
+      const audio = new Audio();
+      audio.play();
+    } catch (error) {
+      console.error('Error playing audio:', error);
+    }
+  }
+  
 
   return (
 
@@ -79,6 +89,10 @@ const HomePage = () => {
       <p className='text-[35px] text-center font-LuckiestGuy text-dblue pt-10 cursor-default'>
         Online Currently not working! Please play Pass and play for now. <br /> Sorry for the inconvinence!
       </p>
+
+      <AudioPlayer/>
+
+      
 
       {/* Modal for logging out */}
       <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
