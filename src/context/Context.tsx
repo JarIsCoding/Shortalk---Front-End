@@ -125,11 +125,11 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     });
     const [Team1Name, setTeam1Name] = useState<string>(() => {
         const Team1NameStr = sessionStorage.getItem('Team1Name');
-        return Team1NameStr ? Team1NameStr : '';
+        return Team1NameStr ? Team1NameStr : 'Team 1';
     });
     const [Team2Name, setTeam2Name] = useState<string>(() => {
         const Team2NameStr = sessionStorage.getItem('Team2Name');
-        return Team2NameStr ? Team2NameStr : '';
+        return Team2NameStr ? Team2NameStr : 'Team 2';
     });
     const [Team1NameList, setTeam1NameList] = useState<string[]>(() => {
         const Team1NameListStr = sessionStorage.getItem('Team1NameList');
@@ -244,11 +244,11 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     }, [Team2Name]);
 
     useEffect(() => {
-        sessionStorage.setItem('Team1NameList', Team1NameList.toString());
+        sessionStorage.setItem('Team1NameList', JSON.stringify(Team1NameList));
     }, [Team1NameList]);
 
     useEffect(() => {
-        sessionStorage.setItem('Team2NameList', Team2NameList.toString());
+        sessionStorage.setItem('Team2NameList',  JSON.stringify(Team2NameList));
     }, [Team2NameList]);
 
     useEffect(() => {
