@@ -98,116 +98,323 @@ export const Context = createContext<IContextValue>({} as IContextValue);
 export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>) => {
 
     const [userData, setUserData] = useState<IUserInfo>(() => {
-        const userDataStr = sessionStorage.getItem('userData');
-        return userDataStr ? JSON.parse(userDataStr) : { username: 'Joe', password: '123' };
+        if (typeof window !== "undefined") {
+            const userDataStr = sessionStorage.getItem('userData');
+            return userDataStr ? JSON.parse(userDataStr) : { username: 'Joe', password: '123' };
+        }
+        return { username: 'Joe', password: '123' };
     });
+    
     const [roundTime, setRoundTime] = useState<number>(() => {
-        const roundTimeStr = sessionStorage.getItem('roundTime');
-        return roundTimeStr ? parseInt(roundTimeStr, 10) : 90;
+        if (typeof window !== "undefined") {
+            const roundTimeStr = sessionStorage.getItem('roundTime');
+            return roundTimeStr ? parseInt(roundTimeStr, 10) : 90;
+        }
+        return 90;
     });
+    
     const [numberOfRounds, setNumberOfRounds] = useState<number>(() => {
-        const numberOfRoundsStr = sessionStorage.getItem('numberOfRounds');
-        return numberOfRoundsStr ? parseInt(numberOfRoundsStr, 10) : 1;
+        if (typeof window !== "undefined") {
+            const numberOfRoundsStr = sessionStorage.getItem('numberOfRounds');
+            return numberOfRoundsStr ? parseInt(numberOfRoundsStr, 10) : 1;
+        }
+        return 1;
     });
-
+    
     const [turnNumber, setTurnNumber] = useState<number>(() => {
-        const turnNumberStr = sessionStorage.getItem('turnNumber');
-        return turnNumberStr ? parseInt(turnNumberStr, 10) : 1;
+        if (typeof window !== "undefined") {
+            const turnNumberStr = sessionStorage.getItem('turnNumber');
+            return turnNumberStr ? parseInt(turnNumberStr, 10) : 1;
+        }
+        return 1;
     });
-
+    
     const [numberOfTurns, setNumberOfTurns] = useState<number>(() => {
-        const numberOfTurnsStr = sessionStorage.getItem('numberOfTurns');
-        return numberOfTurnsStr ? parseInt(numberOfTurnsStr, 10) : 0;
+        if (typeof window !== "undefined") {
+            const numberOfTurnsStr = sessionStorage.getItem('numberOfTurns');
+            return numberOfTurnsStr ? parseInt(numberOfTurnsStr, 10) : 0;
+        }
+        return 0;
     });
+    
     const [numberOfPeople, setNumberOfPeople] = useState<number>(() => {
-        const numberOfPeopleStr = sessionStorage.getItem('numberOfPeople');
-        return numberOfPeopleStr ? parseInt(numberOfPeopleStr, 10) : 0;
+        if (typeof window !== "undefined") {
+            const numberOfPeopleStr = sessionStorage.getItem('numberOfPeople');
+            return numberOfPeopleStr ? parseInt(numberOfPeopleStr, 10) : 0;
+        }
+        return 0;
     });
+    
     const [Team1Name, setTeam1Name] = useState<string>(() => {
-        const Team1NameStr = sessionStorage.getItem('Team1Name');
-        return Team1NameStr ? Team1NameStr : 'Team 1';
+        if (typeof window !== "undefined") {
+            const Team1NameStr = sessionStorage.getItem('Team1Name');
+            return Team1NameStr ? Team1NameStr : 'Team 1';
+        }
+        return 'Team 1';
     });
+    
     const [Team2Name, setTeam2Name] = useState<string>(() => {
-        const Team2NameStr = sessionStorage.getItem('Team2Name');
-        return Team2NameStr ? Team2NameStr : 'Team 2';
+        if (typeof window !== "undefined") {
+            const Team2NameStr = sessionStorage.getItem('Team2Name');
+            return Team2NameStr ? Team2NameStr : 'Team 2';
+        }
+        return 'Team 2';
     });
+    
     const [Team1NameList, setTeam1NameList] = useState<string[]>(() => {
-        const Team1NameListStr = sessionStorage.getItem('Team1NameList');
-        return Team1NameListStr ? JSON.parse(Team1NameListStr) : [];
+        if (typeof window !== "undefined") {
+            const Team1NameListStr = sessionStorage.getItem('Team1NameList');
+            return Team1NameListStr ? JSON.parse(Team1NameListStr) : [];
+        }
+        return [];
     });
+    
     const [Team2NameList, setTeam2NameList] = useState<string[]>(() => {
-        const Team2NameListStr = sessionStorage.getItem('Team2NameList');
-        return Team2NameListStr ? JSON.parse(Team2NameListStr) : [];
+        if (typeof window !== "undefined") {
+            const Team2NameListStr = sessionStorage.getItem('Team2NameList');
+            return Team2NameListStr ? JSON.parse(Team2NameListStr) : [];
+        }
+        return [];
     });
-
+    
     const [shuffle, setShuffle] = useState<boolean>(() => {
-        const shuffleStr = sessionStorage.getItem('shuffle');
-        return shuffleStr ? JSON.parse(shuffleStr) : false;
+        if (typeof window !== "undefined") {
+            const shuffleStr = sessionStorage.getItem('shuffle');
+            return shuffleStr ? JSON.parse(shuffleStr) : false;
+        }
+        return false;
     });
-
-    const [speaker, setSpeaker] =useState<string>(() => {
-        const speakerStr = sessionStorage.getItem('speaker');
-        return speakerStr ? speakerStr : 'Guest';
+    
+    const [speaker, setSpeaker] = useState<string>(() => {
+        if (typeof window !== "undefined") {
+            const speakerStr = sessionStorage.getItem('speaker');
+            return speakerStr ? speakerStr : 'Guest';
+        }
+        return 'Guest';
     });
-    const [team, setTeam] =useState<string>(() => {
-        const teamStr = sessionStorage.getItem('team');
-        return teamStr ? teamStr : 'No Name';
+    
+    const [team, setTeam] = useState<string>(() => {
+        if (typeof window !== "undefined") {
+            const teamStr = sessionStorage.getItem('team');
+            return teamStr ? teamStr : 'No Name';
+        }
+        return 'No Name';
     });
-
+    
     const [BuzzWords, setBuzzWords] = useState<ICard []>(() => {
-        const BuzzWordsStr = sessionStorage.getItem('BuzzWords');
-        return BuzzWordsStr ? JSON.parse(BuzzWordsStr) : [];
+        if (typeof window !== "undefined") {
+            const BuzzWordsStr = sessionStorage.getItem('BuzzWords');
+            return BuzzWordsStr ? JSON.parse(BuzzWordsStr) : [];
+        }
+        return [];
     });
+    
     const [SkipWords, setSkipWords] = useState<ICard []>(() => {
-        const SkipWordsStr = sessionStorage.getItem('SkipWords');
-        return SkipWordsStr ? JSON.parse(SkipWordsStr) : [];
+        if (typeof window !== "undefined") {
+            const SkipWordsStr = sessionStorage.getItem('SkipWords');
+            return SkipWordsStr ? JSON.parse(SkipWordsStr) : [];
+        }
+        return [];
     });
+    
     const [OnePointWords, setOnePointWords] = useState<ICard []>(() => {
-        const OnePointWordsStr = sessionStorage.getItem('OnePointWords');
-        return OnePointWordsStr ? JSON.parse(OnePointWordsStr) : [];
+        if (typeof window !== "undefined") {
+            const OnePointWordsStr = sessionStorage.getItem('OnePointWords');
+            return OnePointWordsStr ? JSON.parse(OnePointWordsStr) : [];
+        }
+        return [];
     });
+    
     const [ThreePointWords, setThreePointWords] = useState<ICard []>(() => {
-        const ThreePointWordsStr = sessionStorage.getItem('ThreePointWords');
-        return ThreePointWordsStr ? JSON.parse(ThreePointWordsStr) : [];
+        if (typeof window !== "undefined") {
+            const ThreePointWordsStr = sessionStorage.getItem('ThreePointWords');
+            return ThreePointWordsStr ? JSON.parse(ThreePointWordsStr) : [];
+        }
+        return [];
     });
-
+    
     const [Team1Score, setTeam1Score] = useState<number>(() => {
-        const Team1ScoreStr = sessionStorage.getItem('Team1Score');
-        return Team1ScoreStr ? parseInt(Team1ScoreStr, 10) : 0;
+        if (typeof window !== "undefined") {
+            const Team1ScoreStr = sessionStorage.getItem('Team1Score');
+            return Team1ScoreStr ? parseInt(Team1ScoreStr, 10) : 0;
+        }
+        return 0;
     });
+    
     const [Team2Score, setTeam2Score] = useState<number>(() => {
-        const Team2ScoreStr = sessionStorage.getItem('Team2Score');
-        return Team2ScoreStr ? parseInt(Team2ScoreStr, 10) : 0;
+        if (typeof window !== "undefined") {
+            const Team2ScoreStr = sessionStorage.getItem('Team2Score');
+            return Team2ScoreStr ? parseInt(Team2ScoreStr, 10) : 0;
+        }
+        return 0;
     });
+    
     const [card, setCard] = useState<ICard>(() => {
-        const cardStr = sessionStorage.getItem('card');
-        return cardStr ? JSON.parse(cardStr) : {} as ICard;
+        if (typeof window !== "undefined") {
+            const cardStr = sessionStorage.getItem('card');
+            return cardStr ? JSON.parse(cardStr) : {} as ICard;
+        }
+        return {} as ICard;
     });
     
     const [isTimeUp, setIsTimeUp] = useState<boolean>(() => {
-        const isTimeUpStr = sessionStorage.getItem('isTimeUp');
-        return isTimeUpStr ? JSON.parse(isTimeUpStr) : false;
+        if (typeof window !== "undefined") {
+            const isTimeUpStr = sessionStorage.getItem('isTimeUp');
+            return isTimeUpStr ? JSON.parse(isTimeUpStr) : false;
+        }
+        return false;
     });
-
+    
     const [isGameOver, setIsGameOver] = useState<boolean>(() => {
-        const isGameOverStr = sessionStorage.getItem('isGameOver');
-        return isGameOverStr ? JSON.parse(isGameOverStr) : false;
+        if (typeof window !== "undefined") {
+            const isGameOverStr = sessionStorage.getItem('isGameOver');
+            return isGameOverStr ? JSON.parse(isGameOverStr) : false;
+        }
+        return false;
     });
-
+    
     const [conn, setConnection] = useState<HubConnection>(() => {
-        const connStr = sessionStorage.getItem('conn');
-        return connStr ? JSON.parse(connStr) : {} as HubConnection;
+        if (typeof window !== "undefined") {
+            const connStr = sessionStorage.getItem('conn');
+            return connStr ? JSON.parse(connStr) : {} as HubConnection;
+        }
+        return {} as HubConnection;
     });
-
+    
     const [lobbyRoomName, setLobbyRoomName] = useState<string>(() => {
-        const lobbyRoomNameStr = sessionStorage.getItem('lobbyRoomName');
-        return lobbyRoomNameStr ? lobbyRoomNameStr : 'Pizza';
+        if (typeof window !== "undefined") {
+            const lobbyRoomNameStr = sessionStorage.getItem('lobbyRoomName');
+            return lobbyRoomNameStr ? lobbyRoomNameStr : 'Pizza';
+        }
+        return 'Pizza';
     });
-
+    
     const [messages, setMessages] = useState<{ username: string; msg: string;}[]>(() => {
-        const messagesStr = sessionStorage.getItem('messages');
-        return messagesStr ? JSON.parse(messagesStr) : [];
+        if (typeof window !== "undefined") {
+            const messagesStr = sessionStorage.getItem('messages');
+            return messagesStr ? JSON.parse(messagesStr) : [];
+        }
+        return [];
     });
+    
+
+    // const [userData, setUserData] = useState<IUserInfo>(() => {
+    //     let userDataStr: string | null = null;
+    //     if ( typeof window !== "undefined" ){
+    //         userDataStr = sessionStorage.getItem('userData');
+    //     }
+    //     return userDataStr ? JSON.parse(userDataStr) : { username: 'Joe', password: '123' };
+    // });
+    // const [roundTime, setRoundTime] = useState<number>(() => {
+    //     let roundTimeStr: string | null = null;
+    //     if ( typeof window !== "undefined" ){
+    //         roundTimeStr = sessionStorage.getItem('roundTime');
+    //     }
+    //     return roundTimeStr ? parseInt(roundTimeStr, 10) : 90;
+    // });
+    // const [numberOfRounds, setNumberOfRounds] = useState<number>(() => {
+    //     const numberOfRoundsStr = sessionStorage.getItem('numberOfRounds');
+    //     return numberOfRoundsStr ? parseInt(numberOfRoundsStr, 10) : 1;
+    // });
+
+    // const [turnNumber, setTurnNumber] = useState<number>(() => {
+    //     const turnNumberStr = sessionStorage.getItem('turnNumber');
+    //     return turnNumberStr ? parseInt(turnNumberStr, 10) : 1;
+    // });
+
+    // const [numberOfTurns, setNumberOfTurns] = useState<number>(() => {
+    //     const numberOfTurnsStr = sessionStorage.getItem('numberOfTurns');
+    //     return numberOfTurnsStr ? parseInt(numberOfTurnsStr, 10) : 0;
+    // });
+    // const [numberOfPeople, setNumberOfPeople] = useState<number>(() => {
+    //     const numberOfPeopleStr = sessionStorage.getItem('numberOfPeople');
+    //     return numberOfPeopleStr ? parseInt(numberOfPeopleStr, 10) : 0;
+    // });
+    // const [Team1Name, setTeam1Name] = useState<string>(() => {
+    //     const Team1NameStr = sessionStorage.getItem('Team1Name');
+    //     return Team1NameStr ? Team1NameStr : 'Team 1';
+    // });
+    // const [Team2Name, setTeam2Name] = useState<string>(() => {
+    //     const Team2NameStr = sessionStorage.getItem('Team2Name');
+    //     return Team2NameStr ? Team2NameStr : 'Team 2';
+    // });
+    // const [Team1NameList, setTeam1NameList] = useState<string[]>(() => {
+    //     const Team1NameListStr = sessionStorage.getItem('Team1NameList');
+    //     return Team1NameListStr ? JSON.parse(Team1NameListStr) : [];
+    // });
+    // const [Team2NameList, setTeam2NameList] = useState<string[]>(() => {
+    //     const Team2NameListStr = sessionStorage.getItem('Team2NameList');
+    //     return Team2NameListStr ? JSON.parse(Team2NameListStr) : [];
+    // });
+
+    // const [shuffle, setShuffle] = useState<boolean>(() => {
+    //     const shuffleStr = sessionStorage.getItem('shuffle');
+    //     return shuffleStr ? JSON.parse(shuffleStr) : false;
+    // });
+
+    // const [speaker, setSpeaker] =useState<string>(() => {
+    //     const speakerStr = sessionStorage.getItem('speaker');
+    //     return speakerStr ? speakerStr : 'Guest';
+    // });
+    // const [team, setTeam] =useState<string>(() => {
+    //     const teamStr = sessionStorage.getItem('team');
+    //     return teamStr ? teamStr : 'No Name';
+    // });
+
+    // const [BuzzWords, setBuzzWords] = useState<ICard []>(() => {
+    //     const BuzzWordsStr = sessionStorage.getItem('BuzzWords');
+    //     return BuzzWordsStr ? JSON.parse(BuzzWordsStr) : [];
+    // });
+    // const [SkipWords, setSkipWords] = useState<ICard []>(() => {
+    //     const SkipWordsStr = sessionStorage.getItem('SkipWords');
+    //     return SkipWordsStr ? JSON.parse(SkipWordsStr) : [];
+    // });
+    // const [OnePointWords, setOnePointWords] = useState<ICard []>(() => {
+    //     const OnePointWordsStr = sessionStorage.getItem('OnePointWords');
+    //     return OnePointWordsStr ? JSON.parse(OnePointWordsStr) : [];
+    // });
+    // const [ThreePointWords, setThreePointWords] = useState<ICard []>(() => {
+    //     const ThreePointWordsStr = sessionStorage.getItem('ThreePointWords');
+    //     return ThreePointWordsStr ? JSON.parse(ThreePointWordsStr) : [];
+    // });
+
+    // const [Team1Score, setTeam1Score] = useState<number>(() => {
+    //     const Team1ScoreStr = sessionStorage.getItem('Team1Score');
+    //     return Team1ScoreStr ? parseInt(Team1ScoreStr, 10) : 0;
+    // });
+    // const [Team2Score, setTeam2Score] = useState<number>(() => {
+    //     const Team2ScoreStr = sessionStorage.getItem('Team2Score');
+    //     return Team2ScoreStr ? parseInt(Team2ScoreStr, 10) : 0;
+    // });
+    // const [card, setCard] = useState<ICard>(() => {
+    //     const cardStr = sessionStorage.getItem('card');
+    //     return cardStr ? JSON.parse(cardStr) : {} as ICard;
+    // });
+    
+    // const [isTimeUp, setIsTimeUp] = useState<boolean>(() => {
+    //     const isTimeUpStr = sessionStorage.getItem('isTimeUp');
+    //     return isTimeUpStr ? JSON.parse(isTimeUpStr) : false;
+    // });
+
+    // const [isGameOver, setIsGameOver] = useState<boolean>(() => {
+    //     const isGameOverStr = sessionStorage.getItem('isGameOver');
+    //     return isGameOverStr ? JSON.parse(isGameOverStr) : false;
+    // });
+
+    // const [conn, setConnection] = useState<HubConnection>(() => {
+    //     const connStr = sessionStorage.getItem('conn');
+    //     return connStr ? JSON.parse(connStr) : {} as HubConnection;
+    // });
+
+    // const [lobbyRoomName, setLobbyRoomName] = useState<string>(() => {
+    //     const lobbyRoomNameStr = sessionStorage.getItem('lobbyRoomName');
+    //     return lobbyRoomNameStr ? lobbyRoomNameStr : 'Pizza';
+    // });
+
+    // const [messages, setMessages] = useState<{ username: string; msg: string;}[]>(() => {
+    //     const messagesStr = sessionStorage.getItem('messages');
+    //     return messagesStr ? JSON.parse(messagesStr) : [];
+    // });
 
     // Updating Storage with UseEffects
 
