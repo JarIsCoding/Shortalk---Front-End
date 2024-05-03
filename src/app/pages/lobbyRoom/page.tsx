@@ -150,7 +150,7 @@ const LobbyPage = () => {
     } else if (time < 30) {
       setWarning('Rounds must take a minimum of 30 seconds')
     } else {
-      setWarning('')
+      setWarning('');
       setIsReady(true);
     }
 
