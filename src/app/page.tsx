@@ -18,8 +18,9 @@ export default function Home() {
   const router = useRouter()
 
   const handleSubmit = async () => {
-
+    console.log('enter')
     if (username !== '' || password !== '') {
+      console.log(userData)
       let token: IToken | string = await login(userData)
 
       if (typeof token !== "string") {

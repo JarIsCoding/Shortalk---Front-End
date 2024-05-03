@@ -1,38 +1,33 @@
-//Local Storage Functions
+// Session Storage Functions
 
-//Favorites
-export const saveToLocalStorage = (city : string, country : string) => {
-
-    let favorites = getlocalStorage();
+// Favorites
+export const saveToSessionStorage = (city: string, country: string) => {
+    let favorites = getSessionStorage();
     let location = city + ", " + country;
     if (!favorites.includes(location)) {
         favorites.push(location);
     }
 
-    localStorage.setItem("Weather Favorites", JSON.stringify(favorites));
+    sessionStorage.setItem("Weather Favorites", JSON.stringify(favorites));
 }
 
-export const getlocalStorage= ():string[]  => {
+export const getSessionStorage = (): string[] => {
+    let sessionStorageData = sessionStorage.getItem("Weather Favorites");
 
-    let localStorageData = localStorage.getItem("Weather Favorites");
-
-    if (localStorageData == null) {
+    if (sessionStorageData == null) {
         return [];
     }
 
-    return JSON.parse(localStorageData);
-
+    return JSON.parse(sessionStorageData);
 }
 
-export const removeFromLocalStorage = (city : string, country : string) => {
-
-    let favorites = getlocalStorage();
+export const removeFromSessionStorage = (city: string, country: string) => {
+    let favorites = getSessionStorage();
     let location = city + ", " + country;
 
     let namedIndex = favorites.indexOf(location);
 
     favorites.splice(namedIndex, 1);
 
-    localStorage.setItem("Weather Favorites", JSON.stringify(favorites))
-
+    sessionStorage.setItem("Weather Favorites", JSON.stringify(favorites));
 }
