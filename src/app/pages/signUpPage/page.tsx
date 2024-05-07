@@ -26,7 +26,7 @@ const SignUpPage = () => {
         //Reset text on click cause its being annoying
         setCreatedText('')
 
-        if (password !== '') {
+        if (password !== '' && security !== '' && username !== '') {
 
             //Check for long enough password
             if (password.length >= 8) {
