@@ -14,7 +14,7 @@ const GamePage = () => {
     //Change these bools to see inputs/buttons
     const [guesser, setGuesser] = useState<boolean>(false)
     const [speaker, setSpeaker] = useState<boolean>(false)
-    const [defense, setDefense] = useState<boolean>(false)
+    const [defense, setDefense] = useState<boolean>(true)
 
     const [role, setRole] = useState<string>('')
 
@@ -22,7 +22,8 @@ const GamePage = () => {
 
     const router = useRouter()
 
-    const [openModal, setOpenModal] = useState(false);
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [openBuzzModal, setOpenBuzzModal] = useState<boolean>(false)
 
     // if(guesser){
     //     setRole('Guesser')
@@ -34,7 +35,7 @@ const GamePage = () => {
 
 
     return (
-        <div className=' h-screen'>
+        <div className='relative'>
 
             <div className='relative'>
                 <NavBar title='ShorTalk' />
@@ -67,6 +68,14 @@ const GamePage = () => {
                 </Modal.Body>
             </Modal>
 
+            <div className={`absolute rounded-lg bg-black inset-0 bg-opacity-25 flex items-center justify-center ${openBuzzModal ? 'block' : 'hidden'}`} onClick={() => setOpenBuzzModal(false)}>
+                <div className="text-center text-red-600 text-[100px] font-LuckiestGuy leading-none tracking-widest -rotate-12 animateText">
+                    BUZZED
+                    <br />
+                    -1
+                </div>
+            </div>
+
             <div className=''>
                 <div className='p-5 pt-10'>
                     <StatusBar time={0} teamName='Team' roundNumber={0} roundTotal={0} role='Guesser' OnePointWord='Word' ThreePointWord='Word' Speaker={null} />
@@ -74,7 +83,7 @@ const GamePage = () => {
                 <div className='grid md:grid-cols-3 gap-5 px-5 pb-5'>
 
                     {/* This is the Guesser box */}
-                    <div className='bg-white rounded-lg relative'>
+                    <div className='bg-white rounded-lg'>
 
                         {/* Text from the guessers goes here */}
                         <div className='pt-4 pb-2 ps-4 text-[20px]'>
@@ -94,7 +103,7 @@ const GamePage = () => {
                         <div className={`flex justify-center py-5 ${speaker ? 'block' : 'hidden'}`}>
                             <SkipBtn />
                         </div>
-                        <div onClick={() => setBuzzed(true)} className={`flex justify-center py-5 ${defense ? 'block' : 'hidden'}`}>
+                        <div onClick={() => { setBuzzed(true); setOpenBuzzModal(true) }} className={`flex justify-center py-5 ${defense ? 'block' : 'hidden'}`}>
                             <BuzzBtn />
                         </div>
                     </div>

@@ -12,6 +12,7 @@ const SignUpPage = () => {
     const [createdText, setCreatedText] = useState<string>('')
     const [openModal, setOpenModal] = useState(false);
     const [success, setSuccess] = useState<boolean>(false);
+    const [security, setSecurity] = useState<string>('')
 
     let router = useRouter();
 
@@ -22,15 +23,28 @@ const SignUpPage = () => {
             password: password
         }
 
+        //Reset text on click cause its being annoying
+        setCreatedText('')
+
         if (password !== '') {
-            const isCreated = await createAccount(userData);
-            if (isCreated) {
-                setCreatedText("User created successfully!");
-                setSuccess(true)
+
+            //Check for long enough password
+            if (password.length >= 8) {
+
+                const isCreated = await createAccount(userData);
+                if (isCreated) {
+                    setCreatedText("User created successfully!");
+                    setSuccess(true)
+                } else {
+                    setCreatedText("Failed to create user. Please try again.");
+                    setSuccess(false)
+                }
+
             } else {
-                setCreatedText("Failed to create user. Please try again.");
+                setCreatedText("Must have 8 characters minimum.");
                 setSuccess(false)
             }
+
         } else {
             setCreatedText("Please fill out all fields!");
             setSuccess(false)
@@ -38,7 +52,7 @@ const SignUpPage = () => {
     }
 
     return (
-        <div className='bg-lblue vh'>
+        <div className='bg-lblue'>
             <div className='grid grid-flow-row justify-center'>
 
                 <div className='py-14 text-center'>
@@ -47,21 +61,33 @@ const SignUpPage = () => {
                     </p>
                 </div>
 
-                <div className='flex justify-center'>
-                    <div className='bigCardBg rounded-md flex justify-center'>
+                <div className='flex justify-center pb-36'>
+                    <div className='bigCardBg rounded-md flex justify-center pb-16'>
                         <form className="flex max-w-md flex-col ">
 
                             {/* Username and password Input Field */}
                             <p className='text-center text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
                                 USERNAME
                             </p>
-                            <input id="username" type="text" placeholder='Username' className='inputSize rounded-none' onChange={(e) => setUsername(e.target.value)} required />
+                            <input id="username" maxLength={20} type="text" placeholder='Username' className='inputSize rounded-md' onChange={(e) => setUsername(e.target.value)} required />
 
-                            <p className='text-center  text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
+                            <p className='text-center text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
                                 PASSWORD
                             </p>
-                            <input id="password1" type="password" placeholder='Password' className='inputSize rounded-none' onChange={(e) => setPassword(e.target.value)} required />
+                            <input id="password1" type="password" placeholder='Password' className='inputSize rounded-md' onChange={(e) => setPassword(e.target.value)} required />
                             <p className='text-center cursor-default'>More than one syllable reccomended</p>
+
+                            <p className='text-center text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
+                                Security Question
+                            </p>
+
+                            <select className='rounded-t-md'>
+                                <option value="question1">What is your favorite Movie?</option>
+                                <option value="question2">What city were you born in?</option>
+                                <option value="question3">What is your favorite color?</option>
+                            </select>
+
+                            <input onChange={(e) => setSecurity(e.target.value)} type='text' placeholder="Enter your answer" className='rounded-b-md' />
 
                             <p onClick={() => router.push('/')} className='text-center pt-5 cursor-pointer underline'>
                                 Already have an account?

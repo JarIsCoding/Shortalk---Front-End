@@ -62,7 +62,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className='bigCardBg rounded-md flex justify-center'>
+        <div className='bg-white border-[#00529E] border-t-[20px] w-[500px] h-[500px] rounded-md flex justify-center'>
           <form className="flex max-w-md flex-col gap-4">
 
             {/* Top Text */}

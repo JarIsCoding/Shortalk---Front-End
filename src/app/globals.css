@@ -22,7 +22,7 @@
     border-color: #00529E;
     border-top-width: 20px;
     width: 500px;
-    height: 500px;
+    height: 625px;
 }
 
 .cardBorder{
@@ -33,7 +33,6 @@
 .inputSize{
     width: 350px;
     height: 50px;
-    border-radius: 0px;
 }
 
 .loginBtn{
@@ -79,6 +78,23 @@ letter-spacing: 0.1em;
 
 .removeScrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.animateText {
+  animation: textAnimation 1.5s forwards;
+  --tw-rotate: -25deg;
+}
+
+@keyframes textAnimation {
+  0% {
+    transform: scale(0) rotate(0.92turn);
+  }
+  50% {
+    transform: scale(1.2) rotate(0.94turn);
+  }
+  100% {
+    transform: scale(1) rotate(0.95turn);
+  }
 }
 
 /* WARNING!!!!!!!!!! */

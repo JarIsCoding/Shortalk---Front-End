@@ -14,7 +14,7 @@ const PassAndPlayLobby = () => {
 
   const router = useRouter();
 
-  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, setTurnNumber } = useAppContext();
+  const { Team1Name, Team2Name, setTeam1Name, setTeam2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, setTurnNumber } = useAppContext();
 
   const [isReady, setIsReady] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('')
@@ -22,6 +22,7 @@ const PassAndPlayLobby = () => {
   const [selectedRounds, setSelectedRounds] = useState('1');
   const [selectedMinutes, setSelectedMinutes] = useState('1');
   const [selectedSeconds, setSelectedSeconds] = useState('0');
+  const [openModal, setOpenModal] = useState(false);
 
   const maxRounds: number = 10;
   const maxMinutes: number = 5;
@@ -77,6 +78,16 @@ const PassAndPlayLobby = () => {
     }
   }
 
+  //need to fix reset button
+  const handleReset = () => {
+    setIsReady(false)
+    setMessage('Give each team a name')
+    setTeam1NameList([])
+    setTeam2NameList([])
+    setTeam1Name(' ')
+    setTeam2Name(' ')
+  }
+
   useEffect(() => {
     if (shuffle) {
       setShuffle(false);
@@ -108,8 +119,6 @@ const PassAndPlayLobby = () => {
 
   }, [Team1Name, Team2Name, Team1NameList, Team2NameList, roundTime, selectedMinutes, selectedSeconds, selectedRounds])
 
-  const [openModal, setOpenModal] = useState(false);
-
   return (
     <div>
       {/* Navbar */}
@@ -127,8 +136,18 @@ const PassAndPlayLobby = () => {
       <div className='flex flex-col items-center space-y-10 pt-20'>
         <div className='md:flex md:flex-row md:justify-between gap-5 md:items-center grid grid-cols-1'>
           <TeamListPNP teamNumber={1} />
-          <div className='flex justify-center'>
+          <div className='pt-36'>
+            <div className='flex justify-center'>
               <DiceBtn />
+            </div>
+            <div className='pt-24'>
+              <Button className='rounded-xl bg-red-500 text-center text-white p-1 font-LuckiestGuy tracking-widest' onClick={handleReset}>
+              Reset
+              </Button>
+              {/* <div className='rounded-xl bg-red-500 text-center text-white p-3 font-LuckiestGuy tracking-widest'>
+                Reset
+              </div> */}
+            </div>
           </div>
           <TeamListPNP teamNumber={2} />
         </div>
