@@ -65,3 +65,10 @@ export interface IScoreTableProps {
 export interface IButton {
     click: () => void
 }
+
+
+export interface ILobbyRoom {
+    LobbyName: string
+    Team1Names: string[]
+    Team2Names: string[]
+}

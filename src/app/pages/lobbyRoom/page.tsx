@@ -48,13 +48,13 @@ const LobbyPage = () => {
       // set up handler
       conn.on("JoinSpecificLobbyRoom", (username: string, msg: string) => { // Specify the types for parameters
         setMessages(messages => [...messages, { username, msg }])
-        if((Team1Names.length + Team2Names.length)%2 == 0){
-        setTeam1Names(Team1Names => [...Team1Names, msg.split(' ')[0]])          
-        }else{
-        setTeam2Names(Team2Names => [...Team2Names, msg.split(' ')[0]])    
-        }
+        // if((Team1Names.length + Team2Names.length)%2 == 0){
+        // setTeam1Names(Team1Names => [...Team1Names, msg.split(' ')[0]])          
+        // }else{
+        // setTeam2Names(Team2Names => [...Team2Names, msg.split(' ')[0]])    
+        // }
 
-        console.log(Team1NameList)
+        // console.log(Team1NameList)
         console.log("msg: ", msg);
       });
 

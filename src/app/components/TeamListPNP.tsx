@@ -10,6 +10,7 @@ const TeamListPNP = (props: ITeamListPNP) => {
   const { Team1Name, setTeam1Name, Team2Name, setTeam2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle } = useAppContext();
   const [teamName, setTeamName] = useState<string>('');
   const [name, setName] = useState<string>('');
+  
 
   const handleClick = () => {
     let teamList: string[] = [];
@@ -61,12 +62,29 @@ const TeamListPNP = (props: ITeamListPNP) => {
     }
   }, [teamName])
 
+  useEffect(() => {
+    switch (props.teamNumber) {
+      case 1:
+        if(Team1Name == ''){
+          setTeamName('')
+        }
+        break;
+      case 2:
+        if(Team2Name == ''){
+          setTeamName('')
+        }
+        break;
+      default:
+        console.log('Error')
+    }
+  },[Team1Name, Team2Name])
+
   return (
     <div className=' space-y-5 sm:w-[350px] w-[300px]'>
       <div className='md:flex flex-row justify-between whitespace-nowrap items-center'>
         <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Team Name</div>
         <div className=''>
-          <input className=' w-full h-7' maxLength={16} type="text" name="" id="" onChange={(e) => setTeamName(e.target.value)} />
+          <input value={teamName} className=' w-full h-7' maxLength={16} type="text" name="" id="" onChange={(e) => setTeamName(e.target.value)} />
         </div>
       </div>
 
