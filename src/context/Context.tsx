@@ -102,7 +102,7 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
             const userDataStr = sessionStorage.getItem('userData');
             return userDataStr ? JSON.parse(userDataStr) : { username: '', password: '' };
         }
-        return { username: 'Joe', password: '123' };
+        return { username: '', password: '' };
     });
     
     const [roundTime, setRoundTime] = useState<number>(() => {
@@ -350,19 +350,19 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     }, [team]);
 
     useEffect(() => {
-        sessionStorage.setItem('BuzzWords', BuzzWords.toString());
+        sessionStorage.setItem('BuzzWords', JSON.stringify(BuzzWords));
     }, [BuzzWords]);
 
     useEffect(() => {
-        sessionStorage.setItem('SkipWords', SkipWords.toString());
+        sessionStorage.setItem('SkipWords', JSON.stringify(SkipWords));
     }, [SkipWords]);
 
     useEffect(() => {
-        sessionStorage.setItem('OnePointWords', OnePointWords.toString());
+        sessionStorage.setItem('OnePointWords', JSON.stringify(OnePointWords));
     }, [OnePointWords]);
 
     useEffect(() => {
-        sessionStorage.setItem('ThreePointWords', ThreePointWords.toString());
+        sessionStorage.setItem('ThreePointWords', JSON.stringify(ThreePointWords));
     }, [ThreePointWords]);
 
     useEffect(() => {
