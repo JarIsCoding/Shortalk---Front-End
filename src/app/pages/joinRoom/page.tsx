@@ -6,6 +6,7 @@ import GoHomeBtn from '@/app/components/GoHomeBtn'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
+import { joinLobbyRoom } from '@/utils/Dataservices'
 
 const JoinRoom = () => {
 
@@ -25,18 +26,18 @@ const JoinRoom = () => {
         setSuccessColor(true)
     }
 
-    const handleCreate = () => {
+    const handleJoin = async () => {
         if (roomName === '') {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
-        } else {
+        } else if (await joinLobbyRoom(roomName)) {
             setLobbyRoomName(roomName)
         }
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            handleCreate();
+            handleJoin();
         }
     };
 
@@ -75,7 +76,7 @@ const JoinRoom = () => {
                     <div className='p-0 m-0 flex justify-center pt-14'>
 
                         {/* On click create room */}
-                        <Button onClick={handleCreate} className='font-LuckiestGuy text-white bg-dblue w-[50%] h-[50px] p-0 m-0'>
+                        <Button onClick={handleJoin} className='font-LuckiestGuy text-white bg-dblue w-[50%] h-[50px] p-0 m-0'>
                             <p className='sm:text-[36px] text-[28px] tracking-widest'>
                                 JOIN
                             </p>

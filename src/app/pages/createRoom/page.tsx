@@ -6,6 +6,8 @@ import GoHomeBtn from '@/app/components/GoHomeBtn'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
+import { createLobbyRoom } from '@/utils/Dataservices'
+import { ILobbyRoom } from '@/Interfaces/Interfaces'
 
 const CreateRoom = () => {
 
@@ -28,12 +30,21 @@ const CreateRoom = () => {
         setSuccessColor(true)
     }
 
-    const handleCreate = () => {
+    const handleCreate = async () => {
         if (roomName === '') {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
         } else {
-            setLobbyRoomName(roomName)
+            const newLobby: ILobbyRoom = {
+                LobbyName: roomName,
+                Team1Names: [],
+                Team2Names: []
+            }
+            const res = await createLobbyRoom(newLobby);
+            if (res) 
+            {
+                setLobbyRoomName(roomName)
+            }
         }
     }
 
