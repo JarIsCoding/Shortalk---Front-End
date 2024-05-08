@@ -1,4 +1,4 @@
-import { ICard, ICardData, IToken, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
+import { ICard, ICardData, ILobbyRoom, IToken, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
 import { Context } from "@/context/Context"
 import * as wordData from '../words.json';
 
@@ -104,4 +104,36 @@ export const getCard = () => {
     }
 
     return card
+}
+
+export const createLobbyRoom = async (createdLobby: ILobbyRoom) => {
+    const res = await fetch(url + '/Lobby/AddLobby', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(createdLobby)
+    })
+
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+
+    const data = await res.json();
+    console.log(data)
+    return data
+}
+
+export const joinLobbyRoom = async (lobbyRoomName: string) => {
+    const res = await fetch(url + `/Lobby/JoinLobby/${lobbyRoomName}`)
+
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+
+    const data = await res.json();
+    console.log(data)
+    return data
 }
