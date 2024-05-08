@@ -9,7 +9,7 @@ import LogoutBtn from '@/app/assets/LogoutBtn2.png'
 import FriendsTab from '@/app/components/FriendsTab';
 import { useAppContext } from '@/context/Context';
 import { useRouter } from 'next/navigation';
-import AudioPlayer from '@/app/components/AudioPlayer'
+import MainMenuMusic from '@/app/components/AudioPlayer';
 const HomePage = () => {
 
   const router = useRouter()
@@ -90,7 +90,7 @@ const HomePage = () => {
         Online Currently not working! Please play Pass and play for now. <br /> Sorry for the inconvinence!
       </p>
 
-      <AudioPlayer/>
+      <MainMenuMusic/>
 
       
 

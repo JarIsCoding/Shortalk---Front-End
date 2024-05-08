@@ -1,5 +1,5 @@
 import React from 'react';
-const AudioPlayer = () => {
+const MainMenuMusic = () => {
     return (
         <div>
             <audio controls autoPlay loop className='w-[1000px] hidden'>
@@ -9,7 +9,9 @@ const AudioPlayer = () => {
 
     );
 }; 
-export default AudioPlayer;
+export default MainMenuMusic;
+
+
 // Player Join - multi - pop
 // Quit - finger snap
 // Winner - you-win-sequence
