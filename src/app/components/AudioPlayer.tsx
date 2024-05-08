@@ -10,3 +10,6 @@ const AudioPlayer = () => {
     );
 }; 
 export default AudioPlayer;
+// Player Join - multi - pop
+// Quit - finger snap
+// Winner - you-win-sequence
