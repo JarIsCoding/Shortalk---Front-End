@@ -20,6 +20,7 @@ const CreateRoom = () => {
     const [roomName, setRoomName] = useState('')
     const [warnText, setWarnText] = useState('')
     const [successColor, setSuccessColor] = useState<boolean>(false)
+    const [disableBtn, setDisableBtn] = useState(false)
 
     const router = useRouter()
 
@@ -31,6 +32,7 @@ const CreateRoom = () => {
     }
 
     const handleCreate = async () => {
+        setDisableBtn(true)
         if (roomName === '') {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
@@ -41,8 +43,7 @@ const CreateRoom = () => {
                 Team2Names: []
             }
             const res = await createLobbyRoom(newLobby);
-            if (res) 
-            {
+            if (res) {
                 setLobbyRoomName(roomName)
             }
         }
@@ -62,6 +63,16 @@ const CreateRoom = () => {
             setTimeout(successfunc, 500)
         }
     }, [lobbyRoomName])
+
+    useEffect(() => {
+        let timer;
+        if (disableBtn) {
+            timer = setTimeout(() => {
+                setDisableBtn(false);
+                console.log('click')
+            }, 1000);
+        }
+    })
 
     return (
         <div>
