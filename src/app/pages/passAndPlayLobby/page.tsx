@@ -78,14 +78,13 @@ const PassAndPlayLobby = () => {
     }
   }
 
-  //need to fix reset button
   const handleReset = () => {
     setIsReady(false)
     setMessage('Give each team a name')
     setTeam1NameList([])
     setTeam2NameList([])
-    setTeam1Name(' ')
-    setTeam2Name(' ')
+    setTeam1Name('')
+    setTeam2Name('')
   }
 
   useEffect(() => {
