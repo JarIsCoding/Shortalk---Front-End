@@ -1,3 +1,5 @@
+import internal from "stream"
+
 //User Token
 export interface IToken {
     token: string
@@ -71,4 +73,19 @@ export interface ILobbyRoom {
     LobbyName: string
     Team1Names: string[]
     Team2Names: string[]
+}
+
+export interface ILobbyRoomBackEnd {
+    ID: number
+    LobbyName: string
+    TeamMemberA1: string
+    TeamMemberA2: string
+    TeamMemberA3: string
+    TeamMemberA4: string
+    TeamMemberA5: string
+    TeamMemberB1: string
+    TeamMemberB2: string
+    TeamMemberB3: string
+    TeamMemberB4: string
+    TeamMemberB5: string
 }

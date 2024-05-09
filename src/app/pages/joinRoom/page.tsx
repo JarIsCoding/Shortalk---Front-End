@@ -30,7 +30,7 @@ const JoinRoom = () => {
         if (roomName === '') {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
-        } else if (await joinLobbyRoom(roomName)) {
+        }else if (await joinLobbyRoom(roomName)) {
             setLobbyRoomName(roomName)
         }
     }

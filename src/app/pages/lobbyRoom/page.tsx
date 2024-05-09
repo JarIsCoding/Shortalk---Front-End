@@ -11,6 +11,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import OnlineTeamName from '@/app/components/OnlineTeamName'
 import FriendsTab from '@/app/components/FriendsTab'
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
+import { ILobbyRoomBackEnd } from '@/Interfaces/Interfaces'
 
 const LobbyPage = () => {
   const router = useRouter();
@@ -23,7 +24,6 @@ const LobbyPage = () => {
   const [messages, setMessages] = useState<{ username: string; msg: string; }[]>([]);
 
   const [Team1Names, setTeam1Names] = useState<string[]>(Team1NameList);
-
   const [Team2Names, setTeam2Names] = useState<string[]>(Team2NameList);
 
   const [selectedRounds, setSelectedRounds] = useState('1');
@@ -46,16 +46,17 @@ const LobbyPage = () => {
       // .build();
 
       // set up handler
-      conn.on("JoinSpecificLobbyRoom", (username: string, msg: string) => { // Specify the types for parameters
-        setMessages(messages => [...messages, { username, msg }])
-        // if((Team1Names.length + Team2Names.length)%2 == 0){
-        // setTeam1Names(Team1Names => [...Team1Names, msg.split(' ')[0]])          
-        // }else{
-        // setTeam2Names(Team2Names => [...Team2Names, msg.split(' ')[0]])    
-        // }
+      conn.on("JoinSpecificLobbyRoom", (username: string, msg: string, json: string) => { // Specify the types for parameters
+        const lobby:ILobbyRoomBackEnd = JSON.parse(json);
+        const team1Names = [lobby.TeamMemberA1, lobby.TeamMemberA2, lobby.TeamMemberA3, lobby.TeamMemberA4,  lobby.TeamMemberA5]
+        const team2Names = [lobby.TeamMemberB1, lobby.TeamMemberB2, lobby.TeamMemberB3, lobby.TeamMemberB4,  lobby.TeamMemberB5]
 
-        // console.log(Team1NameList)
+        setTeam1Names(team1Names);
+        setTeam2Names(team2Names)
+ 
+        setMessages(messages => [...messages, { username, msg }])
         console.log("msg: ", msg);
+        console.log("lobby: ", json);
       });
 
       conn.on("ReceiveSpecificMessage", (username: string, msg: string) => { // Specify the types for parameters
@@ -81,6 +82,7 @@ const LobbyPage = () => {
       console.log(e)
     }
   }
+
 
   const renderOptions = (minNum: number, maxNum: number, ifSeconds: boolean) => {
     const renderedOptions = [];
@@ -144,28 +146,6 @@ const LobbyPage = () => {
       shuffleTeams();
     }
   }, [shuffle])
-
-  useEffect(() => {
-    let numberOfPlayers = Team1NameList.length + Team2NameList.length;
-    let differenceInPlayers = Math.abs(Team1NameList.length - Team2NameList.length);
-    let time = parseInt(selectedMinutes) * 60 + parseInt(selectedSeconds);
-    setNumberOfRounds(parseInt(selectedRounds));
-    setRoundTime(time)
-    setIsReady(false);
-    if (!(Team1Name && Team2Name)) {
-      setWarning('Give each team a name');
-    } else if (numberOfPlayers < 4) {
-      setWarning('At least 4 players must be playing');
-    } else if (differenceInPlayers > 1) {
-      setWarning('Teams can only vary by max 1 player')
-    } else if (time < 30) {
-      setWarning('Rounds must take a minimum of 30 seconds')
-    } else {
-      setWarning('');
-      setIsReady(true);
-    }
-
-  }, [Team1Name, Team2Name, Team1NameList, Team2NameList, roundTime, selectedMinutes, selectedSeconds, selectedRounds])
 
   useEffect(() => {
     joinRoom(userData.username, lobbyRoomName)
