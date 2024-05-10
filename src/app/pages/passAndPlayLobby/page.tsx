@@ -14,7 +14,7 @@ const PassAndPlayLobby = () => {
 
   const router = useRouter();
 
-  const { Team1Name, Team2Name, setTeam1Name, setTeam2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, setTurnNumber } = useAppContext();
+  const { Team1Name, Team2Name, setTeam1Name, setTeam2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, setTurnNumber, setThreePointWords, setOnePointWords, setSkipWords, setBuzzWords } = useAppContext();
 
   const [isReady, setIsReady] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('')
@@ -86,6 +86,13 @@ const PassAndPlayLobby = () => {
     setTeam1Name('')
     setTeam2Name('')
   }
+
+  useEffect(() => {
+    setSkipWords([])
+    setBuzzWords([])
+    setOnePointWords([])
+    setThreePointWords([])
+  }, [])
 
   useEffect(() => {
     if (shuffle) {

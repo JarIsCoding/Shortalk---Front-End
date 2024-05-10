@@ -9,7 +9,7 @@ import PlayAgainBtn from '@/app/components/PlayAgainBtn';
 const WinPage = () => {
 
     const router = useRouter();
-    const {Team1Name, Team1Score, Team2Name, Team2Score, turnNumber, numberOfTurns} = useAppContext();
+    const {Team1Name, Team1Score, Team2Name, Team2Score, turnNumber, setTurnNumber, numberOfTurns} = useAppContext();
 
     if(turnNumber > numberOfTurns){
         return ( 
