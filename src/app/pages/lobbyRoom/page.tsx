@@ -4,7 +4,7 @@ import NavBar from '@/app/components/NavBar'
 import StartBtn from '@/app/components/StartBtn'
 import TeamListPNP from '@/app/components/TeamListPNP'
 import { useAppContext } from '@/context/Context'
-import { renderOptions, shuffleArray } from '@/utils/utils'
+import { checkIfPlayersAreReady, renderOptions, shuffleArray } from '@/utils/utils'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { ReactElement, useEffect, useState } from 'react'
@@ -41,13 +41,13 @@ const LobbyPage = () => {
   const maxMinutes: number = 5;
   const maxSeconds: number = 59;
 
-  const setTeamInfos = (lobby:ILobbyRoomBackEnd) => {
+  const setTeamInfos = (lobby: ILobbyRoomBackEnd) => {
 
     setHost(lobby.Host)
 
     const team1Info = {
       teamName: "Team1",
-      host: lobby.Host ,
+      host: lobby.Host,
       members: [
         {
           name: lobby.TeamMemberA1,
@@ -130,9 +130,16 @@ const LobbyPage = () => {
       })
 
       conn.on("TogglePayerAsReady", (json: string) => {
-        
+
         const lobby: ILobbyRoomBackEnd = JSON.parse(json);
         setTeamInfos(lobby);
+
+      });
+
+      conn.on("ChangeNumberOfRounds", (json: string) => {
+
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setSelectedRounds(`${lobby.NumberOfRounds}`)
 
       });
 
@@ -155,10 +162,18 @@ const LobbyPage = () => {
       console.log(e)
     }
   }
-  
+
   const toggleReadiness = async (username: string, lobbyroom: string) => {
     try {
-      conn && await conn.invoke("TogglePayerAsReady", {username, lobbyroom});
+      conn && await conn.invoke("TogglePayerAsReady", { username, lobbyroom });
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const changeRounds = async (username: string, lobbyroom: string, numberOfRounds:number) => {
+    try {
+      conn && await conn.invoke("ChangeNumberOfRounds", { username, lobbyroom }, `${numberOfRounds}`);
     } catch (e) {
       console.log(e)
     }
@@ -183,9 +198,20 @@ const LobbyPage = () => {
     setTeam2NameList(team2);
   }
 
+  const handleChangeRounds = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRounds(e.target.value)
+    changeRounds( userData.username, lobbyRoomName, numberOfRounds)
+
+  }
+
   const handleStartClick = () => {
-    setIsReady(!isReady)
-    toggleReadiness(userData.username, lobbyRoomName);
+    if (userData.username != host) {
+      console.log("This guy is not the host")
+      setIsReady(!isReady)
+      toggleReadiness(userData.username, lobbyRoomName);
+    } else {
+      console.log("This guy is our host!")
+    }
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -213,6 +239,20 @@ const LobbyPage = () => {
   useEffect(() => {
     setTeam2NameList(Team2Names)
   }, [Team2Names])
+
+  useEffect(() => {
+    if (userData.username == host) {
+      console.log("Host: " + host);
+      if (Team1Info && Team2Info) {
+        let res = checkIfPlayersAreReady(Team1Info, Team2Info)
+        console.log("Res: " + res)
+        if (res) {
+          console.log("The players are ready!!!")
+        }
+        setIsReady(res)
+      }
+    }
+  }, [Team1Info, Team2Info])
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -247,34 +287,50 @@ const LobbyPage = () => {
               <DiceBtn />
             </div>
             <div className='' onClick={handleStartClick}>
-              <StartBtn isReady={isReady} isHost={(host === userData.username)} />
+              <StartBtn isReady={isReady} isHost={(host == userData.username)} />
             </div>
           </div>
-            <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} />          
+          <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} />
         </div>
 
         <div className=' flex flex-col items-center space-y-4'>
           <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
             <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Number of Rounds:</div>
-            <select value={selectedRounds} onChange={(e) => setSelectedRounds(e.target.value)} className=' w-[20%] h-10' name='Rounds' id='Rounds'>
-              {renderOptions(1, maxRounds, false)}
-            </select>
+            {
+              (userData.username == host) ?
+                <select value={selectedRounds} onChange={(e) => handleChangeRounds(e)} className=' w-[20%] h-10' name='Rounds' id='Rounds'>
+                  {renderOptions(1, maxRounds, false)}
+                </select>
+                :
+                <div className=' text-dblue font-LuckiestGuy text-3xl'>{selectedRounds} </div>
+            }
+
           </div>
           <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
             <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Time Limit:</div>
             <div className='w-[30%] flex justify-end space-x-1' >
-              <select className='h-10' value={selectedMinutes} onChange={(e) => setSelectedMinutes(e.target.value)}>
-                {renderOptions(0, maxMinutes, false)}
-              </select>
+              {
+                (userData.username == host) ?
+                  <select className='h-10' value={selectedMinutes} onChange={(e) => setSelectedMinutes(e.target.value)}>
+                    {renderOptions(0, maxMinutes, false)}
+                  </select>
+                  :
+                  <div className=' text-dblue font-LuckiestGuy text-3xl'>#value</div>
+              }
               <div className=' text-dblue font-LuckiestGuy text-3xl'>:</div>
-              <select className='h-10' value={selectedSeconds} onChange={(e) => setSelectedSeconds(e.target.value)}>
-                {renderOptions(0, maxSeconds, true)}
-              </select>
+              {
+                (userData.username == host) ?
+                  <select className='h-10' value={selectedSeconds} onChange={(e) => setSelectedSeconds(e.target.value)}>
+                    {renderOptions(0, maxSeconds, true)}
+                  </select>
+                  :
+                  <div className=' text-dblue font-LuckiestGuy text-3xl'>#value</div>
+              }
             </div>
           </div>
           <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
-            <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>ScoreKeeper</div>
-            <select name="" id=""></select>
+            {/* <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>ScoreKeeper</div>
+            <select name="" id=""></select> */}
           </div>
         </div>
 

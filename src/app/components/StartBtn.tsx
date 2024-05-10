@@ -13,6 +13,8 @@ const StartBtn = (props: IStartButton) => {
 
 
   useEffect(() => {
+    console.log("isHost: " + props.isHost);
+    console.log("isReady " + props.isReady)
     if (props.isHost) {
       setBtnText('Start');
       if (props.isReady) {
