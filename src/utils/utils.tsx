@@ -14,3 +14,12 @@ export function formatTime(seconds: number): string {
     const ss = (seconds % 60).toString().padStart(2, '0'); // Calculate seconds
     return `${m}:${ss}`; // Return formatted time
 }
+
+
+export const renderOptions = (minNum: number, maxNum: number, ifSeconds: boolean) => {
+    const renderedOptions = [];
+    for (let i = minNum; i <= maxNum; i++) {
+      renderedOptions.push(<option key={i} value={i}>{ifSeconds ? String(i).padStart(2, '0') : i}</option>)
+    }
+    return renderedOptions;
+  }

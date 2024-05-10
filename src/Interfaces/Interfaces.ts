@@ -50,6 +50,7 @@ export interface IName {
 
 export interface IStartButton {
     isReady: boolean
+    isHost: boolean
 }
 
 export interface ICardData {
@@ -75,9 +76,15 @@ export interface ILobbyRoom {
     Team2Names: string[]
 }
 
+export interface ICreateLobbyRoomDTO {
+    LobbyName: string
+    Host: string
+}
+
 export interface ILobbyRoomBackEnd {
     ID: number
     LobbyName: string
+    Host: string
     TeamMemberA1: string
     TeamMemberA2: string
     TeamMemberA3: string
@@ -88,4 +95,23 @@ export interface ILobbyRoomBackEnd {
     TeamMemberB3: string
     TeamMemberB4: string
     TeamMemberB5: string
+    ReadyStatusA1: boolean
+    ReadyStatusA2: boolean
+    ReadyStatusA3: boolean
+    ReadyStatusA4: boolean
+    ReadyStatusA5: boolean
+    ReadyStatusB1: boolean
+    ReadyStatusB2: boolean
+    ReadyStatusB3: boolean
+    ReadyStatusB4: boolean
+    ReadyStatusB5: boolean
+}
+
+export interface ITeamInfo {
+    teamName: string;
+    host: string;
+    members: {
+      name: string
+      readyStatus: boolean
+    }[];
 }
