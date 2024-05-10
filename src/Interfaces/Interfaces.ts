@@ -85,6 +85,8 @@ export interface ILobbyRoomBackEnd {
     ID: number
     LobbyName: string
     Host: string
+    NumberOfRounds: number
+    TimeLimit: number
     TeamMemberA1: string
     TeamMemberA2: string
     TeamMemberA3: string

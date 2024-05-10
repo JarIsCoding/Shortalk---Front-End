@@ -1,3 +1,4 @@
+import { ITeamInfo } from "@/Interfaces/Interfaces";
 
 
 export function shuffleArray(array: string[]): string[] {
@@ -19,7 +20,43 @@ export function formatTime(seconds: number): string {
 export const renderOptions = (minNum: number, maxNum: number, ifSeconds: boolean) => {
     const renderedOptions = [];
     for (let i = minNum; i <= maxNum; i++) {
-      renderedOptions.push(<option key={i} value={i}>{ifSeconds ? String(i).padStart(2, '0') : i}</option>)
+        renderedOptions.push(<option key={i} value={i}>{ifSeconds ? String(i).padStart(2, '0') : i}</option>)
     }
     return renderedOptions;
-  }
+}
+
+
+export const checkIfPlayersAreReady = (Team1Info: ITeamInfo, Team2Info: ITeamInfo) => {
+
+    // console.log("Team1Info: "+JSON.stringify(Team1Info));
+    // console.log("Team2Info: "+JSON.stringify(Team2Info));
+
+    let Team1Counter = 0;
+    let Team2Counter = 0;
+
+    Team1Info.members.forEach(member => {
+        if (member.name && !member.readyStatus && (member.name != Team1Info.host)) {
+            return false;
+        }
+        if(member.name){
+            Team1Counter++;
+        }
+    })
+    Team2Info.members.forEach(member => {
+        if (member.name && !member.readyStatus && (member.name != Team2Info.host)) {
+            return false;
+        }
+        if(member.name){
+            Team2Counter++;
+        }
+    })
+
+    if(Team1Counter < 2 || Team2Counter < 2){
+        return false
+    }
+
+    // console.log("Team1Counter: "+Team1Counter);
+    // console.log("Team2Counter: "+Team2Counter);
+    return true;
+}
+
