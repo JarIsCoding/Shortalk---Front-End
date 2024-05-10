@@ -1,8 +1,11 @@
-import { ICard, ICardData, ILobbyRoom, IToken, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
+import { ICard, ICardData, ICreateLobbyRoomDTO, ILobbyRoom, IToken, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
 import { Context } from "@/context/Context"
 import * as wordData from '../words.json';
 
 const url = "https://shortalkapi.azurewebsites.net"
+
+// const url = "http://localhost:5151"
+
 
 let userData: IUserData
 
@@ -106,7 +109,7 @@ export const getCard = () => {
     return card
 }
 
-export const createLobbyRoom = async (createdLobby: ILobbyRoom) => {
+export const createLobbyRoom = async (createdLobby: ICreateLobbyRoomDTO) => {
     const res = await fetch(url + '/Lobby/AddLobby', {
         method: 'POST',
         headers: {

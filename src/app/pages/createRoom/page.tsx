@@ -7,7 +7,7 @@ import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { createLobbyRoom } from '@/utils/Dataservices'
-import { ILobbyRoom } from '@/Interfaces/Interfaces'
+import { ICreateLobbyRoomDTO, ILobbyRoom } from '@/Interfaces/Interfaces'
 
 const CreateRoom = () => {
 
@@ -37,10 +37,9 @@ const CreateRoom = () => {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
         } else {
-            const newLobby: ILobbyRoom = {
+            const newLobby: ICreateLobbyRoomDTO = {
                 LobbyName: roomName,
-                Team1Names: [],
-                Team2Names: []
+                Host: userData.username
             }
             const res = await createLobbyRoom(newLobby);
             if (res) {

@@ -4,15 +4,17 @@ import NavBar from '@/app/components/NavBar'
 import StartBtn from '@/app/components/StartBtn'
 import TeamListPNP from '@/app/components/TeamListPNP'
 import { useAppContext } from '@/context/Context'
-import { shuffleArray } from '@/utils/utils'
+import { renderOptions, shuffleArray } from '@/utils/utils'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { ReactElement, useEffect, useState } from 'react'
 import OnlineTeamName from '@/app/components/OnlineTeamName'
 import FriendsTab from '@/app/components/FriendsTab'
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
+import { ILobbyRoomBackEnd, ITeamInfo } from '@/Interfaces/Interfaces'
 
 const LobbyPage = () => {
+
   const router = useRouter();
 
   const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, conn, setConnection, userData, lobbyRoomName } = useAppContext();
@@ -22,8 +24,13 @@ const LobbyPage = () => {
   const [message, setMessage] = useState<string>('')
   const [messages, setMessages] = useState<{ username: string; msg: string; }[]>([]);
 
-  const [Team1Names, setTeam1Names] = useState<string[]>(Team1NameList);
+  const [Team1Info, setTeam1Info] = useState<ITeamInfo>({} as ITeamInfo);
 
+  const [Team2Info, setTeam2Info] = useState<ITeamInfo>({} as ITeamInfo);
+
+  const [host, setHost] = useState<string>('');
+
+  const [Team1Names, setTeam1Names] = useState<string[]>(Team1NameList);
   const [Team2Names, setTeam2Names] = useState<string[]>(Team2NameList);
 
   const [selectedRounds, setSelectedRounds] = useState('1');
@@ -33,6 +40,69 @@ const LobbyPage = () => {
   const maxRounds: number = 10;
   const maxMinutes: number = 5;
   const maxSeconds: number = 59;
+
+  const setTeamInfos = (lobby:ILobbyRoomBackEnd) => {
+
+    setHost(lobby.Host)
+
+    const team1Info = {
+      teamName: "Team1",
+      host: lobby.Host ,
+      members: [
+        {
+          name: lobby.TeamMemberA1,
+          readyStatus: lobby.ReadyStatusA1
+        },
+        {
+          name: lobby.TeamMemberA2,
+          readyStatus: lobby.ReadyStatusA2
+        },
+        {
+          name: lobby.TeamMemberA3,
+          readyStatus: lobby.ReadyStatusA3
+        },
+        {
+          name: lobby.TeamMemberA4,
+          readyStatus: lobby.ReadyStatusA4
+        },
+        {
+          name: lobby.TeamMemberA5,
+          readyStatus: lobby.ReadyStatusA5
+        }
+      ]
+    }
+
+    setTeam1Info(team1Info);
+
+    const team2Info = {
+      teamName: "Team2",
+      host: lobby.Host,
+      members: [
+        {
+          name: lobby.TeamMemberB1,
+          readyStatus: lobby.ReadyStatusB1
+        },
+        {
+          name: lobby.TeamMemberB2,
+          readyStatus: lobby.ReadyStatusB2
+        },
+        {
+          name: lobby.TeamMemberB3,
+          readyStatus: lobby.ReadyStatusB3
+        },
+        {
+          name: lobby.TeamMemberB4,
+          readyStatus: lobby.ReadyStatusB4
+        },
+        {
+          name: lobby.TeamMemberB5,
+          readyStatus: lobby.ReadyStatusB5
+        }
+      ]
+    }
+
+    setTeam2Info(team2Info)
+  }
 
   const joinRoom = async (username: string, lobbyroom: string) => {
     try {
@@ -46,21 +116,25 @@ const LobbyPage = () => {
       // .build();
 
       // set up handler
-      conn.on("JoinSpecificLobbyRoom", (username: string, msg: string) => { // Specify the types for parameters
-        setMessages(messages => [...messages, { username, msg }])
-        // if((Team1Names.length + Team2Names.length)%2 == 0){
-        // setTeam1Names(Team1Names => [...Team1Names, msg.split(' ')[0]])          
-        // }else{
-        // setTeam2Names(Team2Names => [...Team2Names, msg.split(' ')[0]])    
-        // }
+      conn.on("JoinSpecificLobbyRoom", (username: string, msg: string, json: string) => { // Specify the types for parameters
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setTeamInfos(lobby);
 
-        // console.log(Team1NameList)
+        setMessages(messages => [...messages, { username, msg }])
         console.log("msg: ", msg);
+        console.log("lobby: ", json);
       });
 
       conn.on("ReceiveSpecificMessage", (username: string, msg: string) => { // Specify the types for parameters
         setMessages(messages => [...messages, { username, msg }])
       })
+
+      conn.on("TogglePayerAsReady", (json: string) => {
+        
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setTeamInfos(lobby);
+
+      });
 
       await conn.start();
       await conn.invoke("JoinSpecificLobbyRoom", { username, lobbyroom });
@@ -81,13 +155,13 @@ const LobbyPage = () => {
       console.log(e)
     }
   }
-
-  const renderOptions = (minNum: number, maxNum: number, ifSeconds: boolean) => {
-    const renderedOptions = [];
-    for (let i = minNum; i <= maxNum; i++) {
-      renderedOptions.push(<option key={i} value={i}>{ifSeconds ? String(i).padStart(2, '0') : i}</option>)
+  
+  const toggleReadiness = async (username: string, lobbyroom: string) => {
+    try {
+      conn && await conn.invoke("TogglePayerAsReady", {username, lobbyroom});
+    } catch (e) {
+      console.log(e)
     }
-    return renderedOptions;
   }
 
   const shuffleTeams = () => {
@@ -110,25 +184,8 @@ const LobbyPage = () => {
   }
 
   const handleStartClick = () => {
-    if (isReady) {
-      let coinflip = Math.round(Math.random());
-      setTeam1NameList(shuffleArray(Team1NameList))
-      setTeam2NameList(shuffleArray(Team2NameList))
-      switch (coinflip) {
-        case 0:
-          setTeam(Team1Name);
-          setSpeaker(Team1NameList[0]);
-          break;
-        case 1:
-          setTeam(Team2Name);
-          setSpeaker(Team2NameList[0]);
-          break;
-        default:
-          break;
-      }
-      setNumberOfTurns(Math.max(Team1NameList.length, Team2NameList.length) * numberOfRounds);
-      router.push('/pages/intermissionPnpPage')
-    }
+    setIsReady(!isReady)
+    toggleReadiness(userData.username, lobbyRoomName);
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -146,38 +203,16 @@ const LobbyPage = () => {
   }, [shuffle])
 
   useEffect(() => {
-    let numberOfPlayers = Team1NameList.length + Team2NameList.length;
-    let differenceInPlayers = Math.abs(Team1NameList.length - Team2NameList.length);
-    let time = parseInt(selectedMinutes) * 60 + parseInt(selectedSeconds);
-    setNumberOfRounds(parseInt(selectedRounds));
-    setRoundTime(time)
-    setIsReady(false);
-    if (!(Team1Name && Team2Name)) {
-      setWarning('Give each team a name');
-    } else if (numberOfPlayers < 4) {
-      setWarning('At least 4 players must be playing');
-    } else if (differenceInPlayers > 1) {
-      setWarning('Teams can only vary by max 1 player')
-    } else if (time < 30) {
-      setWarning('Rounds must take a minimum of 30 seconds')
-    } else {
-      setWarning('');
-      setIsReady(true);
-    }
-
-  }, [Team1Name, Team2Name, Team1NameList, Team2NameList, roundTime, selectedMinutes, selectedSeconds, selectedRounds])
-
-  useEffect(() => {
     joinRoom(userData.username, lobbyRoomName)
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     setTeam1NameList(Team1Names)
-  },[Team1Names])
+  }, [Team1Names])
 
-  useEffect(()=>{
+  useEffect(() => {
     setTeam2NameList(Team2Names)
-  },[Team2Names])
+  }, [Team2Names])
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -199,9 +234,12 @@ const LobbyPage = () => {
       {/* Body */}
       <div className='flex flex-col items-center space-y-16 pt-20 pr-72'>
 
-        <div className='flex flex-row'>
-          <OnlineTeamName members={Team1Names} name={Team1Name} />
-          <div className=' flex flex-col items-center space-y-10'>
+        <div className='flex flex-row justify-between'>
+
+          <OnlineTeamName teamName={Team1Info.teamName} host={Team1Info.host} members={Team1Info.members} />
+
+
+          <div className=' flex flex-col items-center space-y-10 mx-10'>
             <Button size="xl" className='w-[230px] h-[50px] bg-dblue mt-5'>
               <p className='font-Roboto text-white px-10 flex items-center'>Toggle Team</p>
             </Button>
@@ -209,10 +247,10 @@ const LobbyPage = () => {
               <DiceBtn />
             </div>
             <div className='' onClick={handleStartClick}>
-              <StartBtn isReady={isReady} />
+              <StartBtn isReady={isReady} isHost={(host === userData.username)} />
             </div>
           </div>
-          <OnlineTeamName members={Team2NameList} name={Team2Name} />
+            <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} />          
         </div>
 
         <div className=' flex flex-col items-center space-y-4'>
