@@ -180,7 +180,7 @@ const PassAndPlayLobby = () => {
           </div>
         </div>
         <div onClick={handleStartClick}>
-          <StartBtn isReady={isReady} />
+          <StartBtn isReady={isReady} isHost={true} />
         </div>
 
         <div className='pb-10'>
