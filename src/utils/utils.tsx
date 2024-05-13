@@ -16,6 +16,17 @@ export function formatTime(seconds: number): string {
     return `${m}:${ss}`; // Return formatted time
 }
 
+export function formatTimeMinutesAndSeconds(seconds: number) {
+    const m = Math.floor(seconds / 60).toString().padStart(1, '0'); // Calculate minutes
+    const ss = (seconds % 60).toString().padStart(2, '0'); // Calculate seconds
+    return {m,ss}; // Return formatted time
+}
+
+export function reverseFormatTime(minutes: number, seconds: number): number {
+    const totalSeconds = minutes * 60 + seconds; // Calculate total seconds
+    return totalSeconds; // Return total seconds
+}
+
 
 export const renderOptions = (minNum: number, maxNum: number, ifSeconds: boolean) => {
     const renderedOptions = [];
