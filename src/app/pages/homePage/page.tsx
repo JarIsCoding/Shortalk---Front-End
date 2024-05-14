@@ -10,7 +10,23 @@ import FriendsTab from '@/app/components/FriendsTab';
 import { useAppContext } from '@/context/Context';
 import { useRouter } from 'next/navigation';
 import MainMenuMusic from '@/app/components/AudioPlayer';
+import VolumeSlider from '@/app/components/VolumeSlider';
+
+// const AudioClips = [
+//   {sound: ("/Audio/MainMenuMusic.mp3"), label: 'MenuMusic'}
+
+// ]
+
 const HomePage = () => {
+
+  // const [value, setValue] = useState(1);
+
+  // useEffect(() =>{
+  //   if(value % 2 === 0)play()}, [value])
+
+  // function play(){
+  //   new Audio("/Audio/MainMenuMusic.mp3").play()
+  // }
 
   const router = useRouter()
 
@@ -20,6 +36,9 @@ const HomePage = () => {
 
   const [openModal, setOpenModal] = useState(false);
 
+  const [isMuted, setIsMuted] = useState(false); // State to track mute/unmute
+
+
   const handleClick = () => {
     setIsFriendsOn(!isFriendsOn);
   }
@@ -28,15 +47,40 @@ const HomePage = () => {
     router.push('/pages/passAndPlayLobby')
   }
 
-  function play() {
-    try {
-      const audio = new Audio();
-      audio.play();
-    } catch (error) {
-      console.error('Error playing audio:', error);
-    }
-  }
+  // function play() {
+  //   try {
+  //     const audio = new Audio("/Audio/MainMenuMusic.mp3");
+  //     audio.play();
+  //   } catch (error) {
+  //     console.error('Error playing audio:', error);
+  //   }
+  // }
   
+  const audioRef = React.useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (!isMuted) {
+      play();
+    } else {
+      stop();
+    }
+  }, [isMuted]); // Re-run effect when isMuted changes
+
+  // function play(){
+  //   new Audio("/Audio/MainMenuMusic.mp3").play()
+  // }
+
+  const play = () => {
+    new Audio("/Audio/MainMenuMusic.mp3").play();
+  };
+
+  const pause = () => {
+    new Audio("/Audio/MainMenuMusic.mp3").pause();
+   };
+
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+  };
 
   return (
 
@@ -64,6 +108,10 @@ const HomePage = () => {
         </div>
       </div>
 
+      <button onClick={toggleMute} className='bg-red-300'>
+        {isMuted ? "Unmute Sound" : "Mute Sound"}
+      </button>
+
       <div className='mt-4'>
         {/* Tilted SHORTALK */}
         <div className='pulse lg:block hidden'>
@@ -90,10 +138,6 @@ const HomePage = () => {
         Online Currently not working! Please play Pass and play for now. <br /> Sorry for the inconvinence!
       </p>
 
-      <MainMenuMusic/>
-
-      
-
       {/* Modal for logging out */}
       <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
         <Modal.Header />
@@ -113,6 +157,8 @@ const HomePage = () => {
           </div>
         </Modal.Body>
       </Modal>
+            {/* Audio Player */}
+            <audio ref={audioRef} src="/Audio/MainMenuMusic.mp3" loop />
     </div>
   )
 }
