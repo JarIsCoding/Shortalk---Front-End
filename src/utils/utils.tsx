@@ -16,6 +16,17 @@ export function formatTime(seconds: number): string {
     return `${m}:${ss}`; // Return formatted time
 }
 
+export function formatTimeMinutesAndSeconds(seconds: number) {
+    const m = Math.floor(seconds / 60).toString().padStart(1, '0'); // Calculate minutes
+    const ss = (seconds % 60).toString().padStart(2, '0'); // Calculate seconds
+    return { m, ss }; // Return formatted time
+}
+
+export function reverseFormatTime(minutes: number, seconds: number): number {
+    const totalSeconds = minutes * 60 + seconds; // Calculate total seconds
+    return totalSeconds; // Return total seconds
+}
+
 
 export const renderOptions = (minNum: number, maxNum: number, ifSeconds: boolean) => {
     const renderedOptions = [];
@@ -33,25 +44,31 @@ export const checkIfPlayersAreReady = (Team1Info: ITeamInfo, Team2Info: ITeamInf
 
     let Team1Counter = 0;
     let Team2Counter = 0;
+//Object.keys(obj).length === 0
+    console.log(Team1Info);
+    if ((Object.keys(Team1Info).length != 0) && (Object.keys(Team2Info).length != 0)) {
+        Team1Info.members.forEach(member => {
+            if (member.name && !member.readyStatus && (member.name != Team1Info.host)) {
+                return false;
+            }
+            if (member.name) {
+                Team1Counter++;
+            }
+        })
+        Team2Info.members.forEach(member => {
+            if (member.name && !member.readyStatus && (member.name != Team2Info.host)) {
+                return false;
+            }
+            if (member.name) {
+                Team2Counter++;
+            }
+        })
+    }else{
+        return false
+    }
 
-    Team1Info.members.forEach(member => {
-        if (member.name && !member.readyStatus && (member.name != Team1Info.host)) {
-            return false;
-        }
-        if(member.name){
-            Team1Counter++;
-        }
-    })
-    Team2Info.members.forEach(member => {
-        if (member.name && !member.readyStatus && (member.name != Team2Info.host)) {
-            return false;
-        }
-        if(member.name){
-            Team2Counter++;
-        }
-    })
 
-    if(Team1Counter < 2 || Team2Counter < 2){
+    if (Team1Counter < 2 || Team2Counter < 2) {
         return false
     }
 

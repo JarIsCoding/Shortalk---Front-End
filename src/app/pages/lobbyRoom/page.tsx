@@ -4,7 +4,7 @@ import NavBar from '@/app/components/NavBar'
 import StartBtn from '@/app/components/StartBtn'
 import TeamListPNP from '@/app/components/TeamListPNP'
 import { useAppContext } from '@/context/Context'
-import { checkIfPlayersAreReady, renderOptions, shuffleArray } from '@/utils/utils'
+import { checkIfPlayersAreReady, formatTime, formatTimeMinutesAndSeconds, renderOptions, shuffleArray } from '@/utils/utils'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { ReactElement, useEffect, useState } from 'react'
@@ -12,12 +12,13 @@ import OnlineTeamName from '@/app/components/OnlineTeamName'
 import FriendsTab from '@/app/components/FriendsTab'
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { ILobbyRoomBackEnd, ITeamInfo } from '@/Interfaces/Interfaces'
+import { createGameRoom } from '@/utils/Dataservices'
 
 const LobbyPage = () => {
 
   const router = useRouter();
 
-  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, conn, setConnection, userData, lobbyRoomName } = useAppContext();
+  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, conn, setConnection, userData, lobbyRoomName, host, setHost } = useAppContext();
 
   const [isReady, setIsReady] = useState<boolean>(false);
   const [warning, setWarning] = useState<string>('')
@@ -28,7 +29,7 @@ const LobbyPage = () => {
 
   const [Team2Info, setTeam2Info] = useState<ITeamInfo>({} as ITeamInfo);
 
-  const [host, setHost] = useState<string>('');
+  // const [host, setHost] = useState<string>('');
 
   const [Team1Names, setTeam1Names] = useState<string[]>(Team1NameList);
   const [Team2Names, setTeam2Names] = useState<string[]>(Team2NameList);
@@ -104,21 +105,41 @@ const LobbyPage = () => {
     setTeam2Info(team2Info)
   }
 
+  const setCorrectIsReady = (lobby: ILobbyRoomBackEnd) => {
+    const PlayerReadinessDict: { [player: string]: boolean } = {}
+    PlayerReadinessDict[lobby.TeamMemberA1] = lobby.ReadyStatusA1;
+    PlayerReadinessDict[lobby.TeamMemberA2] = lobby.ReadyStatusA2;
+    PlayerReadinessDict[lobby.TeamMemberA3] = lobby.ReadyStatusA3;
+    PlayerReadinessDict[lobby.TeamMemberA4] = lobby.ReadyStatusA4;
+    PlayerReadinessDict[lobby.TeamMemberA5] = lobby.ReadyStatusA5;
+    PlayerReadinessDict[lobby.TeamMemberB1] = lobby.ReadyStatusB1;
+    PlayerReadinessDict[lobby.TeamMemberB2] = lobby.ReadyStatusB2;
+    PlayerReadinessDict[lobby.TeamMemberB3] = lobby.ReadyStatusB3;
+    PlayerReadinessDict[lobby.TeamMemberB4] = lobby.ReadyStatusB4;
+    PlayerReadinessDict[lobby.TeamMemberB5] = lobby.ReadyStatusB5;
+
+    setIsReady(PlayerReadinessDict[userData.username])
+  }
+
   const joinRoom = async (username: string, lobbyroom: string) => {
     try {
       const conn = new HubConnectionBuilder()
-        .withUrl("https://shortalkapi.azurewebsites.net/lobby")
+        // .withUrl("https://shortalkapi.azurewebsites.net/lobby")
+        // .configureLogging(LogLevel.Information)
+        // .build();
+
+        .withUrl("http://localhost:5151/lobby")
         .configureLogging(LogLevel.Information)
         .build();
-
-      // .withUrl("http://localhost:5151/lobby")
-      // .configureLogging(LogLevel.Information)
-      // .build();
 
       // set up handler
       conn.on("JoinSpecificLobbyRoom", (username: string, msg: string, json: string) => { // Specify the types for parameters
         const lobby: ILobbyRoomBackEnd = JSON.parse(json);
         setTeamInfos(lobby);
+        if (userData.username != lobby.Host) {
+          setSelectedRounds(`${lobby.NumberOfRounds}`)
+        }
+        setCorrectIsReady(lobby);
 
         setMessages(messages => [...messages, { username, msg }])
         console.log("msg: ", msg);
@@ -139,9 +160,28 @@ const LobbyPage = () => {
       conn.on("ChangeNumberOfRounds", (json: string) => {
 
         const lobby: ILobbyRoomBackEnd = JSON.parse(json);
-        setSelectedRounds(`${lobby.NumberOfRounds}`)
+        if (userData.username != lobby.Host) {
+          setSelectedRounds(`${lobby.NumberOfRounds}`)
+        }
+        console.log("lobby: ", json);
 
       });
+
+      conn.on("ChangeTimeLimit", (json: string) => {
+
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        if (userData.username != lobby.Host) {
+          const time = formatTimeMinutesAndSeconds(lobby.TimeLimit)
+          setSelectedMinutes(time.m);
+          setSelectedSeconds(time.ss)
+        }
+        console.log("lobby: ", json);
+
+      });
+
+      conn.on("StartGame", () => {
+        router.push('/pages/gamePage')
+      })
 
       await conn.start();
       await conn.invoke("JoinSpecificLobbyRoom", { username, lobbyroom });
@@ -171,12 +211,32 @@ const LobbyPage = () => {
     }
   }
 
-  const changeRounds = async (username: string, lobbyroom: string, numberOfRounds:number) => {
+  const changeRounds = async (username: string, lobbyroom: string, numberOfRounds: string) => {
     try {
-      conn && await conn.invoke("ChangeNumberOfRounds", { username, lobbyroom }, `${numberOfRounds}`);
+      conn && await conn.invoke("ChangeNumberOfRounds", { username, lobbyroom }, numberOfRounds);
     } catch (e) {
       console.log(e)
     }
+  }
+
+  const changeTimeLimit = async (username: string, lobbyroom: string, timeLimit: string) => {
+    try {
+      conn && await conn.invoke("changeTimeLimit", { username, lobbyroom }, timeLimit);
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const startGame = async (username: string, lobbyroom: string) => {
+    const response = await createGameRoom(lobbyroom);
+    if (response) {
+      try {
+        conn && await conn.invoke("StartGame", { username, lobbyroom });
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
   }
 
   const shuffleTeams = () => {
@@ -200,7 +260,21 @@ const LobbyPage = () => {
 
   const handleChangeRounds = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRounds(e.target.value)
-    changeRounds( userData.username, lobbyRoomName, numberOfRounds)
+    changeRounds(userData.username, lobbyRoomName, e.target.value)
+
+  }
+
+  const handleChangeTimeLimitMinutes = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMinutes(e.target.value)
+    const time = parseInt(e.target.value) * 60 + parseInt(selectedSeconds);
+    changeTimeLimit(userData.username, lobbyRoomName, time.toString())
+
+  }
+
+  const handleChangeTimeLimitSeconds = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSeconds(e.target.value)
+    const time = parseInt(selectedMinutes) * 60 + parseInt(e.target.value);
+    changeTimeLimit(userData.username, lobbyRoomName, time.toString())
 
   }
 
@@ -210,6 +284,7 @@ const LobbyPage = () => {
       setIsReady(!isReady)
       toggleReadiness(userData.username, lobbyRoomName);
     } else {
+      startGame(userData.username, lobbyRoomName);
       console.log("This guy is our host!")
     }
   }
@@ -311,20 +386,20 @@ const LobbyPage = () => {
             <div className='w-[30%] flex justify-end space-x-1' >
               {
                 (userData.username == host) ?
-                  <select className='h-10' value={selectedMinutes} onChange={(e) => setSelectedMinutes(e.target.value)}>
+                  <select className='h-10' value={selectedMinutes} onChange={(e) => handleChangeTimeLimitMinutes(e)}>
                     {renderOptions(0, maxMinutes, false)}
                   </select>
                   :
-                  <div className=' text-dblue font-LuckiestGuy text-3xl'>#value</div>
+                  <div className=' text-dblue font-LuckiestGuy text-3xl'>{selectedMinutes}</div>
               }
               <div className=' text-dblue font-LuckiestGuy text-3xl'>:</div>
               {
                 (userData.username == host) ?
-                  <select className='h-10' value={selectedSeconds} onChange={(e) => setSelectedSeconds(e.target.value)}>
+                  <select className='h-10' value={selectedSeconds} onChange={(e) => handleChangeTimeLimitSeconds(e)}>
                     {renderOptions(0, maxSeconds, true)}
                   </select>
                   :
-                  <div className=' text-dblue font-LuckiestGuy text-3xl'>#value</div>
+                  <div className=' text-dblue font-LuckiestGuy text-3xl'>{selectedSeconds}</div>
               }
             </div>
           </div>

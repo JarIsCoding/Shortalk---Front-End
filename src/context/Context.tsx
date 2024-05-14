@@ -90,6 +90,9 @@ interface IContextValue {
         msg: string;
     }[]
     setMessages: (messages: { username: string; msg: string;}[]) => void
+
+    host: string
+    setHost: (host:string) => void
 }
 
 
@@ -297,6 +300,14 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
         return [];
     });
 
+    const [host, setHost] = useState<string>(() => {
+        if (typeof window !== "undefined") {
+            const hostStr = sessionStorage.getItem('host');
+            return hostStr ? hostStr : "";
+        }
+        return "";
+    });
+
     useEffect(() => {
         sessionStorage.setItem('userData', JSON.stringify(userData));
     }, [userData]);
@@ -389,9 +400,12 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     useEffect(() => {
         sessionStorage.setItem('messages', messages.toString());
     }, [messages]);
+    useEffect(() => {
+        sessionStorage.setItem('host', host.toString());
+    }, [host]);
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages, host, setHost}}>
             {children}
         </Context.Provider>
     )

@@ -82,7 +82,6 @@ export interface ICreateLobbyRoomDTO {
 }
 
 export interface ILobbyRoomBackEnd {
-    ID: number
     LobbyName: string
     Host: string
     NumberOfRounds: number
