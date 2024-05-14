@@ -12,8 +12,8 @@ import React, { useState } from 'react'
 const GamePage = () => {
 
     //Change these bools to see inputs/buttons
-    const [guesser, setGuesser] = useState<boolean>(false)
-    const [speaker, setSpeaker] = useState<boolean>(false)
+    const [guesser, setGuesser] = useState<boolean>(true)
+    const [speaker, setSpeaker] = useState<boolean>(true)
     const [defense, setDefense] = useState<boolean>(true)
 
     const [role, setRole] = useState<string>('')
@@ -83,15 +83,15 @@ const GamePage = () => {
                 <div className='grid md:grid-cols-3 gap-5 px-5 pb-5'>
 
                     {/* This is the Guesser box */}
-                    <div className='bg-white rounded-lg'>
+                    <div className='bg-white rounded-lg flex flex-col justify-between'>
 
                         {/* Text from the guessers goes here */}
-                        <div className='pt-4 pb-2 ps-4 text-[20px]'>
+                        <div className='pt-4 pb-2 ps-4 text-[20px] h-full'>
                             <p>Chat Box: text here</p>
                         </div>
 
-                        <div className={`absolute bottom-1 left-1 w-[100%] ${guesser ? 'block' : 'hidden'}`}>
-                            <input type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-[98%] text-[20px]' />
+                        <div className={` h-[50px] w-full px-2 ${guesser ? 'block' : 'hidden'}`}>
+                            <input type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
                         </div>
                     </div>
 
@@ -109,18 +109,17 @@ const GamePage = () => {
                     </div>
 
                     {/* This is the speaker box */}
-                    <div className='bg-white rounded-lg'>
+                    <div className='bg-white rounded-lg flex flex-col justify-normal'>
                         <div className='pt-4 pb-2 ps-4 text-[20px]'>
                             Speaker Box
                         </div>
                         <hr className='bg-black mx-3' />
 
                         {/* Text from the Speaker goes here */}
-                        <div className='text-[20px]'>
-
+                        <div className='text-[20px] h-full '>
+                            <input type="text" placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] placeholder:align-text-top align-text-top  ${speaker ? ' inline-block ' : 'hidden'}`} />
                         </div>
 
-                        <input type="text" placeholder='Start Typing Description Here...' className={`border-0 w-[100%] px-5 text-[20px] ${speaker ? 'block' : 'hidden'}`} />
                     </div>
 
                 </div>

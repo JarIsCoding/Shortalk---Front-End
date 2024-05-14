@@ -4,7 +4,6 @@ import React from 'react'
 import Image from 'next/image';
 import BlueArrow from '@/app/assets/BlueArrow.png'
 
-
 const PlayAgainBtn = () => {
   return (
     <div className=' rounded-2xl border-2 border-black w-[325px] h-[75px] bg-[#B7E9F4] flex justify-between items-center px-4'>

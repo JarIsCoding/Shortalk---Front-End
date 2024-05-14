@@ -86,7 +86,7 @@ const HomePage = () => {
         </Button>
       </div>
 
-      <p className='text-[35px] text-center font-LuckiestGuy text-dblue pt-10 cursor-default'>
+      <p className='text-[35px] text-center font-LuckiestGuy text-dblue py-10 cursor-default'>
         Online Currently not working! Please play Pass and play for now. <br /> Sorry for the inconvinence!
       </p>
 

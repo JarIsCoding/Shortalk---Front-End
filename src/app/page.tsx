@@ -14,6 +14,7 @@ export default function Home() {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [wrongText, setWrongText] = useState<string>('')
+  const [guestNum, setGuestNum] = useState<string>('')
 
   const router = useRouter()
 
@@ -32,7 +33,7 @@ export default function Home() {
       } else {
         setWrongText(token)
       }
-    }else{
+    } else {
       setWrongText("Please fill out all fields.")
     }
   }
@@ -51,6 +52,10 @@ export default function Home() {
     })
 
   }, [password, username])
+
+  useEffect(() => {
+    setGuestNum(`Guest${Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000}`)
+  }, [])
 
   return (
     <div className='bg-lblue vh'>
@@ -91,7 +96,7 @@ export default function Home() {
                 New to WWC? <span className='underline cursor-pointer'>Create an profile!</span>
               </p>
 
-              <p onClick={() => { router.push('/pages/homePage'); setUsername('Guest') }} className='text-center cursor-default'>
+              <p onClick={() => { router.push('/pages/homePage'); setUsername(guestNum) }} className='text-center cursor-default'>
                 or <span className='underline cursor-pointer'>Sign in as guest</span>
               </p>
             </div>
