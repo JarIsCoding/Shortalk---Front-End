@@ -12,6 +12,7 @@ import OnlineTeamName from '@/app/components/OnlineTeamName'
 import FriendsTab from '@/app/components/FriendsTab'
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { ILobbyRoomBackEnd, ITeamInfo } from '@/Interfaces/Interfaces'
+import { createGameRoom } from '@/utils/Dataservices'
 
 const LobbyPage = () => {
 
@@ -104,16 +105,32 @@ const LobbyPage = () => {
     setTeam2Info(team2Info)
   }
 
+  const setCorrectIsReady = (lobby: ILobbyRoomBackEnd) => {
+    const PlayerReadinessDict: { [player: string]: boolean } = {}
+    PlayerReadinessDict[lobby.TeamMemberA1] = lobby.ReadyStatusA1;
+    PlayerReadinessDict[lobby.TeamMemberA2] = lobby.ReadyStatusA2;
+    PlayerReadinessDict[lobby.TeamMemberA3] = lobby.ReadyStatusA3;
+    PlayerReadinessDict[lobby.TeamMemberA4] = lobby.ReadyStatusA4;
+    PlayerReadinessDict[lobby.TeamMemberA5] = lobby.ReadyStatusA5;
+    PlayerReadinessDict[lobby.TeamMemberB1] = lobby.ReadyStatusB1;
+    PlayerReadinessDict[lobby.TeamMemberB2] = lobby.ReadyStatusB2;
+    PlayerReadinessDict[lobby.TeamMemberB3] = lobby.ReadyStatusB3;
+    PlayerReadinessDict[lobby.TeamMemberB4] = lobby.ReadyStatusB4;
+    PlayerReadinessDict[lobby.TeamMemberB5] = lobby.ReadyStatusB5;
+
+    setIsReady(PlayerReadinessDict[userData.username])
+  }
+
   const joinRoom = async (username: string, lobbyroom: string) => {
     try {
       const conn = new HubConnectionBuilder()
-        .withUrl("https://shortalkapi.azurewebsites.net/lobby")
+        // .withUrl("https://shortalkapi.azurewebsites.net/lobby")
+        // .configureLogging(LogLevel.Information)
+        // .build();
+
+        .withUrl("http://localhost:5151/lobby")
         .configureLogging(LogLevel.Information)
         .build();
-
-      // .withUrl("http://localhost:5151/lobby")
-      // .configureLogging(LogLevel.Information)
-      // .build();
 
       // set up handler
       conn.on("JoinSpecificLobbyRoom", (username: string, msg: string, json: string) => { // Specify the types for parameters
@@ -122,6 +139,7 @@ const LobbyPage = () => {
         if (userData.username != lobby.Host) {
           setSelectedRounds(`${lobby.NumberOfRounds}`)
         }
+        setCorrectIsReady(lobby);
 
         setMessages(messages => [...messages, { username, msg }])
         console.log("msg: ", msg);
@@ -160,6 +178,10 @@ const LobbyPage = () => {
         console.log("lobby: ", json);
 
       });
+
+      conn.on("StartGame", () => {
+        router.push('/pages/gamePage')
+      })
 
       await conn.start();
       await conn.invoke("JoinSpecificLobbyRoom", { username, lobbyroom });
@@ -205,6 +227,18 @@ const LobbyPage = () => {
     }
   }
 
+  const startGame = async (username: string, lobbyroom: string) => {
+    const response = await createGameRoom(lobbyroom);
+    if (response) {
+      try {
+        conn && await conn.invoke("StartGame", { username, lobbyroom });
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+  }
+
   const shuffleTeams = () => {
     let allPlayers = [...Team1NameList, ...Team2NameList];
     allPlayers = shuffleArray(allPlayers);
@@ -232,14 +266,14 @@ const LobbyPage = () => {
 
   const handleChangeTimeLimitMinutes = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedMinutes(e.target.value)
-    const time = parseInt(e.target.value)*60 + parseInt(selectedSeconds);
+    const time = parseInt(e.target.value) * 60 + parseInt(selectedSeconds);
     changeTimeLimit(userData.username, lobbyRoomName, time.toString())
 
   }
 
   const handleChangeTimeLimitSeconds = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSeconds(e.target.value)
-    const time = parseInt(selectedMinutes)*60 + parseInt(e.target.value);
+    const time = parseInt(selectedMinutes) * 60 + parseInt(e.target.value);
     changeTimeLimit(userData.username, lobbyRoomName, time.toString())
 
   }
@@ -250,6 +284,7 @@ const LobbyPage = () => {
       setIsReady(!isReady)
       toggleReadiness(userData.username, lobbyRoomName);
     } else {
+      startGame(userData.username, lobbyRoomName);
       console.log("This guy is our host!")
     }
   }
