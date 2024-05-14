@@ -2,9 +2,9 @@ import { ICard, ICardData, ICreateLobbyRoomDTO, ILobbyRoom, ILobbyRoomBackEnd, I
 import { Context } from "@/context/Context"
 import * as wordData from '../words.json';
 
-// const url = "https://shortalkapi.azurewebsites.net"
+const url = "https://shortalkapi.azurewebsites.net"
 
-const url = "http://localhost:5151"
+// const url = "http://localhost:5151"
 
 
 let userData: IUserData
