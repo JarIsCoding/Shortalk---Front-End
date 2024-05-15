@@ -48,19 +48,19 @@ const PassAndPlayPage = () => {
     getNextCard();
   }
 
-  function SkipAudio(){
+  function SkipAudio() {
     new Audio("/Audio/fart.mp3").play()
   }
 
-  function PlusOneAudio(){
+  function PlusOneAudio() {
     new Audio("/Audio/PlusOne.mp3").play()
   }
 
-  function PlusThreeAudio(){
+  function PlusThreeAudio() {
     new Audio("/Audio/PlusThree.mp3").play()
   }
 
-  function BuzzAudio(){
+  function BuzzAudio() {
     new Audio("/Audio/HockeyBuzzer.wav").play()
   }
 
@@ -222,6 +222,7 @@ const PassAndPlayPage = () => {
             OnePointWord={null}
             ThreePointWord={null}
             Speaker={null}
+            user={null}
           />
         </div>
       </div>
@@ -252,6 +253,7 @@ const PassAndPlayPage = () => {
             OnePointWord={null}
             ThreePointWord={null}
             Speaker={speaker}
+            user={null}
           />
         </div>
 
@@ -260,10 +262,10 @@ const PassAndPlayPage = () => {
         </div>
 
         <div className=' w-full px-40 lg:flex justify-between hidden pb-10'>
-        <div className=' cursor-pointer' onClick={()=>{SkipBtnHandle(); SkipAudio()}}><SkipBtn /></div>          
-          <div className=' cursor-pointer' onClick={()=>{BuzzBtnHandle(); BuzzAudio()}}><BuzzBtn /></div>
-          <div className=' cursor-pointer' onClick={()=>{OnePointBtnHandle(); PlusOneAudio()}}><OnePointBtn /></div>
-          <div className=' cursor-pointer' onClick={()=>{ThreePointBtnHandle(); PlusThreeAudio()}}><ThreePointBtn /></div>
+          <SkipBtn onClick={() => { SkipBtnHandle(); SkipAudio() }} />
+          <BuzzBtn onClick={() => { BuzzBtnHandle(); BuzzAudio() }} />
+          <OnePointBtn onClick={() => { OnePointBtnHandle(); PlusOneAudio() }} />
+          <ThreePointBtn onClick={() => { ThreePointBtnHandle(); PlusThreeAudio() }} />
         </div>
       </div>
 
