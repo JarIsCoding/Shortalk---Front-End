@@ -260,10 +260,10 @@ const PassAndPlayPage = () => {
         </div>
 
         <div className=' w-full px-40 lg:flex justify-between hidden pb-10'>
-          <div className='cursor-pointer' onClick={SkipBtnHandle}><SkipBtn /></div>
-          <div className='cursor-pointer' onClick={BuzzBtnHandle}><BuzzBtn /></div>
-          <div className='cursor-pointer' onClick={OnePointBtnHandle}><OnePointBtn /></div>
-          <div className='cursor-pointer' onClick={ThreePointBtnHandle}><ThreePointBtn /></div>
+        <div className=' cursor-pointer' onClick={()=>{SkipBtnHandle(); SkipAudio()}}><SkipBtn /></div>          
+          <div className=' cursor-pointer' onClick={()=>{BuzzBtnHandle(); BuzzAudio()}}><BuzzBtn /></div>
+          <div className=' cursor-pointer' onClick={()=>{OnePointBtnHandle(); PlusOneAudio()}}><OnePointBtn /></div>
+          <div className=' cursor-pointer' onClick={()=>{ThreePointBtnHandle(); PlusThreeAudio()}}><ThreePointBtn /></div>
         </div>
       </div>
 
