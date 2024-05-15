@@ -16,16 +16,20 @@ import React, { useContext, useEffect, useState } from 'react'
 
 const GamePage = () => {
 
-    //Change these bools to see inputs/buttons
-    const [guesser, setGuesser] = useState<boolean>(true)
-    const [speaker, setSpeaker] = useState<boolean>(true)
-    const [defense, setDefense] = useState<boolean>(true)
+    const [conn, setConnection] = useState<HubConnection>()
+
+    //Change these bools to see inputs/button
+    const [isGuesser, setIsGuesser] = useState<boolean>(true)
+    const [isSpeaker, setIsSpeaker] = useState<boolean>(true)
+    const [isDefense, setIsDefense] = useState<boolean>(true)
 
     const [time, setTime] = useState<number>();
-
-
-    const [role, setRole] = useState<string>('')
     const [round, setRound] = useState<number>(0);
+    const [roundTotal, setRoundTotal] = useState<number>(0);
+    const [role, setRole] = useState<string>('');
+    const [onePointWord, setOnePointWord] = useState<string>('');
+    const [threePointWord, setThreePointWord] = useState<string>('');
+    const [speaker, setSpeaker] = useState<string>('');
 
     const [buzzed, setBuzzed] = useState<boolean>(false)
 
@@ -47,23 +51,35 @@ const GamePage = () => {
                 .configureLogging(LogLevel.Information)
                 .build();
 
-                // .withUrl("http://localhost:5151/game")
-                // .configureLogging(LogLevel.Information)
-                // .build();
+            // .withUrl("http://localhost:5151/game")
+            // .configureLogging(LogLevel.Information)
+            // .build();
 
+            conn.on("GetNextCard", (json: string) => {
+                const game: IGameInfo = JSON.parse(json);
+                setOnePointWord(game.onePointWord);
+                setThreePointWord(game.threePointWord);
+            })
+
+            await conn.start();
+            setConnection(conn);
+            console.log('success')
 
         } catch (e) {
             console.log(e);
         }
     }
 
-    const getNewCard = () => {
-
-
+    const getNewCard = async (username: string, lobbyroom: string) => {
+        try {
+            conn && await conn.invoke("GetNextCard", { username, lobbyroom });
+        } catch (e) {
+            console.log(e)
+        }
     }
 
-    const handleSkip = () => {
-
+    const handleSkip = async () => {
+        await getNewCard(userData.username, lobbyRoomName)
     }
     const handleBuzz = () => {
 
@@ -74,7 +90,7 @@ const GamePage = () => {
     const handleThreePoint = () => {
 
     }
-    
+
 
 
 
@@ -83,9 +99,14 @@ const GamePage = () => {
             connectToGame(userData.username, lobbyRoomName);
             console.log(lobbyRoomName);
             const initGameInfo = await getGameInfo(lobbyRoomName);
-            setRole(determineRole(userData.username, initGameInfo));
+            setTime(initGameInfo.timeLimit);
             setRound(determineRound(initGameInfo));
-            setGameInfo({...initGameInfo})
+            setRoundTotal(initGameInfo.numberOfRounds);
+            setRole(determineRole(userData.username, initGameInfo));
+            setOnePointWord(initGameInfo.onePointWord);
+            setThreePointWord(initGameInfo.threePointWord);
+            setSpeaker(initGameInfo.speaker);
+            setGameInfo({ ...initGameInfo })
         }
 
         initializeRoom();
@@ -148,15 +169,15 @@ const GamePage = () => {
                 <div className='p-5 pt-10'>
                     {Object.keys(gameInfo).length > 0 && (
                         <StatusBar
-                            time={gameInfo.timeLimit}
+                            time={time}
                             teamName=''
                             user={userData.username}
                             roundNumber={round}
-                            roundTotal={gameInfo.numberOfRounds}
+                            roundTotal={roundTotal}
                             role={role}
-                            OnePointWord={gameInfo.onePointWord}
-                            ThreePointWord={gameInfo.threePointWord}
-                            Speaker={gameInfo.speaker}
+                            OnePointWord={onePointWord}
+                            ThreePointWord={threePointWord}
+                            Speaker={speaker}
                         />
                     )}
                 </div>
@@ -170,7 +191,7 @@ const GamePage = () => {
                             <p>Chat Box: text here</p>
                         </div>
 
-                        <div className={` h-[50px] w-full px-2 ${guesser ? 'block' : 'hidden'}`}>
+                        <div className={` h-[50px] w-full px-2 ${isGuesser ? 'block' : 'hidden'}`}>
                             <input type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
                         </div>
                     </div>
@@ -180,10 +201,10 @@ const GamePage = () => {
                         <div className='flex justify-center'>
                             <Card top={gameInfo.onePointWord} bottom={gameInfo.threePointWord} />
                         </div>
-                        <div className={`flex justify-center py-5 ${speaker ? 'block' : 'hidden'}`}>
+                        <div className={`flex justify-center py-5 ${isSpeaker ? 'block' : 'hidden'}`}>
                             <SkipBtn onClick={handleSkip} />
                         </div>
-                        <div onClick={() => { setBuzzed(true); setOpenBuzzModal(true) }} className={`flex justify-center py-5 ${defense ? 'block' : 'hidden'}`}>
+                        <div onClick={() => { setBuzzed(true); setOpenBuzzModal(true) }} className={`flex justify-center py-5 ${isDefense ? 'block' : 'hidden'}`}>
                             <BuzzBtn onClick={handleBuzz} />
                         </div>
                     </div>
@@ -198,7 +219,7 @@ const GamePage = () => {
                         {/* Text from the Speaker goes here */}
                         <div className='text-[20px] h-full '>
                             {/* <input type="text" placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px]  ${speaker ? ' inline-block ' : 'hidden'}`} /> */}
-                            <textarea style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg  ${speaker ? ' inline-block ' : 'hidden'}`}>
+                            <textarea style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg  ${isSpeaker ? ' inline-block ' : 'hidden'}`}>
 
                             </textarea>
                         </div>

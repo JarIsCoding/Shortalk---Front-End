@@ -11,11 +11,11 @@ const StatusBar = (props: IStatusBar) => {
         {props.time && <Timer initialTime={props.time}/>}
         {props.teamName && <div>{"Team: " + props.teamName}</div>}
         {props.user && <div>{"Player: " + props.user}</div>}        
-        {<div>{"Speaker: " + props.Speaker}</div>}
-        {<div>{"Round: " +props.roundNumber + " of " + props.roundTotal}</div>}
-        {<div>{"Role: " + props.role}</div>}
-        {<div>{"1-Point-Word: " + props.OnePointWord}</div>}
-        {<div>{ "3-Point-Word: " + props.ThreePointWord}</div>}
+        {props.Speaker && <div>{"Speaker: " + props.Speaker}</div>}
+        {props.roundNumber && <div>{"Round: " +props.roundNumber + " of " + props.roundTotal}</div>}
+        {props.role && <div>{"Role: " + props.role}</div>}
+        {props.OnePointWord && <div>{"1-Point-Word: " + props.OnePointWord}</div>}
+        {props.ThreePointWord && <div>{ "3-Point-Word: " + props.ThreePointWord}</div>}
     </div>
   )
 }
