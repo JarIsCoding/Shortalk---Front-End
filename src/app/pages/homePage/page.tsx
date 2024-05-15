@@ -24,9 +24,9 @@ const HomePage = () => {
   // useEffect(() =>{
   //   if(value % 2 === 0)play()}, [value])
 
-  // function play(){
-  //   new Audio("/Audio/MainMenuMusic.mp3").play()
-  // }
+  function play(){
+    new Audio("/Audio/MainMenuMusic.mp3").play()
+  }
 
   const router = useRouter()
 
@@ -35,9 +35,6 @@ const HomePage = () => {
   const [isFriendsOn, setIsFriendsOn] = useState<boolean>(false);
 
   const [openModal, setOpenModal] = useState(false);
-
-  const [isMuted, setIsMuted] = useState(false); // State to track mute/unmute
-
 
   const handleClick = () => {
     setIsFriendsOn(!isFriendsOn);
@@ -56,31 +53,6 @@ const HomePage = () => {
   //   }
   // }
   
-  const audioRef = React.useRef<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    if (!isMuted) {
-      play();
-    } else {
-      stop();
-    }
-  }, [isMuted]); // Re-run effect when isMuted changes
-
-  // function play(){
-  //   new Audio("/Audio/MainMenuMusic.mp3").play()
-  // }
-
-  const play = () => {
-    new Audio("/Audio/MainMenuMusic.mp3").play();
-  };
-
-  const pause = () => {
-    new Audio("/Audio/MainMenuMusic.mp3").pause();
-   };
-
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-  };
 
   return (
 
@@ -89,6 +61,9 @@ const HomePage = () => {
       <div className={`absolute right-0 pt-24 ${isFriendsOn ? 'block' : 'hidden'}`}>
         <FriendsTab />
       </div>
+
+    {/* <VolumeSlider/> */}
+
 
       {/* Check if user is guest or signed in */}
       {/* Title */}
@@ -108,8 +83,8 @@ const HomePage = () => {
         </div>
       </div>
 
-      <button onClick={toggleMute} className='bg-red-300'>
-        {isMuted ? "Unmute Sound" : "Mute Sound"}
+      <button onClick={play} className='bg-red-300'>
+        Play Sound pls!!!
       </button>
 
       <div className='mt-4'>
@@ -157,8 +132,6 @@ const HomePage = () => {
           </div>
         </Modal.Body>
       </Modal>
-            {/* Audio Player */}
-            <audio ref={audioRef} src="/Audio/MainMenuMusic.mp3" loop />
     </div>
   )
 }
