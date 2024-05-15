@@ -48,6 +48,22 @@ const PassAndPlayPage = () => {
     getNextCard();
   }
 
+  function SkipAudio(){
+    new Audio("/Audio/fart.mp3").play()
+  }
+
+  function PlusOneAudio(){
+    new Audio("/Audio/PlusOne.mp3").play()
+  }
+
+  function PlusThreeAudio(){
+    new Audio("/Audio/PlusThree.mp3").play()
+  }
+
+  function BuzzAudio(){
+    new Audio("/Audio/HockeyBuzzer.wav").play()
+  }
+
   const router = useRouter()
 
   useEffect(() => {
