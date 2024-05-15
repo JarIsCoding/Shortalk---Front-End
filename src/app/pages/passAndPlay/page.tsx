@@ -47,6 +47,33 @@ const PassAndPlayPage = () => {
     getNextCard();
   }
 
+//   ### Sound Effects
+// +1 - Success 1
+// +3 - Winner Bell Gameshow
+// Loser - Slow Sad Trombone fail
+// Winner - you win sequence
+// Buzz - Ice Hockey Sports Buzzer
+// Skip - fart
+// Game Start - Success Fanfare Trumpets
+// PLayer Join -  multi pop
+// Quit - finger snap
+
+    function SkipAudio(){
+    new Audio("/Audio/fart.mp3").play()
+  }
+
+  function PlusOneAudio(){
+    new Audio("/Audio/PlusOne.mp3").play()
+  }
+
+  function PlusThreeAudio(){
+    new Audio("/Audio/PlusThree.mp3").play()
+  }
+
+  function BuzzAudio(){
+    new Audio("/Audio/HockeyBuzzer.wav").play()
+  }
+
   const router = useRouter()
 
   useEffect(() => {
@@ -125,10 +152,10 @@ const PassAndPlayPage = () => {
         />
         <Card top={card.top} bottom={card.bottom} />
         <div className=' w-full px-40 flex justify-between'>
-          <div className=' cursor-pointer' onClick={SkipBtnHandle}><SkipBtn /></div>          
-          <div className=' cursor-pointer' onClick={BuzzBtnHandle}><BuzzBtn /></div>
-          <div className=' cursor-pointer' onClick={OnePointBtnHandle}><OnePointBtn /></div>
-          <div className=' cursor-pointer' onClick={ThreePointBtnHandle}><ThreePointBtn /></div>
+          <div className=' cursor-pointer' onClick={()=>{SkipBtnHandle(); SkipAudio()}}><SkipBtn /></div>          
+          <div className=' cursor-pointer' onClick={()=>{BuzzBtnHandle(); BuzzAudio()}}><BuzzBtn /></div>
+          <div className=' cursor-pointer' onClick={()=>{OnePointBtnHandle(); PlusOneAudio()}}><OnePointBtn /></div>
+          <div className=' cursor-pointer' onClick={()=>{ThreePointBtnHandle(); PlusThreeAudio()}}><ThreePointBtn /></div>
         </div>
       </div>
 
