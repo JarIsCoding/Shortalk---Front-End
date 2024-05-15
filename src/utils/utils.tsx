@@ -1,4 +1,4 @@
-import { ITeamInfo } from "@/Interfaces/Interfaces";
+import { IGameInfo, ITeamInfo } from "@/Interfaces/Interfaces";
 
 
 export function shuffleArray(array: string[]): string[] {
@@ -44,7 +44,7 @@ export const checkIfPlayersAreReady = (Team1Info: ITeamInfo, Team2Info: ITeamInf
 
     let Team1Counter = 0;
     let Team2Counter = 0;
-//Object.keys(obj).length === 0
+    //Object.keys(obj).length === 0
     console.log(Team1Info);
     if ((Object.keys(Team1Info).length != 0) && (Object.keys(Team2Info).length != 0)) {
         Team1Info.members.forEach(member => {
@@ -63,7 +63,7 @@ export const checkIfPlayersAreReady = (Team1Info: ITeamInfo, Team2Info: ITeamInf
                 Team2Counter++;
             }
         })
-    }else{
+    } else {
         return false
     }
 
@@ -77,3 +77,58 @@ export const checkIfPlayersAreReady = (Team1Info: ITeamInfo, Team2Info: ITeamInf
     return true;
 }
 
+export const determineRole = (userName: string, game: IGameInfo) => {
+    if (game.speaker == userName) {
+        return "Speaker";
+    }
+
+    let speakerOnTeam1 = false;
+    if (
+        game.speaker == game.teamMemberA1 ||
+        game.speaker == game.teamMemberA2 ||
+        game.speaker == game.teamMemberA3 ||
+        game.speaker == game.teamMemberA4 ||
+        game.speaker == game.teamMemberA5
+    ) { speakerOnTeam1 = true }
+
+    let playerOnTeam1 = false;
+    if (
+        userName == game.teamMemberA1 ||
+        userName == game.teamMemberA2 ||
+        userName == game.teamMemberA3 ||
+        userName == game.teamMemberA4 ||
+        userName == game.teamMemberA5
+    ) { playerOnTeam1 = true }
+
+    if (speakerOnTeam1 == playerOnTeam1) {
+        return "Guesser"
+    } else {
+        return "Defense"
+    }
+
+}
+
+export const determineRound = (game: IGameInfo) => {
+    let counter = 0;
+    let players = [
+        game.teamMemberA1,
+        game.teamMemberA2,
+        game.teamMemberA3,
+        game.teamMemberA4,
+        game.teamMemberA5,
+        game.teamMemberB1,
+        game.teamMemberB2,
+        game.teamMemberB3,
+        game.teamMemberB4,
+        game.teamMemberB5,
+    ]
+    for (let player in players) {
+        if (player != "") {
+            counter++;
+        }
+    }
+
+    const round = Math.ceil(game.turn / (Math.ceil(counter/2)*2));
+
+    return round;
+}

@@ -31,6 +31,7 @@ export interface IStatusBar {
     OnePointWord: string | null
     ThreePointWord: string | null
     Speaker: string | null
+    user: string | null
 }
 
 export interface ICard {

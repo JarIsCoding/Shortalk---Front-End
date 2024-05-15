@@ -8,6 +8,7 @@ import SkipBtn from '@/app/components/SkipBtn'
 import StatusBar from '@/app/components/StatusBar'
 import { useAppContext } from '@/context/Context'
 import { getGameInfo } from '@/utils/Dataservices'
+import { determineRole, determineRound } from '@/utils/utils'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
@@ -24,6 +25,7 @@ const GamePage = () => {
 
 
     const [role, setRole] = useState<string>('')
+    const [round, setRound] = useState<number>(0);
 
     const [buzzed, setBuzzed] = useState<boolean>(false)
 
@@ -55,15 +57,34 @@ const GamePage = () => {
         }
     }
 
+    const getNewCard = () => {
 
+
+    }
+
+    const handleSkip = () => {
+
+    }
+    const handleBuzz = () => {
+
+    }
+    const handleOnePoint = () => {
+
+    }
+    const handleThreePoint = () => {
+
+    }
+    
 
 
 
     useEffect(() => {
         const initializeRoom = async () => {
-            connectToGame(userData.username, lobbyRoomName)
+            connectToGame(userData.username, lobbyRoomName);
             console.log(lobbyRoomName);
-            const initGameInfo = await getGameInfo(lobbyRoomName)
+            const initGameInfo = await getGameInfo(lobbyRoomName);
+            setRole(determineRole(userData.username, initGameInfo));
+            setRound(determineRound(initGameInfo));
             setGameInfo({...initGameInfo})
         }
 
@@ -129,9 +150,10 @@ const GamePage = () => {
                         <StatusBar
                             time={gameInfo.timeLimit}
                             teamName=''
-                            roundNumber={0}
+                            user={userData.username}
+                            roundNumber={round}
                             roundTotal={gameInfo.numberOfRounds}
-                            role=''
+                            role={role}
                             OnePointWord={gameInfo.onePointWord}
                             ThreePointWord={gameInfo.threePointWord}
                             Speaker={gameInfo.speaker}
@@ -159,10 +181,10 @@ const GamePage = () => {
                             <Card top={gameInfo.onePointWord} bottom={gameInfo.threePointWord} />
                         </div>
                         <div className={`flex justify-center py-5 ${speaker ? 'block' : 'hidden'}`}>
-                            <SkipBtn />
+                            <SkipBtn onClick={handleSkip} />
                         </div>
                         <div onClick={() => { setBuzzed(true); setOpenBuzzModal(true) }} className={`flex justify-center py-5 ${defense ? 'block' : 'hidden'}`}>
-                            <BuzzBtn />
+                            <BuzzBtn onClick={handleBuzz} />
                         </div>
                     </div>
 
