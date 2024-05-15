@@ -97,6 +97,35 @@ letter-spacing: 0.1em;
   }
 }
 
+.animateSide {
+  animation: sideAnimation 1.5s forwards;
+}
+
+@keyframes sideAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1.5);
+  }
+}
+
+square {
+  height: 400px;
+  width: 400px;
+  overflow: hidden;
+}
+svg {
+  height: 100%;
+  width: 100%;
+}
+polygon {
+  fill: aliceblue;
+}
+
 /* WARNING!!!!!!!!!! */
 /* ONLY WICKED CSS BELOW THIS COMMENT */
 /*!
