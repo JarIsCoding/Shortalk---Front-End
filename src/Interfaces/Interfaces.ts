@@ -23,7 +23,7 @@ export interface INavBar {
 }
 
 export interface IStatusBar {
-    time: number
+    time: number | undefined
     teamName: string | null
     roundNumber: number | null
     roundTotal: number | null
@@ -106,6 +106,29 @@ export interface ILobbyRoomBackEnd {
     ReadyStatusB3: boolean
     ReadyStatusB4: boolean
     ReadyStatusB5: boolean
+}
+
+export interface IGameInfo {
+    lobbyName: string
+    host: string
+    numberOfRounds: number
+    timeLimit: number
+    teamMemberA1: string
+    teamMemberA2: string
+    teamMemberA3: string
+    teamMemberA4: string
+    teamMemberA5: string
+    teamMemberB1: string
+    teamMemberB2: string
+    teamMemberB3: string
+    teamMemberB4: string
+    teamMemberB5: string
+    turn: number
+    speaker: string 
+    onePointWord: string 
+    threePointWord: string 
+    team1Score: number
+    team2Score: number
 }
 
 export interface ITeamInfo {

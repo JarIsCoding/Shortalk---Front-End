@@ -1,11 +1,10 @@
-import { ICard, ICardData, ICreateLobbyRoomDTO, ILobbyRoom, ILobbyRoomBackEnd, IToken, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
+import { ICard, ICardData, ICreateLobbyRoomDTO, IGameInfo, ILobbyRoom, ILobbyRoomBackEnd, IToken, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
 import { Context } from "@/context/Context"
 import * as wordData from '../words.json';
 
 const url = "https://shortalkapi.azurewebsites.net"
 
 // const url = "http://localhost:5151"
-
 
 let userData: IUserData
 
@@ -146,7 +145,7 @@ export const createGameRoom = async (lobbyRoomName: string) => {
     const promise = await fetch(url + `/Lobby/GetLobby/${lobbyRoomName}`);
     const lobbyData:ILobbyRoomBackEnd = await promise.json();
 
-    console.log(lobbyData);
+    // console.log(lobbyData);
 
     const res = await fetch(url + '/Game/AddGame', {
         method: 'POST',
@@ -164,4 +163,12 @@ export const createGameRoom = async (lobbyRoomName: string) => {
     const data = await res.json();
     console.log(data)
     return data
+}
+
+export const getGameInfo = async (lobbyRoomName:string) => {
+
+    const promise = await fetch(url + `/Game/GetGameInfo/${lobbyRoomName}`);
+    const gameData:IGameInfo = await promise.json();
+    console.log(gameData)
+    return gameData;
 }

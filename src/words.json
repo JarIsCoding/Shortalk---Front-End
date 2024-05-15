@@ -4,9 +4,7 @@
     "Bottom": [
       "worker",
       "sensitive",
-      "law",
       "study",
-      "history",
       "closed",
       "number"
     ]
@@ -378,11 +376,9 @@
   {
     "Top": "smart",
     "Bottom": [
-      "cookie",
       "car",
       "ass",
-      "water",
-      "lock"
+      "water"
     ]
   },
   {
@@ -413,8 +409,7 @@
       "flight",
       "drive",
       "tube",
-      "pilot",
-      "case"
+      "pilot"
     ]
   },
   {
@@ -424,7 +419,6 @@
       "alley",
       "league",
       "shoes",
-      "green",
       "pin"
     ]
   },
@@ -3483,7 +3477,8 @@
       "base",
       "family",
       "night",
-      "step"
+      "step",
+      "aid"
     ]
   },
   {
@@ -4041,12 +4036,6 @@
       "out",
       "tower",
       "radio"
-    ]
-  },
-  {
-    "Top": "sin",
-    "Bottom": [
-      "wave"
     ]
   },
   {
@@ -6105,8 +6094,8 @@
       "practice",
       "viewing",
       "eye",
-      "investigator",
-      "dick"
+      "investigator"
+      
     ]
   },
   {
@@ -6116,7 +6105,6 @@
       "animal",
       "fresh",
       "land",
-      "stand",
       "house"
     ]
   },
@@ -9554,7 +9542,8 @@
     "Bottom": [
       "away",
       "call",
-      "over"
+      "over",
+      "tide"
     ]
   },
   {
@@ -9568,7 +9557,9 @@
   {
     "Top": "pressure",
     "Bottom": [
-      "point"
+      "point",
+      "rising",
+      "plate"
     ]
   },
   {
@@ -10926,14 +10917,6 @@
     ]
   },
   {
-    "Top": "waxing",
-    "Bottom": [
-      "poetic",
-      "gibbous",
-      "crescent"
-    ]
-  },
-  {
     "Top": "petting",
     "Bottom": [
       "zoo"
@@ -11009,12 +10992,6 @@
     ]
   },
   {
-    "Top": "leash",
-    "Bottom": [
-      "law"
-    ]
-  },
-  {
     "Top": "climb",
     "Bottom": [
       "away",
@@ -11058,7 +11035,9 @@
   {
     "Top": "danger",
     "Bottom": [
-      "zone"
+      "zone",
+      "close",
+      "ahead"
     ]
   },
   {
@@ -12506,7 +12485,6 @@
   {
     "Top": "hole",
     "Bottom": [
-      "shot",
       "punch",
       "card"
     ]
@@ -17138,12 +17116,6 @@
     ]
   },
   {
-    "Top": "maritime",
-    "Bottom": [
-      "law"
-    ]
-  },
-  {
     "Top": "prison",
     "Bottom": [
       "inmate",
@@ -18551,7 +18523,8 @@
   {
     "Top": "cannon",
     "Bottom": [
-      "ball"
+      "ball",
+      "grand"
     ]
   },
   {
@@ -18570,19 +18543,23 @@
   {
     "Top": "lens",
     "Bottom": [
-      "cover"
+      "cover",
+      "flare"
     ]
   },
   {
     "Top": "google",
     "Bottom": [
-      "search"
+      "search",
+      "chrome"
     ]
   },
   {
     "Top": "software",
     "Bottom": [
-      "update"
+      "update",
+      "developer",
+      "engineer"
     ]
   },
   {
@@ -18629,13 +18606,14 @@
   {
     "Top": "debate",
     "Bottom": [
-      "team"
+      "team",
+      "squad"
     ]
   },
   {
     "Top": "wager",
     "Bottom": [
-      "wisely"
+      "match"
     ]
   },
   {
@@ -18647,13 +18625,14 @@
   {
     "Top": "dye",
     "Bottom": [
-      "job"
+      "hair"
     ]
   },
   {
     "Top": "conch",
     "Bottom": [
-      "shell"
+      "shell",
+      "magic"
     ]
   },
   {
@@ -18675,7 +18654,8 @@
   {
     "Top": "tiki",
     "Bottom": [
-      "torch"
+      "torch",
+      "punch"
     ]
   },
   {
@@ -18688,7 +18668,8 @@
     "Top": "losing",
     "Bottom": [
       "weight",
-      "heart"
+      "heart",
+      "faith"
     ]
   },
   {
@@ -18701,7 +18682,9 @@
   {
     "Top": "steamed",
     "Bottom": [
-      "clams"
+      "clams",
+      "rice",
+      "pork"
     ]
   },
   {
@@ -18725,7 +18708,9 @@
   {
     "Top": "cuban",
     "Bottom": [
-      "sandwich"
+      "sandwich",
+      "cigar",
+      "wife"
     ]
   },
   {
@@ -18737,7 +18722,7 @@
   {
     "Top": "beanie",
     "Bottom": [
-      "baby"
+      "boy"
     ]
   },
   {
@@ -18748,9 +18733,9 @@
     ]
   },
   {
-    "Top": "toast",
+    "Top": "jelly",
     "Bottom": [
-      "master"
+      "toast"
     ]
   },
   {
@@ -18769,12 +18754,6 @@
     "Top": "message",
     "Bottom": [
       "board"
-    ]
-  },
-  {
-    "Top": "literary",
-    "Bottom": [
-      "text"
     ]
   },
   {
@@ -18797,15 +18776,10 @@
     ]
   },
   {
-    "Top": "lovely",
-    "Bottom": [
-      "bones"
-    ]
-  },
-  {
     "Top": "hunger",
     "Bottom": [
-      "games"
+      "games",
+      "strike"
     ]
   },
   {
@@ -18844,7 +18818,7 @@
   {
     "Top": "moldy",
     "Bottom": [
-      "muffin"
+      "bread"
     ]
   },
   {
@@ -18894,7 +18868,6 @@
     "Top": "contact",
     "Bottom": [
       "lens",
-      "book",
       "sports"
     ]
   },
@@ -18907,7 +18880,7 @@
   {
     "Top": "nip",
     "Bottom": [
-      "tuck"
+      "slip"
     ]
   },
   {
@@ -18927,8 +18900,7 @@
     "Top": "cotton",
     "Bottom": [
       "candy",
-      "picking",
-      "gin"
+      "picking"
     ]
   },
   {
@@ -18961,13 +18933,13 @@
   {
     "Top": "medical",
     "Bottom": [
-      "bill"
+      "bill",
+      "field"
     ]
   },
   {
     "Top": "bat",
     "Bottom": [
-      "mitzvah",
       "boy",
       "cave"
     ]
@@ -18977,7 +18949,7 @@
     "Bottom": [
       "stone",
       "thunder",
-      "resistance"
+      "loud"
     ]
   },
   {
@@ -18991,19 +18963,23 @@
   {
     "Top": "appropriate",
     "Bottom": [
-      "attire"
+      "attire",
+      "reaction"
     ]
   },
   {
     "Top": "decorated",
     "Bottom": [
-      "general"
+      "general",
+      "wall",
+      "veteran"
     ]
   },
   {
     "Top": "raisin",
     "Bottom": [
-      "box"
+      "box",
+      "brand"
     ]
   },
   {
@@ -19023,7 +18999,8 @@
   {
     "Top": "bingo",
     "Bottom": [
-      "card"
+      "card",
+      "night"
     ]
   },
   {
@@ -19041,7 +19018,8 @@
   {
     "Top": "betty",
     "Bottom": [
-      "white"
+      "white",
+      "boop"
     ]
   },
   {
@@ -19052,7 +19030,6 @@
       "steady",
       "crazy",
       "places",
-      "postal",
       "public"
     ]
   },
@@ -19079,13 +19056,15 @@
   {
     "Top": "scrambled",
     "Bottom": [
-      "eggs"
+      "eggs",
+      "brain"
     ]
   },
   {
     "Top": "poached",
     "Bottom": [
-      "egg"
+      "egg",
+      "animal"
     ]
   },
   {
@@ -19098,7 +19077,9 @@
   {
     "Top": "grilled",
     "Bottom": [
-      "cheese"
+      "cheese",
+      "chicken",
+      "meat"
     ]
   },
   {
@@ -19112,12 +19093,6 @@
     "Top": "scape",
     "Bottom": [
       "goat"
-    ]
-  },
-  {
-    "Top": "aid",
-    "Bottom": [
-      "program"
     ]
   },
   {
@@ -20913,15 +20888,10 @@
     ]
   },
   {
-    "Top": "razzle",
-    "Bottom": [
-      "dazzle"
-    ]
-  },
-  {
     "Top": "dodge",
     "Bottom": [
-      "ball"
+      "ball",
+      "charger"
     ]
   },
   {
@@ -20943,7 +20913,8 @@
     "Top": "wipe",
     "Bottom": [
       "out",
-      "away"
+      "down",
+      "butt"
     ]
   }
 ]
