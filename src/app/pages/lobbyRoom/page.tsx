@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import React, { ReactElement, useEffect, useState } from 'react'
 import OnlineTeamName from '@/app/components/OnlineTeamName'
 import FriendsTab from '@/app/components/FriendsTab'
-import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { ILobbyRoomBackEnd, ITeamInfo } from '@/Interfaces/Interfaces'
 import { createGameRoom } from '@/utils/Dataservices'
 
@@ -18,8 +18,9 @@ const LobbyPage = () => {
 
   const router = useRouter();
 
-  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, conn, setConnection, userData, lobbyRoomName, host, setHost } = useAppContext();
+  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, userData, lobbyRoomName, host, setHost } = useAppContext();
 
+  const [conn, setConnection] = useState<HubConnection>()
   const [isReady, setIsReady] = useState<boolean>(false);
   const [warning, setWarning] = useState<string>('')
   const [message, setMessage] = useState<string>('')
