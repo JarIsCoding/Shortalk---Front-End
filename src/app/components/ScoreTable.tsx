@@ -1,14 +1,13 @@
 'use client'
 
 import { IScoreTableProps } from '@/Interfaces/Interfaces'
-import { FooterDivider } from 'flowbite-react'
 import React from 'react'
 
 const ScoreTable = (props: IScoreTableProps) => {
     return (
         <div className='flex justify-center py-10 cursor-default'>
 
-            <div className='grid grid-cols-1 bg-white'>
+            <div className='grid lg:grid-cols-1 grid-cols-3 bg-white'>
                 <div className='border-[2px] border-black px-14 py-2'>
                     <p className='text-gray-600 font-LuckiestGuy text-[40px] tracking-widest text-center'>
                         SKIPPED

@@ -12,6 +12,7 @@ import { getCard } from '@/utils/Dataservices'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
+import { useSwipeable } from 'react-swipeable'
 
 const PassAndPlayPage = () => {
 
@@ -96,12 +97,97 @@ const PassAndPlayPage = () => {
 
   const [openModal, setOpenModal] = useState(false);
 
+  const [swipeRight, setSwipeRight] = useState(false)
+  const [swipeLeft, setSwipeLeft] = useState(false)
+  const [swipeUp, setSwipeUp] = useState(false)
+  const [swipeDown, setSwipeDown] = useState(false)
+  const [isSwiping, setIsSwiping] = useState(false)
+  const [anim, setAnim] = useState(false)
+  const [anim2, setAnim2] = useState(false)
+  const [anim3, setAnim3] = useState(false)
+  const [anim4, setAnim4] = useState(false)
+
+  const handleSwipe = useSwipeable({
+    onSwiping: () => {
+      console.log('Swiping!');
+      setIsSwiping(true)
+    },
+    onSwipedRight: () => {
+      console.log('Swiped to the right');
+      setSwipeRight(true);
+      setSwipeLeft(false);
+      setSwipeDown(false);
+      setSwipeUp(false)
+      setIsSwiping(false)
+      ThreePointBtnHandle()
+    },
+    onSwipedLeft: () => {
+      console.log('Swiped to the left');
+      setSwipeLeft(true);
+      setSwipeRight(false);
+      setSwipeDown(false);
+      setSwipeUp(false)
+      setIsSwiping(false)
+      OnePointBtnHandle()
+    },
+    onSwipedUp: () => {
+      console.log('Swiped Upward');
+      setSwipeUp(true);
+      setSwipeLeft(false);
+      setSwipeRight(false);
+      setSwipeDown(false)
+      setIsSwiping(false)
+      BuzzBtnHandle()
+    },
+    onSwipedDown: () => {
+      console.log('Swiped Downward');
+      setSwipeDown(true);
+      setSwipeLeft(false);
+      setSwipeRight(false);
+      setIsSwiping(false)
+      setSwipeUp(false)
+      SkipBtnHandle()
+    }
+  })
+
+  const animCheck = () => {
+    if (swipeUp) {
+      setAnim(true)
+      setAnim2(false)
+      setAnim3(false)
+      setAnim4(false)
+      console.log('anim1')
+    } else if (swipeRight) {
+      setAnim2(true)
+      setAnim(false)
+      setAnim3(false)
+      setAnim4(false)
+      console.log('anim2')
+    } else if (swipeDown) {
+      setAnim3(true)
+      setAnim(false)
+      setAnim2(false)
+      setAnim4(false)
+      console.log('anim3')
+    } else if (swipeLeft) {
+      setAnim4(true)
+      setAnim(false)
+      setAnim2(false)
+      setAnim3(false)
+      console.log('anim4')
+    }
+  }
+
+  // useEffect(() => {
+  //   animCheck()
+  // }, [swipeUp, swipeRight, swipeDown, swipeLeft])
+
   return (
     <div className=' bg-lblue h-screen'>
 
       {/* Navbar */}
       <div className='relative'>
-        <NavBar title="Pass N' Play Settings" />
+        <NavBar title="ShorTalk" />
         <div className="absolute top-6 right-0 mr-10 flex z-50">
           <Button onClick={() => setOpenModal(true)} className="bg-clear">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -109,27 +195,62 @@ const PassAndPlayPage = () => {
             </svg>
           </Button>
         </div>
-      </div>
-
-      <div className=' px-10 flex flex-col items-center space-y-5 mt-10'>
-        <StatusBar
-          time={roundTime}
-          teamName={team}
-          roundNumber={1}
-          roundTotal={numberOfRounds}
-          role={null}
-          OnePointWord={null}
-          ThreePointWord={null}
-          Speaker={speaker}
-        />
-        <Card top={card.top} bottom={card.bottom} />
-        <div className=' w-full px-40 flex justify-between'>
-          <div className=' cursor-pointer' onClick={SkipBtnHandle}><SkipBtn /></div>          
-          <div className=' cursor-pointer' onClick={BuzzBtnHandle}><BuzzBtn /></div>
-          <div className=' cursor-pointer' onClick={OnePointBtnHandle}><OnePointBtn /></div>
-          <div className=' cursor-pointer' onClick={ThreePointBtnHandle}><ThreePointBtn /></div>
+        <div className='lg:hidden block w-full bg-dblue ps-4 pe-4 pb-4'>
+          <StatusBar
+            time={roundTime}
+            teamName={null}
+            roundNumber={1}
+            roundTotal={numberOfRounds}
+            role={null}
+            OnePointWord={null}
+            ThreePointWord={null}
+            Speaker={null}
+          />
         </div>
       </div>
+
+      <div className='lg:hidden block'>
+        <div {...handleSwipe} className='w-full h-screen absolute z-20'>
+          <div className='flex justify-center h-[10%]'>
+            <div className='rounded-b-full h-[20%] bg-red-600 text-red-600 w-[80%]'>.</div>
+          </div>
+          <div className='flex justify-between items-center h-[80%]'>
+            <div className='rounded-e-full h-[80%] bg-green-500 text-green-500 w-5'>.</div>
+            <div className='rounded-s-full h-[80%] bg-purple-500 text-purple-500 w-5'>.</div>
+          </div>
+          <div className='flex justify-center absolute bottom-0 w-[100%]'>
+            <div className='rounded-t-full h-[20%] bg-gray-500 text-gray-500 w-[80%]'>.</div>
+          </div>
+        </div>
+      </div>
+
+      <div className='px-10 flex flex-col items-center space-y-5 lg:pt-10 pt-1'>
+        <div className='lg:block hidden w-full'>
+          <StatusBar
+            time={roundTime}
+            teamName={team}
+            roundNumber={1}
+            roundTotal={numberOfRounds}
+            role={null}
+            OnePointWord={null}
+            ThreePointWord={null}
+            Speaker={speaker}
+          />
+        </div>
+
+        <div className='lg:static absolute lg:p-0 flex items-center md:pt-20 pt-28 z-10'>
+          <Card top={card.top} bottom={card.bottom} />
+        </div>
+
+        <div className=' w-full px-40 lg:flex justify-between hidden pb-10'>
+          <div className='cursor-pointer' onClick={SkipBtnHandle}><SkipBtn /></div>
+          <div className='cursor-pointer' onClick={BuzzBtnHandle}><BuzzBtn /></div>
+          <div className='cursor-pointer' onClick={OnePointBtnHandle}><OnePointBtn /></div>
+          <div className='cursor-pointer' onClick={ThreePointBtnHandle}><ThreePointBtn /></div>
+        </div>
+      </div>
+
+
 
       {/* Modal for navbar */}
       <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
