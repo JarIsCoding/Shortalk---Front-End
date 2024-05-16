@@ -53,13 +53,13 @@ const GamePage = () => {
     const connectToGame = async (username: string, lobbyroom: string) => {
         try {
             const conn = new HubConnectionBuilder()
-                // .withUrl("https://shortalkapi.azurewebsites.net/game")
-                // .configureLogging(LogLevel.Information)
-                // .build();
-
-                .withUrl("http://localhost:5151/game")
+                .withUrl("https://shortalkapi.azurewebsites.net/game")
                 .configureLogging(LogLevel.Information)
                 .build();
+
+                // .withUrl("http://localhost:5151/game")
+                // .configureLogging(LogLevel.Information)
+                // .build();
 
             conn.on("JoinSpecificGame", (username: string, msg: string) => {
                 console.log(username + ": " + msg)
@@ -152,7 +152,9 @@ const GamePage = () => {
             connectToGame(userData.username, lobbyRoomName);
             console.log(lobbyRoomName);
             const initGameInfo = await getGameInfo(lobbyRoomName);
+            console.log(initGameInfo);
             const InitGameInfo = Converti2I(initGameInfo);
+            console.log(InitGameInfo)
             setTime(InitGameInfo.TimeLimit);
             setRound(determineRound(InitGameInfo));
             setRoundTotal(InitGameInfo.NumberOfRounds);

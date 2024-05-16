@@ -2,9 +2,9 @@ import { ICard, ICardData, ICreateLobbyRoomDTO, IGameInfo, ILobbyRoom, ILobbyRoo
 import { Context } from "@/context/Context"
 import * as wordData from '../words.json';
 
-// const url = "https://shortalkapi.azurewebsites.net"
+const url = "https://shortalkapi.azurewebsites.net"
 
-const url = "http://localhost:5151"
+// const url = "http://localhost:5151"
 
 let userData: IUserData
 
@@ -48,7 +48,7 @@ export const login = async (loginUser: IUserInfo) => {
 }
 
 export const getLoggedInUserData = async (username: string) => {
-    const res = await fetch(url + 'User/GetUserByUsername/' + username)
+    const res = await fetch(url + '/User/GetUserByUsername/' + username)
     const data = await res.json()
     userData = data;
 }
