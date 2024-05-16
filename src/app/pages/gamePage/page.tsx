@@ -8,7 +8,7 @@ import SkipBtn from '@/app/components/SkipBtn'
 import StatusBar from '@/app/components/StatusBar'
 import { useAppContext } from '@/context/Context'
 import { getGameInfo } from '@/utils/Dataservices'
-import { determineRole, determineRound } from '@/utils/utils'
+import { Converti2I, determineRole, determineRound } from '@/utils/utils'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
@@ -47,21 +47,28 @@ const GamePage = () => {
     const connectToGame = async (username: string, lobbyroom: string) => {
         try {
             const conn = new HubConnectionBuilder()
-                .withUrl("https://shortalkapi.azurewebsites.net/game")
+                // .withUrl("https://shortalkapi.azurewebsites.net/game")
+                // .configureLogging(LogLevel.Information)
+                // .build();
+
+                .withUrl("http://localhost:5151/game")
                 .configureLogging(LogLevel.Information)
                 .build();
 
-            // .withUrl("http://localhost:5151/game")
-            // .configureLogging(LogLevel.Information)
-            // .build();
+            conn.on("JoinSpecificGame", (username: string, msg: string) => {
+                console.log(username + ": " + msg)
+            })
 
             conn.on("GetNextCard", (json: string) => {
+                console.log(json)
                 const game: IGameInfo = JSON.parse(json);
-                setOnePointWord(game.onePointWord);
-                setThreePointWord(game.threePointWord);
+                console.log(game.OnePointWord)
+                setOnePointWord(game.OnePointWord);
+                setThreePointWord(game.ThreePointWord);
             })
 
             await conn.start();
+            await conn.invoke("JoinSpecificGame", { username, lobbyroom });
             setConnection(conn);
             console.log('success')
 
@@ -99,14 +106,15 @@ const GamePage = () => {
             connectToGame(userData.username, lobbyRoomName);
             console.log(lobbyRoomName);
             const initGameInfo = await getGameInfo(lobbyRoomName);
-            setTime(initGameInfo.timeLimit);
-            setRound(determineRound(initGameInfo));
-            setRoundTotal(initGameInfo.numberOfRounds);
-            setRole(determineRole(userData.username, initGameInfo));
-            setOnePointWord(initGameInfo.onePointWord);
-            setThreePointWord(initGameInfo.threePointWord);
-            setSpeaker(initGameInfo.speaker);
-            setGameInfo({ ...initGameInfo })
+            const InitGameInfo = Converti2I(initGameInfo);
+            setTime(InitGameInfo.TimeLimit);
+            setRound(determineRound(InitGameInfo));
+            setRoundTotal(InitGameInfo.NumberOfRounds);
+            setRole(determineRole(userData.username, InitGameInfo));
+            setOnePointWord(InitGameInfo.OnePointWord);
+            setThreePointWord(InitGameInfo.ThreePointWord);
+            setSpeaker(InitGameInfo.Speaker);
+            setGameInfo({ ...InitGameInfo })
         }
 
         initializeRoom();
@@ -125,9 +133,9 @@ const GamePage = () => {
 
 
     return (
-        <div className='relative'>
+        <div className='relative h-[100vh]'>
 
-            <div className='relative'>
+            <div className='relative h-[9.25%]'>
                 <NavBar title='ShorTalk' />
                 <div className="absolute top-6 right-0 mr-10 flex z-50">
                     <Button onClick={() => setOpenModal(true)} className="bg-clear">
@@ -165,7 +173,7 @@ const GamePage = () => {
                 </div>
             </div>
 
-            <div className=''>
+            <div className='h-[90.75%]'>
                 <div className='p-5 pt-10'>
                     {Object.keys(gameInfo).length > 0 && (
                         <StatusBar
@@ -181,32 +189,44 @@ const GamePage = () => {
                         />
                     )}
                 </div>
-                <div className='grid md:grid-cols-3 gap-5 px-5 pb-5'>
+                <div className='grid md:grid-cols-3 gap-5 px-5 pb-5 h-full'>
 
                     {/* This is the Guesser box */}
                     <div className='bg-white rounded-lg flex flex-col justify-between'>
 
                         {/* Text from the guessers goes here */}
                         <div className='pt-4 pb-2 ps-4 text-[20px] h-full'>
-                            <p>Chat Box: text here</p>
+                            <p>Guesser Box</p>
+                            <hr className='bg-black me-3' />
                         </div>
 
-                        <div className={` h-[50px] w-full px-2 ${isGuesser ? 'block' : 'hidden'}`}>
-                            <input type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
-                        </div>
+                        {
+                            role == 'Guesser' &&
+                            <div className={` h-[50px] w-full px-2 ${isGuesser ? 'block' : 'hidden'}`}>
+                                <input type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
+                            </div>
+                        }
+
                     </div>
 
                     {/* This is the Card box */}
                     <div>
                         <div className='flex justify-center'>
-                            <Card top={gameInfo.onePointWord} bottom={gameInfo.threePointWord} />
+                            <Card top={onePointWord} bottom={threePointWord} />
                         </div>
-                        <div className={`flex justify-center py-5 ${isSpeaker ? 'block' : 'hidden'}`}>
-                            <SkipBtn onClick={handleSkip} />
-                        </div>
-                        <div onClick={() => { setBuzzed(true); setOpenBuzzModal(true) }} className={`flex justify-center py-5 ${isDefense ? 'block' : 'hidden'}`}>
-                            <BuzzBtn onClick={handleBuzz} />
-                        </div>
+                        {
+                            role == 'Speaker' &&
+                            <div className={`flex justify-center py-5`}>
+                                <SkipBtn onClick={handleSkip} />
+                            </div>
+                        }
+                        {
+                            role == 'Defense' &&
+                            <div className={`flex justify-center py-5 ${isDefense ? 'block' : 'hidden'}`}>
+                                <BuzzBtn onClick={() => { setBuzzed(true); setOpenBuzzModal(true); handleBuzz() }} />
+                            </div>
+                        }
+
                     </div>
 
                     {/* This is the speaker box */}
@@ -217,13 +237,15 @@ const GamePage = () => {
                         <hr className='bg-black mx-3' />
 
                         {/* Text from the Speaker goes here */}
-                        <div className='text-[20px] h-full '>
-                            {/* <input type="text" placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px]  ${speaker ? ' inline-block ' : 'hidden'}`} /> */}
-                            <textarea style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg  ${isSpeaker ? ' inline-block ' : 'hidden'}`}>
+                        {
+                            role == 'Speaker' &&
+                            <div className='text-[20px] h-full '>
+                                {/* <input type="text" placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px]  ${speaker ? ' inline-block ' : 'hidden'}`} /> */}
+                                <textarea style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg  ${isSpeaker ? ' inline-block ' : 'hidden'}`}>
 
-                            </textarea>
-                        </div>
-
+                                </textarea>
+                            </div>
+                        }
                     </div>
 
                 </div>
