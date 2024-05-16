@@ -139,6 +139,9 @@ const LobbyPage = () => {
         setTeamInfos(lobby);
         if (userData.username != lobby.Host) {
           setSelectedRounds(`${lobby.NumberOfRounds}`)
+          const time = formatTimeMinutesAndSeconds(lobby.TimeLimit)
+          setSelectedMinutes(time.m);
+          setSelectedSeconds(time.ss)
         }
         setCorrectIsReady(lobby);
 

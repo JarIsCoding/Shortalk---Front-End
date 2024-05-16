@@ -31,6 +31,10 @@ const GamePage = () => {
     const [threePointWord, setThreePointWord] = useState<string>('');
     const [speaker, setSpeaker] = useState<string>('');
 
+    const [guess, setGuess] = useState<string>('')
+    const [guesses, setGuesses] = useState<{ username: string; msg: string; }[]>([]);
+    const [description, setDescription] = useState<string>('');
+
     const [buzzed, setBuzzed] = useState<boolean>(false)
 
     const router = useRouter()
@@ -41,6 +45,8 @@ const GamePage = () => {
     const [gameInfo, setGameInfo] = useState<IGameInfo>({} as IGameInfo);
 
     const { userData, lobbyRoomName } = useAppContext();
+
+    const [ line, setLine] = useState<string>('')
 
 
 
@@ -67,6 +73,15 @@ const GamePage = () => {
                 setThreePointWord(game.ThreePointWord);
             })
 
+            conn.on("ReceiveGuess", (username: string, msg: string) => {
+                setGuesses(guesses => [...guesses, { username, msg }])
+            })
+
+            conn.on("RenderDescription", (description: string) => {
+                console.log(description)
+                setDescription(description);
+            })
+
             await conn.start();
             await conn.invoke("JoinSpecificGame", { username, lobbyroom });
             setConnection(conn);
@@ -82,6 +97,37 @@ const GamePage = () => {
             conn && await conn.invoke("GetNextCard", { username, lobbyroom });
         } catch (e) {
             console.log(e)
+        }
+    }
+
+    const SubmitGuess = async (guess: string) => {
+        try {
+            conn && await conn.invoke("SubmitGuess", guess);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            SubmitGuess(guess);
+            setGuess('');
+        }
+    };
+
+    const TypeDescription = async (description: string) => {
+        try {
+            conn && await conn.invoke("TypeDescription", description);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        if (description != event.target.value) {
+            TypeDescription(event.target.value)
+        }else{
+            TypeDescription(event.target.value)
         }
     }
 
@@ -189,7 +235,7 @@ const GamePage = () => {
                         />
                     )}
                 </div>
-                <div className='grid md:grid-cols-3 gap-5 px-5 pb-5 h-full'>
+                <div className='grid md:grid-cols-3 gap-5 px-5 pb-5 '>
 
                     {/* This is the Guesser box */}
                     <div className='bg-white rounded-lg flex flex-col justify-between'>
@@ -198,12 +244,20 @@ const GamePage = () => {
                         <div className='pt-4 pb-2 ps-4 text-[20px] h-full'>
                             <p>Guesser Box</p>
                             <hr className='bg-black me-3' />
+                            {
+                                guesses.map((guess, ix) => {
+                                    return (
+                                        <p key={ix} className=' font-Roboto'> <span className=' font-RobotoBold'>{guess.username}</span> {" - "} <span>{guess.msg}</span> </p>
+                                    )
+                                })
+
+                            }
                         </div>
 
                         {
                             role == 'Guesser' &&
                             <div className={` h-[50px] w-full px-2 ${isGuesser ? 'block' : 'hidden'}`}>
-                                <input type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
+                                <input onChange={(e) => { setGuess(e.target.value) }} onKeyDown={handleKeyDown} value={guess} type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
                             </div>
                         }
 
@@ -215,17 +269,20 @@ const GamePage = () => {
                             <Card top={onePointWord} bottom={threePointWord} />
                         </div>
                         {
-                            role == 'Speaker' &&
-                            <div className={`flex justify-center py-5`}>
-                                <SkipBtn onClick={handleSkip} />
-                            </div>
+                            role == 'Speaker' ?
+                                <div className={`flex justify-center py-5`}>
+                                    <SkipBtn onClick={handleSkip} />
+                                </div>
+                                : role == 'Defense' ?
+                                    <div className={`flex justify-center py-5 ${isDefense ? 'block' : 'hidden'}`}>
+                                        <BuzzBtn onClick={() => { setBuzzed(true); setOpenBuzzModal(true); handleBuzz() }} />
+                                    </div>
+                                    :
+                                    <div className=' my-5 h-[75px]'>
+
+                                    </div>
                         }
-                        {
-                            role == 'Defense' &&
-                            <div className={`flex justify-center py-5 ${isDefense ? 'block' : 'hidden'}`}>
-                                <BuzzBtn onClick={() => { setBuzzed(true); setOpenBuzzModal(true); handleBuzz() }} />
-                            </div>
-                        }
+
 
                     </div>
 
@@ -238,19 +295,23 @@ const GamePage = () => {
 
                         {/* Text from the Speaker goes here */}
                         {
-                            role == 'Speaker' &&
-                            <div className='text-[20px] h-full '>
-                                {/* <input type="text" placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px]  ${speaker ? ' inline-block ' : 'hidden'}`} /> */}
-                                <textarea style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg  ${isSpeaker ? ' inline-block ' : 'hidden'}`}>
 
-                                </textarea>
+                            <div className='text-[20px] h-full '>
+                                {
+                                    role == 'Speaker' ?
+                                        < textarea value={description} onChange={handleOnChange} style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg`} />
+                                        :
+
+                                     <div className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg break-all whitespace-pre-line`}>{description}</div>
+                                }
+
                             </div>
                         }
                     </div>
 
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
