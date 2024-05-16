@@ -109,7 +109,7 @@ export interface ILobbyRoomBackEnd {
     ReadyStatusB5: boolean
 }
 
-export interface IGameInfo {
+export interface iGameInfo {
     lobbyName: string
     host: string
     numberOfRounds: number
@@ -130,6 +130,41 @@ export interface IGameInfo {
     threePointWord: string 
     team1Score: number
     team2Score: number
+    onePointWordHasBeenSaid: boolean
+    threePointWordHasBeenSaid: boolean
+    buzzWords: string
+    skippedWords: string
+    onePointWords: string
+    threePointWords: string
+}
+
+export interface IGameInfo {
+    LobbyName: string
+    Host: string
+    NumberOfRounds: number
+    TimeLimit: number
+    TeamMemberA1: string
+    TeamMemberA2: string
+    TeamMemberA3: string
+    TeamMemberA4: string
+    TeamMemberA5: string
+    TeamMemberB1: string
+    TeamMemberB2: string
+    TeamMemberB3: string
+    TeamMemberB4: string
+    TeamMemberB5: string
+    Turn: number
+    Speaker: string 
+    OnePointWord: string 
+    ThreePointWord: string 
+    Team1Score: number
+    Team2Score: number
+    OnePointWordHasBeenSaid: boolean
+    ThreePointWordHasBeenSaid: boolean
+    BuzzWords: string
+    SkippedWords: string
+    OnePointWords: string
+    ThreePointWords: string
 }
 
 export interface ITeamInfo {

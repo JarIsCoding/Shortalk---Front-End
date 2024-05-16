@@ -1,4 +1,4 @@
-import { IGameInfo, ITeamInfo } from "@/Interfaces/Interfaces";
+import { IGameInfo, ITeamInfo, iGameInfo } from "@/Interfaces/Interfaces";
 
 
 export function shuffleArray(array: string[]): string[] {
@@ -78,26 +78,26 @@ export const checkIfPlayersAreReady = (Team1Info: ITeamInfo, Team2Info: ITeamInf
 }
 
 export const determineRole = (userName: string, game: IGameInfo) => {
-    if (game.speaker == userName) {
+    if (game.Speaker == userName) {
         return "Speaker";
     }
 
     let speakerOnTeam1 = false;
     if (
-        game.speaker == game.teamMemberA1 ||
-        game.speaker == game.teamMemberA2 ||
-        game.speaker == game.teamMemberA3 ||
-        game.speaker == game.teamMemberA4 ||
-        game.speaker == game.teamMemberA5
+        game.Speaker == game.TeamMemberA1 ||
+        game.Speaker == game.TeamMemberA2 ||
+        game.Speaker == game.TeamMemberA3 ||
+        game.Speaker == game.TeamMemberA4 ||
+        game.Speaker == game.TeamMemberA5
     ) { speakerOnTeam1 = true }
 
     let playerOnTeam1 = false;
     if (
-        userName == game.teamMemberA1 ||
-        userName == game.teamMemberA2 ||
-        userName == game.teamMemberA3 ||
-        userName == game.teamMemberA4 ||
-        userName == game.teamMemberA5
+        userName == game.TeamMemberA1 ||
+        userName == game.TeamMemberA2 ||
+        userName == game.TeamMemberA3 ||
+        userName == game.TeamMemberA4 ||
+        userName == game.TeamMemberA5
     ) { playerOnTeam1 = true }
 
     if (speakerOnTeam1 == playerOnTeam1) {
@@ -111,16 +111,16 @@ export const determineRole = (userName: string, game: IGameInfo) => {
 export const determineRound = (game: IGameInfo) => {
     let counter = 0;
     let players = [
-        game.teamMemberA1,
-        game.teamMemberA2,
-        game.teamMemberA3,
-        game.teamMemberA4,
-        game.teamMemberA5,
-        game.teamMemberB1,
-        game.teamMemberB2,
-        game.teamMemberB3,
-        game.teamMemberB4,
-        game.teamMemberB5,
+        game.TeamMemberA1,
+        game.TeamMemberA2,
+        game.TeamMemberA3,
+        game.TeamMemberA4,
+        game.TeamMemberA5,
+        game.TeamMemberB1,
+        game.TeamMemberB2,
+        game.TeamMemberB3,
+        game.TeamMemberB4,
+        game.TeamMemberB5,
     ]
     for (let player in players) {
         if (player != "") {
@@ -128,7 +128,41 @@ export const determineRound = (game: IGameInfo) => {
         }
     }
 
-    const round = Math.ceil(game.turn / (Math.ceil(counter/2)*2));
+    const round = Math.ceil(game.Turn / (Math.ceil(counter/2)*2));
 
     return round;
+}
+
+export const Converti2I =  (data: iGameInfo) => {
+    let game: IGameInfo = {} as IGameInfo;
+    game.LobbyName = data.lobbyName;
+    game.Host = data.host;
+    game.NumberOfRounds = data.numberOfRounds;
+    game.TimeLimit = data.timeLimit;
+    game.TeamMemberA1 = data.teamMemberA1;
+    game.TeamMemberA2 = data.teamMemberA2;
+    game.TeamMemberA3 = data.teamMemberA3;
+    game.TeamMemberA4 = data.teamMemberA4;
+    game.TeamMemberA5 = data.teamMemberA5;
+    game.TeamMemberB1 = data.teamMemberB1;
+    game.TeamMemberB2 = data.teamMemberB2;
+    game.TeamMemberB3 = data.teamMemberB3;
+    game.TeamMemberB4 = data.teamMemberB4;
+    game.TeamMemberB5 = data.teamMemberB5;
+    game.Turn = data.turn;
+    game.Speaker = data.speaker;
+    game.OnePointWord = data.onePointWord;
+    game.ThreePointWord = data.threePointWord;
+    game.Team1Score = data.team1Score;
+    game.Team2Score =data.team2Score;
+    game.OnePointWordHasBeenSaid = data.onePointWordHasBeenSaid;
+    game.ThreePointWordHasBeenSaid = data.threePointWordHasBeenSaid;
+    game.BuzzWords = data.buzzWords;
+    game.SkippedWords = data.skippedWords;
+    game.OnePointWords = data.onePointWords;
+    game.ThreePointWords = data.threePointWords;
+
+    return game;
+     
+
 }
