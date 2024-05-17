@@ -81,7 +81,7 @@ const TeamListPNP = (props: ITeamListPNP) => {
 
   return (
     <div className=' space-y-5 sm:w-[350px] w-[300px]'>
-      <div className='md:flex flex-row justify-between whitespace-nowrap items-center'>
+      <div className='lg:flex flex-row justify-between whitespace-nowrap items-center'>
         <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Team Name</div>
         <div className=''>
           <input value={teamName} className=' w-full h-7' maxLength={16} type="text" name="" id="" onChange={(e) => setTeamName(e.target.value)} />
@@ -95,7 +95,7 @@ const TeamListPNP = (props: ITeamListPNP) => {
             (props.teamNumber == 1) ? renderNameList(Team1NameList) : renderNameList(Team2NameList)
           }
         </div>
-        <div className=' md:flex md:flex-row md:space-x-5 grid grid-cols-1'>
+        <div className=' lg:flex lg:flex-row md:space-x-5 grid grid-cols-1'>
           <input className='w-full border-2 border-[#551F00] rounded-lg font-Roboto text-[20px] placeholder:text-[20px]'
             type="text" name="" id="" placeholder='Player Name'
             onChange={(e) => setName(e.target.value)}

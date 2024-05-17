@@ -258,7 +258,7 @@ const PassAndPlayPage = () => {
         </div>
 
         <div className='lg:static absolute lg:p-0 flex items-center md:pt-20 pt-28 z-10'>
-          <Card top={card.top} bottom={card.bottom} />
+          <Card top={card.top} bottom={card.bottom} isGuessing={false} />
         </div>
 
         <div className=' w-full px-40 lg:flex justify-between hidden pb-10'>
