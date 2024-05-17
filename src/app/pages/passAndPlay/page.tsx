@@ -233,8 +233,8 @@ const PassAndPlayPage = () => {
             <div className='rounded-b-full h-[20%] bg-red-600 text-red-600 w-[80%]'>.</div>
           </div>
           <div className='flex justify-between items-center h-[80%]'>
-            <div className='rounded-e-full h-[80%] bg-green-500 text-green-500 w-5'>.</div>
-            <div className='rounded-s-full h-[80%] bg-purple-500 text-purple-500 w-5'>.</div>
+            <div className='rounded-e-full h-[80%] bg-green text-green w-5'>.</div>
+            <div className='rounded-s-full h-[80%] bg-purple text-purple w-5'>.</div>
           </div>
           <div className='flex justify-center absolute bottom-0 w-[100%]'>
             <div className='rounded-t-full h-[20%] bg-gray-500 text-gray-500 w-[80%]'>.</div>

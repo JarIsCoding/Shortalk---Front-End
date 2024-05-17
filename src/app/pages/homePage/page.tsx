@@ -69,7 +69,7 @@ const HomePage = () => {
       {/* Title */}
       <div className='relative'>
         <NavBar title={'Welcome ' + userData.username + ' !'} />
-        <div className="absolute top-6 right-0 mr-10 flex z-50">
+        <div className="absolute top-6 right-0 md:mr-10 flex z-50">
           {/*NavBar Icons/Buttons*/}
           <Button onClick={() => router.push('rulesPage')} className="bg-clear">
             <Image src={RulesPic} alt="RulesPicture" className="w-35px h-30px rulesNav" />
