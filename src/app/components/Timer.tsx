@@ -10,8 +10,14 @@ const Timer = ({ initialTime }: TimerProps) => {
   const { isTimeUp, setIsTimeUp } = useAppContext();
 
   const getInitialTime = () => {
-    const storedTime = sessionStorage.getItem('currentTimer');
-    return storedTime && parseInt(storedTime) !== 0 ? parseInt(storedTime) : initialTime;
+
+    if (typeof window !== "undefined") {
+      const storedTimeStr = sessionStorage.getItem('currentTimer');
+      return storedTimeStr ? parseInt(storedTimeStr, 10) : initialTime;
+    }
+    return initialTime;
+    // const storedTime = sessionStorage.getItem('currentTimer');
+    // return storedTime && parseInt(storedTime) !== 0 ? parseInt(storedTime) : initialTime;
   };
 
   const [time, setTime] = useState(getInitialTime());
