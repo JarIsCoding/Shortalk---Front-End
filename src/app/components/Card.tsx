@@ -5,7 +5,7 @@ import cardBack from '@/app/assets/CardBack.png'
 
 const Card = (props: { top: string, bottom: string, isGuessing: boolean }) => {
   return (
-    <div className='h-[550px] w-[400px] flex flex-col justify-between rounded-xl border-2 border-black bg-dblue'>
+    <div className='lg:h-[550px] lg:w-[400px] md:h-[500px] md:w-[350px] h-[425px] w-[275px] flex flex-col justify-between rounded-xl border-2 border-black bg-dblue text-center'>
       <div className='  w-full h-[30px]'></div>
       {props.isGuessing ?
         <div className='w-full h-full'>

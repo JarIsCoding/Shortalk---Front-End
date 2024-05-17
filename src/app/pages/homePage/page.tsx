@@ -9,8 +9,24 @@ import LogoutBtn from '@/app/assets/LogoutBtn2.png'
 import FriendsTab from '@/app/components/FriendsTab';
 import { useAppContext } from '@/context/Context';
 import { useRouter } from 'next/navigation';
-import AudioPlayer from '@/app/components/AudioPlayer'
+import MainMenuMusic from '@/app/components/AudioPlayer';
+import VolumeSlider from '@/app/components/VolumeSlider';
+
+// const AudioClips = [
+//   {sound: ("/Audio/MainMenuMusic.mp3"), label: 'MenuMusic'}
+
+// ]
+
 const HomePage = () => {
+
+  // const [value, setValue] = useState(1);
+
+  // useEffect(() =>{
+  //   if(value % 2 === 0)play()}, [value])
+
+  function play(){
+    new Audio("/Audio/MainMenuMusic.mp3").play()
+  }
 
   const router = useRouter()
 
@@ -28,14 +44,14 @@ const HomePage = () => {
     router.push('/pages/passAndPlayLobby')
   }
 
-  function play() {
-    try {
-      const audio = new Audio();
-      audio.play();
-    } catch (error) {
-      console.error('Error playing audio:', error);
-    }
-  }
+  // function play() {
+  //   try {
+  //     const audio = new Audio("/Audio/MainMenuMusic.mp3");
+  //     audio.play();
+  //   } catch (error) {
+  //     console.error('Error playing audio:', error);
+  //   }
+  // }
   
 
   return (
@@ -45,6 +61,9 @@ const HomePage = () => {
       <div className={`absolute right-0 pt-24 ${isFriendsOn ? 'block' : 'hidden'}`}>
         <FriendsTab />
       </div>
+
+    {/* <VolumeSlider/> */}
+
 
       {/* Check if user is guest or signed in */}
       {/* Title */}
@@ -63,6 +82,10 @@ const HomePage = () => {
           </Button>
         </div>
       </div>
+
+      <button onClick={play} className='bg-red-300'>
+        Play Sound pls!!!
+      </button>
 
       <div className='mt-4'>
         {/* Tilted SHORTALK */}
@@ -89,10 +112,6 @@ const HomePage = () => {
       <p className='text-[35px] text-center font-LuckiestGuy text-dblue py-10 cursor-default'>
         Online Currently not working! Please play Pass and play for now. <br /> Sorry for the inconvinence!
       </p>
-
-      <AudioPlayer/>
-
-      
 
       {/* Modal for logging out */}
       <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>

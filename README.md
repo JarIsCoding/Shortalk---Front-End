@@ -4,8 +4,15 @@
 3. sounded cool, The Showdown
 4. sounded cool, empty city
 5. https://www.youtube.com/watch?v=i1sUh0bzDps&ab_channel=FezSound
-6. 
-7. 
-8. 
-9. 
-10. 
+
+
+### Sound Effects
++1 - Success 1
++3 - Winner Bell Gameshow
+Loser - Slow Sad Trombone fail
+Winner - you win sequence
+Buzz - Ice Hockey Sports Buzzer
+Skip - fart
+Game Start - Success Fanfare Trumpets
+PLayer Join -  multi pop
+Quit - finger snap
