@@ -1,4 +1,4 @@
-import { ICard, ICardData, ICreateLobbyRoomDTO, IGameInfo, ILobbyRoom, ILobbyRoomBackEnd, IToken, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
+import { ICard, ICardData, ICreateLobbyRoomDTO, IGameInfo, ILobbyRoom, ILobbyRoomBackEnd, IToken, IUserData, IUserInfo, iGameInfo } from "@/Interfaces/Interfaces"
 import { Context } from "@/context/Context"
 import * as wordData from '../words.json';
 
@@ -48,7 +48,7 @@ export const login = async (loginUser: IUserInfo) => {
 }
 
 export const getLoggedInUserData = async (username: string) => {
-    const res = await fetch(url + 'User/GetUserByUsername/' + username)
+    const res = await fetch(url + '/User/GetUserByUsername/' + username)
     const data = await res.json()
     userData = data;
 }
@@ -168,7 +168,7 @@ export const createGameRoom = async (lobbyRoomName: string) => {
 export const getGameInfo = async (lobbyRoomName:string) => {
 
     const promise = await fetch(url + `/Game/GetGameInfo/${lobbyRoomName}`);
-    const gameData:IGameInfo = await promise.json();
+    const gameData:iGameInfo = await promise.json();
     console.log(gameData)
     return gameData;
 }
