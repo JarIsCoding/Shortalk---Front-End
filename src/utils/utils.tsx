@@ -186,3 +186,56 @@ export const String2ICardArray = (wordList: string) => {
 
     return cardArray;
 }
+
+export const DetermineInitialTeam = (game: IGameInfo) => {
+    let Team1 = [
+        game.TeamMemberA1,
+        game.TeamMemberA2,
+        game.TeamMemberA3,
+        game.TeamMemberA4,
+        game.TeamMemberA5,
+    ]
+
+    for(let player in Team1){
+        if(game.Speaker == player)
+            return 'Team1';
+    }
+
+    return 'Team2';
+}
+
+export const DetermineTeam = (teamUp: string) => {
+    if(teamUp == "Team1"){
+        return "Team2"
+    }
+    return "Team1"
+}
+
+export const determineSpeaker = (game: IGameInfo) => {
+    let counter = 0;
+    let players = [
+        game.TeamMemberA1,
+        game.TeamMemberA2,
+        game.TeamMemberA3,
+        game.TeamMemberA4,
+        game.TeamMemberA5,
+        game.TeamMemberB1,
+        game.TeamMemberB2,
+        game.TeamMemberB3,
+        game.TeamMemberB4,
+        game.TeamMemberB5,
+    ]
+    for (let player in players) {
+        if (player != "") {
+            counter++;
+        }
+    }
+
+    const round = Math.ceil(game.Turn / (Math.ceil(counter/2)*2));
+
+    return round;
+}
+
+export const AddUpPoints = (buzzWords: string, onePointWords: string, threePointWords:string ) => {
+    return String2ICardArray(onePointWords).length + 3*String2ICardArray(threePointWords).length - String2ICardArray(buzzWords).length
+}

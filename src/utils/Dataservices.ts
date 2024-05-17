@@ -220,3 +220,51 @@ export const AppendSkipPointWords = async (lobbyName:string, skipWordTop:string,
     const result = await res.text();
     return result.toLowerCase() === 'true';
 }
+
+export const ChangeScore = async (lobbyName:string, Team:string, point:number) => {
+    const res = await fetch(url +`/Game/ChangeScore/${lobbyName}/${Team}/${point}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const GoToNextTurn = async (lobbyName:string) => {
+    const res = await fetch(url +`/Game/GoToNextTurn/${lobbyName}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const UpdateSpeaker = async (lobbyName:string) => {
+    const res = await fetch(url +`/Game/UpdateSpeaker/${lobbyName}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true'; 
+}
+
+export const ClearWordLists = async (lobbyName:string) => {
+    const res = await fetch(url +`/Game/ClearWordLists/${lobbyName}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true'; 
+}

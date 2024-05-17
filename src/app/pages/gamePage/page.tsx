@@ -4,14 +4,16 @@ import { IGameInfo } from '@/Interfaces/Interfaces'
 import BuzzBtn from '@/app/components/BuzzBtn'
 import Card from '@/app/components/Card'
 import NavBar from '@/app/components/NavBar'
+import NextTurnBtn from '@/app/components/NextTurnBtn'
 import OnePointBtn from '@/app/components/OnePointBtn'
+import ResultsBtn from '@/app/components/ResultsBtn'
 import ScoreTable from '@/app/components/ScoreTable'
 import SkipBtn from '@/app/components/SkipBtn'
 import StatusBar from '@/app/components/StatusBar'
 import ThreePointBtn from '@/app/components/ThreePointBtn'
 import { useAppContext } from '@/context/Context'
-import { AppendBuzzWords, AppendOnePointWords, AppendSkipPointWords, AppendThreePointWords, getGameInfo } from '@/utils/Dataservices'
-import { Converti2I, String2ICardArray, determineRole, determineRound } from '@/utils/utils'
+import { AppendBuzzWords, AppendOnePointWords, AppendSkipPointWords, AppendThreePointWords, ChangeScore, ClearWordLists, GoToNextTurn, UpdateSpeaker, getGameInfo } from '@/utils/Dataservices'
+import { AddUpPoints, Converti2I, DetermineInitialTeam, DetermineTeam, String2ICardArray, determineRole, determineRound } from '@/utils/utils'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
@@ -56,9 +58,16 @@ const GamePage = () => {
     const [gameInfo, setGameInfo] = useState<IGameInfo>({} as IGameInfo);
 
     const { userData, lobbyRoomName, isTimeUp, setIsTimeUp } = useAppContext();
+    const [isGameOver, setIsGameOver] = useState<boolean>(false);
+    const [Team1Score, setTeam1Score] = useState<number>(0);
+    const [Team2Score, setTeam2Score] = useState<number>(0);
 
-    const [line, setLine] = useState<string>('')
+    const [Team1Name, setTeam1Name] = useState<string>('Team 1');
+    const [Team2Name, setTeam2Name] = useState<string>('Team 2');
 
+    const [turn, setTurn] = useState<number>(1)
+    const [numberOfTurns, setNumberOfTurns] = useState<number>(2);
+    const [teamUp, setTeamUp] = useState<string>('Team1');
 
 
     const connectToGame = async (username: string, lobbyroom: string) => {
@@ -103,7 +112,7 @@ const GamePage = () => {
                 setDescription(description);
             })
 
-            conn.on("Buzz", ()=>{
+            conn.on("Buzz", () => {
                 setOpenBuzzModal(true)
             })
 
@@ -182,27 +191,53 @@ const GamePage = () => {
         await getNewCard(userData.username, lobbyRoomName)
     }
 
+    const updateRoom = async () => {
+        let points = AddUpPoints(buzzWords, onePointWords, threePointWords);
+        await ChangeScore(lobbyRoomName, teamUp, points);
+        setTeamUp(DetermineTeam(teamUp));
+        await GoToNextTurn(lobbyRoomName);
+        await UpdateSpeaker(lobbyRoomName);
+        await ClearWordLists(lobbyRoomName)
+        await initializeRoom();
+    }
 
+    const handleResults = async () => {
 
+    }
+
+    const handleNextTurn = async () => {
+        //Add Points
+        //Switch team up
+        //Get Speaker
+        //Clear Word Lists
+        //Reset Time
+        updateRoom();
+        setIsTimeUp(false)
+
+    }
+
+    const initializeRoom = async () => {
+        connectToGame(userData.username, lobbyRoomName);
+        console.log(lobbyRoomName);
+        const initGameInfo = await getGameInfo(lobbyRoomName);
+        console.log(initGameInfo);
+        const InitGameInfo = Converti2I(initGameInfo);
+        console.log(InitGameInfo)
+        setTime(InitGameInfo.TimeLimit);
+        setRound(determineRound(InitGameInfo));
+        setRoundTotal(InitGameInfo.NumberOfRounds);
+        setRole(determineRole(userData.username, InitGameInfo));
+        setOnePointWord(InitGameInfo.OnePointWord);
+        setThreePointWord(InitGameInfo.ThreePointWord);
+        setSpeaker(InitGameInfo.Speaker);
+        setTurn(InitGameInfo.Turn);
+        setTeamUp(DetermineInitialTeam(InitGameInfo));
+        setTeam1Score(InitGameInfo.Team1Score);
+        setTeam2Score(InitGameInfo.Team2Score);
+        setGameInfo({ ...InitGameInfo })
+    }
 
     useEffect(() => {
-        const initializeRoom = async () => {
-            connectToGame(userData.username, lobbyRoomName);
-            console.log(lobbyRoomName);
-            const initGameInfo = await getGameInfo(lobbyRoomName);
-            console.log(initGameInfo);
-            const InitGameInfo = Converti2I(initGameInfo);
-            console.log(InitGameInfo)
-            setTime(InitGameInfo.TimeLimit);
-            setRound(determineRound(InitGameInfo));
-            setRoundTotal(InitGameInfo.NumberOfRounds);
-            setRole(determineRole(userData.username, InitGameInfo));
-            setOnePointWord(InitGameInfo.OnePointWord);
-            setThreePointWord(InitGameInfo.ThreePointWord);
-            setSpeaker(InitGameInfo.Speaker);
-            setGameInfo({ ...InitGameInfo })
-        }
-
         initializeRoom();
     }, [])
 
@@ -219,7 +254,7 @@ const GamePage = () => {
 
 
     return (
-        
+
         <div className='relative h-[100vh]'>
 
             <div className='relative h-[9.25%]'>
@@ -261,112 +296,164 @@ const GamePage = () => {
             </div>
 
             {
-            !isTimeUp ?
-            <div className='h-[90.75%]'>
-                <div className='p-5 pt-10'>
-                    {Object.keys(gameInfo).length > 0 && (
-                        <StatusBar
-                            time={time}
-                            teamName=''
-                            user={userData.username}
-                            roundNumber={round}
-                            roundTotal={roundTotal}
-                            role={role}
-                            OnePointWord={onePointWord}
-                            ThreePointWord={threePointWord}
-                            Speaker={speaker}
-                        />
-                    )}
-                </div>
-                <div className='grid md:grid-cols-3 gap-5 px-5 pb-5 '>
-
-                    {/* This is the Guesser box */}
-                    <div className='bg-white rounded-lg flex flex-col justify-between'>
-
-                        {/* Text from the guessers goes here */}
-                        <div className='pt-4 pb-2 ps-4 text-[20px] h-full'>
-                            <p>Guesser Box</p>
-                            <hr className='bg-black me-3' />
-                            <div className=' text-green'></div>
-                            <div className=' text-yellow'></div>
-                            <div className=' text-purple'></div>
+                isTimeUp ?
+                    isGameOver ?
+                        <div className='font-LuckiestGuy tracking-widest'>
+                            <div className='text-center pt-32 pb-16 text-[50px] text-dblue flex flex-col'>
+                                {
+                                    Team1Score > Team2Score
+                                        ? <p>{Team1Name} WINS</p>
+                                        : Team2Score > Team1Score
+                                            ? <p>{Team2Name} WINS</p>
+                                            : <p>{"IT'S A TIE!"}</p>
+                                }
+                                <p>Final Score</p>
+                            </div>
+                            <div className='grid grid-cols-1'>
+                                <div className='flex justify-center bg-white mx-96 border-[1px] border-black text-[50px]'>
+                                    <div className='grid grid-cols-2 py-10 w-[100%] px-24'>
+                                        <div className=''>
+                                            Team {Team1Name}:
+                                        </div>
+                                        <div className='text-end'>
+                                            {Team1Score}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='flex justify-center bg-white mx-96 border-[1px] border-black text-[50px]'>
+                                    <div className='grid grid-cols-2 py-10 w-[100%] px-24'>
+                                        <div className=''>
+                                            Team {Team2Name}:
+                                        </div>
+                                        <div className='text-end'>
+                                            {Team2Score}
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* push to whatever page is next */}
+                                {/* <div onClick={() => router.push('/pages/passAndPlayLobby')} className='flex justify-center py-16 cursor-pointer'>
+                                    <PlayAgainBtn />
+                                </div> */}
+                            </div>
+                        </div>
+                        :
+                        <div>
+                            <ScoreTable skipWords={String2ICardArray(skipWords)} buzzWords={String2ICardArray(buzzWords)} onePointWords={String2ICardArray(onePointWords)} threePointWords={String2ICardArray(threePointWords)} />
                             {
-                                guesses.map((guess, ix) => {
-                                    return (
-                                        <p key={ix} className={' font-Roboto' + guess.color}> <span className=' font-RobotoBold'>{guess.username}</span> {" - "} <span className={'text-' + guess.color}>{guess.msg}</span> </p>
-                                    )
-                                })
-
+                                (round > roundTotal)
+                                    ? <div className='flex justify-center pb-16'>
+                                        <ResultsBtn click={handleResults} />
+                                    </div>
+                                    : <div className='flex justify-center pb-16'>
+                                        <NextTurnBtn click={handleNextTurn} />
+                                    </div>
                             }
                         </div>
-
-                        {
-                            role == 'Guesser' &&
-                            <div className={` h-[50px] w-full px-2 ${isGuesser ? 'block' : 'hidden'}`}>
-                                <input onChange={(e) => { setGuess(e.target.value) }} onKeyDown={handleKeyDown} value={guess} type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
-                            </div>
-                        }
-
-                    </div>
-
-                    {/* This is the Card box */}
-                    <div>
-                        <div className='flex justify-center'>
-                            <Card top={onePointWord} bottom={threePointWord} isGuessing={role == 'Guesser'} />
+                    :
+                    <div className='h-[90.75%]'>
+                        <div className='p-5 pt-10'>
+                            {Object.keys(gameInfo).length > 0 && (
+                                <StatusBar
+                                    time={time}
+                                    teamName=''
+                                    user={userData.username}
+                                    roundNumber={round}
+                                    roundTotal={roundTotal}
+                                    role={role}
+                                    OnePointWord={onePointWord}
+                                    ThreePointWord={threePointWord}
+                                    Speaker={speaker}
+                                />
+                            )}
                         </div>
-                        {
-                            role == 'Speaker' ?
-                                <div className={`flex justify-center py-5`}>
+                        <div className='grid md:grid-cols-3 gap-5 px-5 pb-5 '>
+
+                            {/* This is the Guesser box */}
+                            <div className='bg-white rounded-lg flex flex-col justify-between'>
+
+                                {/* Text from the guessers goes here */}
+                                <div className='pt-4 pb-2 ps-4 text-[20px] h-full'>
+                                    <p>Guesser Box</p>
+                                    <hr className='bg-black me-3' />
+                                    <div className=' text-green'></div>
+                                    <div className=' text-yellow'></div>
+                                    <div className=' text-purple'></div>
                                     {
-                                        threePointWordHasBeenSaid ?
-                                            <ThreePointBtn onClick={handleThreePoint} />
-                                            :
-                                            onePointWordHasBeenSaid ?
-                                                <OnePointBtn onClick={handleOnePoint} />
-                                                :
-                                                <SkipBtn onClick={handleSkip} />
+                                        guesses.map((guess, ix) => {
+                                            return (
+                                                <p key={ix} className={' font-Roboto' + guess.color}> <span className=' font-RobotoBold'>{guess.username}</span> {" - "} <span className={'text-' + guess.color}>{guess.msg}</span> </p>
+                                            )
+                                        })
+
                                     }
-
                                 </div>
-                                : role == 'Defense' ?
-                                    <div className={`flex justify-center py-5 ${isDefense ? 'block' : 'hidden'}`}>
-                                        <BuzzBtn onClick={() => { setBuzzed(true); setOpenBuzzModal(true); handleBuzz() }} />
-                                    </div>
-                                    :
-                                    <div className=' my-5 h-[75px]'>
 
-                                    </div>
-                        }
-
-
-                    </div>
-
-                    {/* This is the speaker box */}
-                    <div className='bg-white rounded-lg flex flex-col justify-normal'>
-                        <div className='pt-4 pb-2 ps-4 text-[20px]'>
-                            Speaker Box
-                        </div>
-                        <hr className='bg-black mx-3' />
-
-                        {/* Text from the Speaker goes here */}
-                        {
-
-                            <div className='text-[20px] h-full '>
                                 {
-                                    role == 'Speaker' ?
-                                        < textarea value={description} onChange={handleOnChange} style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg`} />
-                                        :
-
-                                        <div className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg break-all whitespace-pre-line`}>{description}</div>
+                                    role == 'Guesser' &&
+                                    <div className={` h-[50px] w-full px-2 ${isGuesser ? 'block' : 'hidden'}`}>
+                                        <input onChange={(e) => { setGuess(e.target.value) }} onKeyDown={handleKeyDown} value={guess} type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
+                                    </div>
                                 }
 
                             </div>
-                        }
-                    </div>
 
-                </div>
-            </div>
-            : <ScoreTable skipWords={String2ICardArray(skipWords)} buzzWords={String2ICardArray(buzzWords)} onePointWords={String2ICardArray(onePointWords)} threePointWords={String2ICardArray(threePointWords)} />
+                            {/* This is the Card box */}
+                            <div>
+                                <div className='flex justify-center'>
+                                    <Card top={onePointWord} bottom={threePointWord} isGuessing={role == 'Guesser'} />
+                                </div>
+                                {
+                                    role == 'Speaker' ?
+                                        <div className={`flex justify-center py-5`}>
+                                            {
+                                                threePointWordHasBeenSaid ?
+                                                    <ThreePointBtn onClick={handleThreePoint} />
+                                                    :
+                                                    onePointWordHasBeenSaid ?
+                                                        <OnePointBtn onClick={handleOnePoint} />
+                                                        :
+                                                        <SkipBtn onClick={handleSkip} />
+                                            }
+
+                                        </div>
+                                        : role == 'Defense' ?
+                                            <div className={`flex justify-center py-5 ${isDefense ? 'block' : 'hidden'}`}>
+                                                <BuzzBtn onClick={() => { setBuzzed(true); setOpenBuzzModal(true); handleBuzz() }} />
+                                            </div>
+                                            :
+                                            <div className=' my-5 h-[75px]'>
+
+                                            </div>
+                                }
+
+
+                            </div>
+
+                            {/* This is the speaker box */}
+                            <div className='bg-white rounded-lg flex flex-col justify-normal'>
+                                <div className='pt-4 pb-2 ps-4 text-[20px]'>
+                                    Speaker Box
+                                </div>
+                                <hr className='bg-black mx-3' />
+
+                                {/* Text from the Speaker goes here */}
+                                {
+
+                                    <div className='text-[20px] h-full '>
+                                        {
+                                            role == 'Speaker' ?
+                                                < textarea value={description} onChange={handleOnChange} style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg`} />
+                                                :
+
+                                                <div className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg break-all whitespace-pre-line`}>{description}</div>
+                                        }
+
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
             }
 
 
