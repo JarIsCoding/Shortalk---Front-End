@@ -88,9 +88,7 @@ const GamePage = () => {
             })
 
             conn.on("GetNextCard", (json: string) => {
-                console.log(json)
                 const game: IGameInfo = JSON.parse(json);
-                console.log(game.OnePointWord)
                 setOnePointWord(game.OnePointWord);
                 setThreePointWord(game.ThreePointWord);
                 setOnePointWordHasBeenSaid(game.OnePointWordHasBeenSaid);
@@ -103,14 +101,12 @@ const GamePage = () => {
 
             conn.on("ReceiveGuess", (username: string, msg: string, color: string, json: string) => {
                 const game: IGameInfo = JSON.parse(json);
-                console.log(game)
                 setOnePointWordHasBeenSaid(game.OnePointWordHasBeenSaid);
                 setThreePointWordHasBeenSaid(game.ThreePointWordHasBeenSaid);
                 setGuesses(guesses => [...guesses, { username, msg, color }])
             })
 
             conn.on("RenderDescription", (description: string) => {
-                console.log(description)
                 setDescription(description);
             })
 
@@ -226,12 +222,9 @@ const GamePage = () => {
     }
 
     const initializeRoom = async () => {
-        connectToGame(userData.username, lobbyRoomName);
-        console.log(lobbyRoomName);
         const initGameInfo = await getGameInfo(lobbyRoomName);
         console.log(initGameInfo);
         const InitGameInfo = Converti2I(initGameInfo);
-        console.log(InitGameInfo)
         setTime(InitGameInfo.TimeLimit);
         setRound(determineRound(InitGameInfo));
         setRoundTotal(InitGameInfo.NumberOfRounds);
@@ -248,6 +241,7 @@ const GamePage = () => {
     }
 
     useEffect(() => {
+        connectToGame(userData.username, lobbyRoomName);
         initializeRoom();
     }, [])
 
