@@ -70,7 +70,7 @@ const ScoreTable = (props: IScoreTableProps) => {
 
             <div className='grid grid-cols-1 bg-white'>
                 <div className='border-[2px] border-black px-14 py-2'>
-                    <p className='text-green-600 font-LuckiestGuy text-[40px] tracking-widest text-center'>
+                    <p className='text-green font-LuckiestGuy text-[40px] tracking-widest text-center'>
                         +1 POINT
                     </p>
                 </div>
@@ -91,7 +91,7 @@ const ScoreTable = (props: IScoreTableProps) => {
                     }
                 </div>
                 <div className='border-[2px] border-black px-14 py-2'>
-                    <p className='text-green-600 font-LuckiestGuy text-[40px] tracking-widest text-center'>
+                    <p className='text-green font-LuckiestGuy text-[40px] tracking-widest text-center'>
                         +{props.onePointWords.length}
                     </p>
                 </div>
@@ -99,7 +99,7 @@ const ScoreTable = (props: IScoreTableProps) => {
 
             <div className='grid grid-cols-1 bg-white'>
                 <div className='border-[2px] border-black px-14 py-2'>
-                    <p className='text-purple-600 font-LuckiestGuy text-[40px] tracking-widest text-center'>
+                    <p className='text-purple font-LuckiestGuy text-[40px] tracking-widest text-center'>
                         +3 POINT
                     </p>
                 </div>
@@ -120,7 +120,7 @@ const ScoreTable = (props: IScoreTableProps) => {
                     }
                 </div>
                 <div className='border-[2px] border-black px-14 py-2'>
-                    <p className='text-purple-600 font-LuckiestGuy text-[40px] tracking-widest text-center'>
+                    <p className='text-purple font-LuckiestGuy text-[40px] tracking-widest text-center'>
                         +{props.threePointWords.length * 3}
                     </p>
                 </div>

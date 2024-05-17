@@ -69,6 +69,8 @@ const GamePage = () => {
     const [numberOfTurns, setNumberOfTurns] = useState<number>(2);
     const [teamUp, setTeamUp] = useState<string>('Team1');
 
+    const [host, setHost] = useState<string>('');
+
 
     const connectToGame = async (username: string, lobbyroom: string) => {
         try {
@@ -77,9 +79,9 @@ const GamePage = () => {
                 .configureLogging(LogLevel.Information)
                 .build();
 
-                // .withUrl("http://localhost:5151/game")
-                // .configureLogging(LogLevel.Information)
-                // .build();
+            // .withUrl("http://localhost:5151/game")
+            // .configureLogging(LogLevel.Information)
+            // .build();
 
             conn.on("JoinSpecificGame", (username: string, msg: string) => {
                 console.log(username + ": " + msg)
@@ -116,6 +118,11 @@ const GamePage = () => {
                 setOpenBuzzModal(true)
             })
 
+            conn.on("GoToNextTurn", ()=>{
+                setIsTimeUp(false);
+                initializeRoom();
+            })
+
             await conn.start();
             await conn.invoke("JoinSpecificGame", { username, lobbyroom });
             setConnection(conn);
@@ -148,6 +155,14 @@ const GamePage = () => {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    const goToNextTurn = async () => {
+        try {
+            conn && await conn.invoke("GoToNextTurn");
+        } catch (e) {
+            console.log(e)
+        }   
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -198,7 +213,6 @@ const GamePage = () => {
         await GoToNextTurn(lobbyRoomName);
         await UpdateSpeaker(lobbyRoomName);
         await ClearWordLists(lobbyRoomName)
-        await initializeRoom();
     }
 
     const handleResults = async () => {
@@ -206,13 +220,8 @@ const GamePage = () => {
     }
 
     const handleNextTurn = async () => {
-        //Add Points
-        //Switch team up
-        //Get Speaker
-        //Clear Word Lists
-        //Reset Time
-        updateRoom();
-        setIsTimeUp(false)
+        await updateRoom();
+        await goToNextTurn();
 
     }
 
@@ -234,6 +243,7 @@ const GamePage = () => {
         setTeamUp(DetermineInitialTeam(InitGameInfo));
         setTeam1Score(InitGameInfo.Team1Score);
         setTeam2Score(InitGameInfo.Team2Score);
+        setHost(InitGameInfo.Host);
         setGameInfo({ ...InitGameInfo })
     }
 
@@ -340,13 +350,17 @@ const GamePage = () => {
                         <div>
                             <ScoreTable skipWords={String2ICardArray(skipWords)} buzzWords={String2ICardArray(buzzWords)} onePointWords={String2ICardArray(onePointWords)} threePointWords={String2ICardArray(threePointWords)} />
                             {
-                                (round > roundTotal)
-                                    ? <div className='flex justify-center pb-16'>
-                                        <ResultsBtn click={handleResults} />
-                                    </div>
-                                    : <div className='flex justify-center pb-16'>
-                                        <NextTurnBtn click={handleNextTurn} />
-                                    </div>
+                                (userData.username == host) ?
+
+                                    (round > roundTotal)
+                                        ? <div className='flex justify-center pb-16'>
+                                            <ResultsBtn click={handleResults} />
+                                        </div>
+                                        : <div className='flex justify-center pb-16'>
+                                            <NextTurnBtn click={handleNextTurn} />
+                                        </div>
+                                :
+                                <div className=' font-LuckiestGuy text-4xl text-dblue w-full text-center'>Waiting on Host to Start Next Round</div>
                             }
                         </div>
                     :
