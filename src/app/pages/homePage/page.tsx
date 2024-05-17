@@ -58,7 +58,7 @@ const HomePage = () => {
 
     <div className='bg-lblue min-h-screen w-full Bg relative'>
 
-      <div className={`absolute right-0 pt-24 ${isFriendsOn ? 'block' : 'hidden'}`}>
+      <div className={`absolute right-0 pt-24 ${isFriendsOn ? 'block slideLeft' : 'hidden'}`}>
         <FriendsTab />
       </div>
 
@@ -71,11 +71,11 @@ const HomePage = () => {
         <NavBar title={'Welcome ' + userData.username + ' !'} />
         <div className="absolute top-6 right-0 md:mr-10 flex z-50">
           {/*NavBar Icons/Buttons*/}
-          <Button onClick={() => router.push('rulesPage')} className="bg-clear">
+          <Button onClick={() => router.push('rulesPage')} className="bg-clear wiggle">
             <Image src={RulesPic} alt="RulesPicture" className="w-35px h-30px rulesNav" />
           </Button>
           <Button onClick={() => { isFriendsOn ? setIsFriendsOn(false) : setIsFriendsOn(true) }} className={`bg-clear`}>
-            <Image src={FriendsPic} alt="FriendsPicture" className="w-35px h-30px friendsNav" />
+            <Image src={FriendsPic} alt="FriendsPicture" className={`w-35px h-30px friendsNav`} />
           </Button>
           <Button onClick={() => setOpenModal(true)} className={`bg-clear p-0`}>
             <Image src={LogoutBtn} alt="Power Button" className="w-25px h-40px friendsNav" />

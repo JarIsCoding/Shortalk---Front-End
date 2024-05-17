@@ -27,7 +27,7 @@ const FriendsTab = () => {
   }, [])
 
   return (
-    <div className={`Friends w-[300px] text-white text-[20px] z-30 relative ${correctRoom ? 'h-[750px]' : 'h-[850px]'}`}>
+    <div className={`Friends w-[300px] text-white text-[20px] z-30 relative ${correctRoom ? 'h-[790px]' : 'h-[850px]'}`}>
       <div className='mx-3 cursor-default'>
         <p className='text-end py-4 font-bold'>{userData.username}</p>
         <p className='text-end pt-2'>Friends</p>
