@@ -54,14 +54,23 @@ const IntermissionPnpPage = () => {
         </Modal.Body>
       </Modal>
 
-      <div className='pb-80 pt-64 w-screen cursor-pointer' onClick={handleClick}>
-        <p className='flex justify-center font-LuckiestGuy text-dblue text-[48px] tracking-widest'>
-          {"Team\u00A0"}<span>{team}</span>{"'s Turn"}
+      <div className='lg:pb-80 lg:pt-64 py-36 w-screen cursor-pointer' onClick={handleClick}>
+        <p className='lg:flex hidden justify-center font-LuckiestGuy text-dblue text-[48px] tracking-widest text-center'>
+          {"Team\u00A0"}{team}{"'s Turn"}
         </p>
-        <p className='flex justify-center font-LuckiestGuy text-dblue text-[48px] tracking-widest'>
+        <p className='lg:flex hidden justify-center font-LuckiestGuy text-dblue text-[48px] tracking-widest lg:pt-0 pt-10'>
           {"Speaker:\u00A0"}<span>{speaker}</span>
         </p>
-        <p className='flex justify-center font-LuckiestGuy text-dblue text-[40px] tracking-widest pt-14'>
+
+        {/* For smaller screens */}
+        <p className='lg:hidden block font-LuckiestGuy text-dblue text-[48px] tracking-widest text-center'>
+          {"Team\u00A0"} <br /> {team}{"'s Turn"}
+        </p>
+        <p className='lg:hidden block text-center font-LuckiestGuy text-dblue text-[48px] tracking-widest lg:pt-0 pt-10'>
+          {"Speaker:\u00A0"} <br /> {speaker}
+        </p>
+
+        <p className='flex justify-center text-center font-LuckiestGuy text-dblue text-[40px] tracking-widest pt-14'>
           Click anywhere to start
         </p>
       </div>

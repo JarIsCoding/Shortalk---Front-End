@@ -1,4 +1,4 @@
-import { ICard, ICardData, ICreateLobbyRoomDTO, IGameInfo, ILobbyRoom, ILobbyRoomBackEnd, IToken, IUserData, IUserInfo } from "@/Interfaces/Interfaces"
+import { ICard, ICardData, ICreateLobbyRoomDTO, IGameInfo, ILobbyRoom, ILobbyRoomBackEnd, IToken, IUserData, IUserInfo, iGameInfo } from "@/Interfaces/Interfaces"
 import { Context } from "@/context/Context"
 import * as wordData from '../words.json';
 
@@ -48,7 +48,7 @@ export const login = async (loginUser: IUserInfo) => {
 }
 
 export const getLoggedInUserData = async (username: string) => {
-    const res = await fetch(url + 'User/GetUserByUsername/' + username)
+    const res = await fetch(url + '/User/GetUserByUsername/' + username)
     const data = await res.json()
     userData = data;
 }
@@ -168,7 +168,103 @@ export const createGameRoom = async (lobbyRoomName: string) => {
 export const getGameInfo = async (lobbyRoomName:string) => {
 
     const promise = await fetch(url + `/Game/GetGameInfo/${lobbyRoomName}`);
-    const gameData:IGameInfo = await promise.json();
+    const gameData:iGameInfo = await promise.json();
     console.log(gameData)
     return gameData;
+}
+
+export const AppendBuzzWords = async (lobbyName:string, buzzWordTop:string, buzzWordBottom:string) => {
+    const res = await fetch(url +`/Game/AppendBuzzWords/${lobbyName}/${buzzWordTop}/${buzzWordBottom}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const AppendOnePointWords = async (lobbyName:string, onePointWordTop:string, onePointWordBottom:string) => {
+    const res = await fetch(url +`/Game/AppendOnePointWords/${lobbyName}/${onePointWordTop}/${onePointWordBottom}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const AppendThreePointWords = async (lobbyName:string, threePointWordTop:string, threePointWordBottom:string) => {
+    const res = await fetch(url +`/Game/AppendThreePointWords/${lobbyName}/${threePointWordTop}/${threePointWordBottom}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const AppendSkipPointWords = async (lobbyName:string, skipWordTop:string, skipWordBottom:string) => {
+    const res = await fetch(url +`/Game/AppendSkipPointWords/${lobbyName}/${skipWordTop}/${skipWordBottom}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const ChangeScore = async (lobbyName:string, Team:string, point:number) => {
+    const res = await fetch(url +`/Game/ChangeScore/${lobbyName}/${Team}/${point}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const GoToNextTurn = async (lobbyName:string) => {
+    const res = await fetch(url +`/Game/GoToNextTurn/${lobbyName}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const UpdateSpeaker = async (lobbyName:string) => {
+    const res = await fetch(url +`/Game/UpdateSpeaker/${lobbyName}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true'; 
+}
+
+export const ClearWordLists = async (lobbyName:string) => {
+    const res = await fetch(url +`/Game/ClearWordLists/${lobbyName}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true'; 
 }

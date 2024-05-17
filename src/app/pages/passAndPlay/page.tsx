@@ -48,19 +48,19 @@ const PassAndPlayPage = () => {
     getNextCard();
   }
 
-  function SkipAudio(){
+  function SkipAudio() {
     new Audio("/Audio/fart.mp3").play()
   }
 
-  function PlusOneAudio(){
+  function PlusOneAudio() {
     new Audio("/Audio/PlusOne.mp3").play()
   }
 
-  function PlusThreeAudio(){
+  function PlusThreeAudio() {
     new Audio("/Audio/PlusThree.mp3").play()
   }
 
-  function BuzzAudio(){
+  function BuzzAudio() {
     new Audio("/Audio/HockeyBuzzer.wav").play()
   }
 
@@ -222,6 +222,7 @@ const PassAndPlayPage = () => {
             OnePointWord={null}
             ThreePointWord={null}
             Speaker={null}
+            user={null}
           />
         </div>
       </div>
@@ -232,8 +233,8 @@ const PassAndPlayPage = () => {
             <div className='rounded-b-full h-[20%] bg-red-600 text-red-600 w-[80%]'>.</div>
           </div>
           <div className='flex justify-between items-center h-[80%]'>
-            <div className='rounded-e-full h-[80%] bg-green-500 text-green-500 w-5'>.</div>
-            <div className='rounded-s-full h-[80%] bg-purple-500 text-purple-500 w-5'>.</div>
+            <div className='rounded-e-full h-[80%] bg-green text-green w-5'>.</div>
+            <div className='rounded-s-full h-[80%] bg-purple text-purple w-5'>.</div>
           </div>
           <div className='flex justify-center absolute bottom-0 w-[100%]'>
             <div className='rounded-t-full h-[20%] bg-gray-500 text-gray-500 w-[80%]'>.</div>
@@ -252,18 +253,19 @@ const PassAndPlayPage = () => {
             OnePointWord={null}
             ThreePointWord={null}
             Speaker={speaker}
+            user={null}
           />
         </div>
 
         <div className='lg:static absolute lg:p-0 flex items-center md:pt-20 pt-28 z-10'>
-          <Card top={card.top} bottom={card.bottom} />
+          <Card top={card.top} bottom={card.bottom} isGuessing={false} />
         </div>
 
         <div className=' w-full px-40 lg:flex justify-between hidden pb-10'>
-        <div className=' cursor-pointer' onClick={()=>{SkipBtnHandle(); SkipAudio()}}><SkipBtn /></div>          
-          <div className=' cursor-pointer' onClick={()=>{BuzzBtnHandle(); BuzzAudio()}}><BuzzBtn /></div>
-          <div className=' cursor-pointer' onClick={()=>{OnePointBtnHandle(); PlusOneAudio()}}><OnePointBtn /></div>
-          <div className=' cursor-pointer' onClick={()=>{ThreePointBtnHandle(); PlusThreeAudio()}}><ThreePointBtn /></div>
+          <SkipBtn onClick={() => { SkipBtnHandle(); SkipAudio() }} />
+          <BuzzBtn onClick={() => { BuzzBtnHandle(); BuzzAudio() }} />
+          <OnePointBtn onClick={() => { OnePointBtnHandle(); PlusOneAudio() }} />
+          <ThreePointBtn onClick={() => { ThreePointBtnHandle(); PlusThreeAudio() }} />
         </div>
       </div>
 

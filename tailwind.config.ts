@@ -26,7 +26,11 @@ const config: Config = {
         'textGray' : '#545454',
         'lmagenta' : '#F099F2',
         'dmagenta' : '#C500E5',
-        'status': 'rgba(255, 255, 255, 0.75)'
+        'status': 'rgba(255, 255, 255, 0.75)',
+        'green': '#006110',
+        'yellow': '#ACA500',
+        'purple': '#F300F8',
+
       },
       fontFamily: {
         'LuckiestGuy':'LuckiestGuy',

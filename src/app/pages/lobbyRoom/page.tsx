@@ -129,9 +129,9 @@ const LobbyPage = () => {
         .configureLogging(LogLevel.Information)
         .build();
 
-        // .withUrl("http://localhost:5151/lobby")
-        // .configureLogging(LogLevel.Information)
-        // .build();
+      // .withUrl("http://localhost:5151/lobby")
+      // .configureLogging(LogLevel.Information)
+      // .build();
 
       // set up handler
       conn.on("JoinSpecificLobbyRoom", (username: string, msg: string, json: string) => { // Specify the types for parameters
@@ -139,6 +139,9 @@ const LobbyPage = () => {
         setTeamInfos(lobby);
         if (userData.username != lobby.Host) {
           setSelectedRounds(`${lobby.NumberOfRounds}`)
+          const time = formatTimeMinutesAndSeconds(lobby.TimeLimit)
+          setSelectedMinutes(time.m);
+          setSelectedSeconds(time.ss)
         }
         setCorrectIsReady(lobby);
 
@@ -292,8 +295,14 @@ const LobbyPage = () => {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      sendMessage(message);
-      setMessage('');
+      
+      // Check if user input something if so send otherwise nothing
+      if (message !== '') {
+        sendMessage(message);
+        setMessage('');
+      } else {
+
+      }
     }
   };
 
@@ -331,6 +340,7 @@ const LobbyPage = () => {
   }, [Team1Info, Team2Info])
 
   const [openModal, setOpenModal] = useState(false);
+
 
   // START OF RETURN CODE
   return (
