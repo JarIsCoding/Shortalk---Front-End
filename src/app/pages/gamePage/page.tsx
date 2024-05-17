@@ -360,8 +360,10 @@ const GamePage = () => {
                                     roundNumber={round}
                                     roundTotal={roundTotal}
                                     role={role}
-                                    OnePointWord={onePointWord}
-                                    ThreePointWord={threePointWord}
+                                    // OnePointWord={onePointWord}
+                                    // ThreePointWord={threePointWord}
+                                    OnePointWord={""}
+                                    ThreePointWord={""}
                                     Speaker={speaker}
                                 />
                             )}
