@@ -1,4 +1,4 @@
-import { IGameInfo, ITeamInfo, iGameInfo } from "@/Interfaces/Interfaces";
+import { ICard, IGameInfo, ITeamInfo, iGameInfo } from "@/Interfaces/Interfaces";
 
 
 export function shuffleArray(array: string[]): string[] {
@@ -165,4 +165,24 @@ export const Converti2I =  (data: iGameInfo) => {
     return game;
      
 
+}
+
+export const String2ICardArray = (wordList: string) => {
+    console.log(wordList);
+    if(wordList == ''){
+        return [];
+    }
+    const cardStringArray = wordList.split(',')
+    const cardArray: ICard[] = [];
+
+    cardStringArray.map( card => {
+        const cardSubArray = card.split('-');
+        const newCard: ICard = {
+            top: cardSubArray[0],
+            bottom: cardSubArray[1]
+        }
+        cardArray.push(newCard);
+    })
+
+    return cardArray;
 }

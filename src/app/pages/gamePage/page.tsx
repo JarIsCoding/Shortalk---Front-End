@@ -4,11 +4,14 @@ import { IGameInfo } from '@/Interfaces/Interfaces'
 import BuzzBtn from '@/app/components/BuzzBtn'
 import Card from '@/app/components/Card'
 import NavBar from '@/app/components/NavBar'
+import OnePointBtn from '@/app/components/OnePointBtn'
+import ScoreTable from '@/app/components/ScoreTable'
 import SkipBtn from '@/app/components/SkipBtn'
 import StatusBar from '@/app/components/StatusBar'
+import ThreePointBtn from '@/app/components/ThreePointBtn'
 import { useAppContext } from '@/context/Context'
-import { getGameInfo } from '@/utils/Dataservices'
-import { Converti2I, determineRole, determineRound } from '@/utils/utils'
+import { AppendBuzzWords, AppendOnePointWords, AppendSkipPointWords, AppendThreePointWords, getGameInfo } from '@/utils/Dataservices'
+import { Converti2I, String2ICardArray, determineRole, determineRound } from '@/utils/utils'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
@@ -31,8 +34,16 @@ const GamePage = () => {
     const [threePointWord, setThreePointWord] = useState<string>('');
     const [speaker, setSpeaker] = useState<string>('');
 
+    const [onePointWordHasBeenSaid, setOnePointWordHasBeenSaid] = useState<boolean>();
+    const [threePointWordHasBeenSaid, setThreePointWordHasBeenSaid] = useState<boolean>();
+
+    const [buzzWords, setBuzzWords] = useState<string>('')
+    const [onePointWords, setOnePointWords] = useState<string>('')
+    const [threePointWords, setThreePointWords] = useState<string>('')
+    const [skipWords, setSkipWords] = useState<string>('')
+
     const [guess, setGuess] = useState<string>('')
-    const [guesses, setGuesses] = useState<{ username: string; msg: string; }[]>([]);
+    const [guesses, setGuesses] = useState<{ username: string; msg: string; color: string }[]>([]);
     const [description, setDescription] = useState<string>('');
 
     const [buzzed, setBuzzed] = useState<boolean>(false)
@@ -44,22 +55,22 @@ const GamePage = () => {
 
     const [gameInfo, setGameInfo] = useState<IGameInfo>({} as IGameInfo);
 
-    const { userData, lobbyRoomName } = useAppContext();
+    const { userData, lobbyRoomName, isTimeUp, setIsTimeUp } = useAppContext();
 
-    const [ line, setLine] = useState<string>('')
+    const [line, setLine] = useState<string>('')
 
 
 
     const connectToGame = async (username: string, lobbyroom: string) => {
         try {
             const conn = new HubConnectionBuilder()
-                .withUrl("https://shortalkapi.azurewebsites.net/game")
-                .configureLogging(LogLevel.Information)
-                .build();
-
-                // .withUrl("http://localhost:5151/game")
+                // .withUrl("https://shortalkapi.azurewebsites.net/game")
                 // .configureLogging(LogLevel.Information)
                 // .build();
+
+                .withUrl("http://localhost:5151/game")
+                .configureLogging(LogLevel.Information)
+                .build();
 
             conn.on("JoinSpecificGame", (username: string, msg: string) => {
                 console.log(username + ": " + msg)
@@ -71,15 +82,29 @@ const GamePage = () => {
                 console.log(game.OnePointWord)
                 setOnePointWord(game.OnePointWord);
                 setThreePointWord(game.ThreePointWord);
+                setOnePointWordHasBeenSaid(game.OnePointWordHasBeenSaid);
+                setThreePointWordHasBeenSaid(game.ThreePointWordHasBeenSaid);
+                setBuzzWords(game.BuzzWords);
+                setOnePointWords(game.OnePointWords);
+                setThreePointWords(game.ThreePointWords);
+                setSkipWords(game.SkippedWords);
             })
 
-            conn.on("ReceiveGuess", (username: string, msg: string) => {
-                setGuesses(guesses => [...guesses, { username, msg }])
+            conn.on("ReceiveGuess", (username: string, msg: string, color: string, json: string) => {
+                const game: IGameInfo = JSON.parse(json);
+                console.log(game)
+                setOnePointWordHasBeenSaid(game.OnePointWordHasBeenSaid);
+                setThreePointWordHasBeenSaid(game.ThreePointWordHasBeenSaid);
+                setGuesses(guesses => [...guesses, { username, msg, color }])
             })
 
             conn.on("RenderDescription", (description: string) => {
                 console.log(description)
                 setDescription(description);
+            })
+
+            conn.on("Buzz", ()=>{
+                setOpenBuzzModal(true)
             })
 
             await conn.start();
@@ -100,9 +125,17 @@ const GamePage = () => {
         }
     }
 
-    const SubmitGuess = async (guess: string) => {
+    const SubmitGuess = async (onePointWord: string, threePointWord: string, guess: string) => {
         try {
-            conn && await conn.invoke("SubmitGuess", guess);
+            conn && await conn.invoke("SubmitGuess", onePointWord, threePointWord, guess);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const Buzz = async () => {
+        try {
+            conn && await conn.invoke("Buzz");
         } catch (e) {
             console.log(e)
         }
@@ -110,7 +143,7 @@ const GamePage = () => {
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            SubmitGuess(guess);
+            SubmitGuess(onePointWord, threePointWord, guess);
             setGuess('');
         }
     };
@@ -126,22 +159,27 @@ const GamePage = () => {
     const handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (description != event.target.value) {
             TypeDescription(event.target.value)
-        }else{
+        } else {
             TypeDescription(event.target.value)
         }
     }
 
     const handleSkip = async () => {
+        await AppendSkipPointWords(lobbyRoomName, onePointWord, threePointWord)
         await getNewCard(userData.username, lobbyRoomName)
     }
-    const handleBuzz = () => {
-
+    const handleBuzz = async () => {
+        Buzz();
+        await AppendBuzzWords(lobbyRoomName, onePointWord, threePointWord)
+        await getNewCard(userData.username, lobbyRoomName)
     }
-    const handleOnePoint = () => {
-
+    const handleOnePoint = async () => {
+        await AppendOnePointWords(lobbyRoomName, onePointWord, threePointWord)
+        await getNewCard(userData.username, lobbyRoomName)
     }
-    const handleThreePoint = () => {
-
+    const handleThreePoint = async () => {
+        await AppendThreePointWords(lobbyRoomName, onePointWord, threePointWord)
+        await getNewCard(userData.username, lobbyRoomName)
     }
 
 
@@ -181,6 +219,7 @@ const GamePage = () => {
 
 
     return (
+        
         <div className='relative h-[100vh]'>
 
             <div className='relative h-[9.25%]'>
@@ -221,6 +260,8 @@ const GamePage = () => {
                 </div>
             </div>
 
+            {
+            !isTimeUp ?
             <div className='h-[90.75%]'>
                 <div className='p-5 pt-10'>
                     {Object.keys(gameInfo).length > 0 && (
@@ -246,10 +287,13 @@ const GamePage = () => {
                         <div className='pt-4 pb-2 ps-4 text-[20px] h-full'>
                             <p>Guesser Box</p>
                             <hr className='bg-black me-3' />
+                            <div className=' text-green'></div>
+                            <div className=' text-yellow'></div>
+                            <div className=' text-purple'></div>
                             {
                                 guesses.map((guess, ix) => {
                                     return (
-                                        <p key={ix} className=' font-Roboto'> <span className=' font-RobotoBold'>{guess.username}</span> {" - "} <span>{guess.msg}</span> </p>
+                                        <p key={ix} className={' font-Roboto' + guess.color}> <span className=' font-RobotoBold'>{guess.username}</span> {" - "} <span className={'text-' + guess.color}>{guess.msg}</span> </p>
                                     )
                                 })
 
@@ -268,12 +312,21 @@ const GamePage = () => {
                     {/* This is the Card box */}
                     <div>
                         <div className='flex justify-center'>
-                            <Card top={onePointWord} bottom={threePointWord} />
+                            <Card top={onePointWord} bottom={threePointWord} isGuessing={role == 'Guesser'} />
                         </div>
                         {
                             role == 'Speaker' ?
                                 <div className={`flex justify-center py-5`}>
-                                    <SkipBtn onClick={handleSkip} />
+                                    {
+                                        threePointWordHasBeenSaid ?
+                                            <ThreePointBtn onClick={handleThreePoint} />
+                                            :
+                                            onePointWordHasBeenSaid ?
+                                                <OnePointBtn onClick={handleOnePoint} />
+                                                :
+                                                <SkipBtn onClick={handleSkip} />
+                                    }
+
                                 </div>
                                 : role == 'Defense' ?
                                     <div className={`flex justify-center py-5 ${isDefense ? 'block' : 'hidden'}`}>
@@ -304,7 +357,7 @@ const GamePage = () => {
                                         < textarea value={description} onChange={handleOnChange} style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg`} />
                                         :
 
-                                     <div className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg break-all whitespace-pre-line`}>{description}</div>
+                                        <div className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg break-all whitespace-pre-line`}>{description}</div>
                                 }
 
                             </div>
@@ -313,6 +366,11 @@ const GamePage = () => {
 
                 </div>
             </div>
+            : <ScoreTable skipWords={String2ICardArray(skipWords)} buzzWords={String2ICardArray(buzzWords)} onePointWords={String2ICardArray(onePointWords)} threePointWords={String2ICardArray(threePointWords)} />
+            }
+
+
+
         </div >
     )
 }

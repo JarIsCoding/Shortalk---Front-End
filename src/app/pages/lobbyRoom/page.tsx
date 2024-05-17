@@ -125,13 +125,13 @@ const LobbyPage = () => {
   const joinRoom = async (username: string, lobbyroom: string) => {
     try {
       const conn = new HubConnectionBuilder()
-        .withUrl("https://shortalkapi.azurewebsites.net/lobby")
-        .configureLogging(LogLevel.Information)
-        .build();
-
-        // .withUrl("http://localhost:5151/lobby")
+        // .withUrl("https://shortalkapi.azurewebsites.net/lobby")
         // .configureLogging(LogLevel.Information)
         // .build();
+
+        .withUrl("http://localhost:5151/lobby")
+        .configureLogging(LogLevel.Information)
+        .build();
 
       // set up handler
       conn.on("JoinSpecificLobbyRoom", (username: string, msg: string, json: string) => { // Specify the types for parameters

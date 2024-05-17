@@ -2,9 +2,9 @@ import { ICard, ICardData, ICreateLobbyRoomDTO, IGameInfo, ILobbyRoom, ILobbyRoo
 import { Context } from "@/context/Context"
 import * as wordData from '../words.json';
 
-const url = "https://shortalkapi.azurewebsites.net"
+// const url = "https://shortalkapi.azurewebsites.net"
 
-// const url = "http://localhost:5151"
+const url = "http://localhost:5151"
 
 let userData: IUserData
 
@@ -171,4 +171,52 @@ export const getGameInfo = async (lobbyRoomName:string) => {
     const gameData:iGameInfo = await promise.json();
     console.log(gameData)
     return gameData;
+}
+
+export const AppendBuzzWords = async (lobbyName:string, buzzWordTop:string, buzzWordBottom:string) => {
+    const res = await fetch(url +`/Game/AppendBuzzWords/${lobbyName}/${buzzWordTop}/${buzzWordBottom}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const AppendOnePointWords = async (lobbyName:string, onePointWordTop:string, onePointWordBottom:string) => {
+    const res = await fetch(url +`/Game/AppendOnePointWords/${lobbyName}/${onePointWordTop}/${onePointWordBottom}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const AppendThreePointWords = async (lobbyName:string, threePointWordTop:string, threePointWordBottom:string) => {
+    const res = await fetch(url +`/Game/AppendThreePointWords/${lobbyName}/${threePointWordTop}/${threePointWordBottom}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
+}
+
+export const AppendSkipPointWords = async (lobbyName:string, skipWordTop:string, skipWordBottom:string) => {
+    const res = await fetch(url +`/Game/AppendSkipPointWords/${lobbyName}/${skipWordTop}/${skipWordBottom}`, {
+        method: 'PUT'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true';
 }
