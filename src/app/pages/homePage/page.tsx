@@ -13,34 +13,7 @@ import Player from '@/app/components/Player';
 import MainMenuMusic from '@/app/components/AudioPlayer';
 import VolumeSlider from '@/app/components/VolumeSlider';
 
-// const AudioClips = [
-//   {sound: ("/Audio/MainMenuMusic.mp3"), label: 'MenuMusic'}
-
-// ]
-
-// const [M, setMMM] = useState<void>()
-
 const HomePage = () => {
-
-  // const [value, setValue] = useState(1);
-
-  // useEffect(() =>{
-  //   if(value % 2 === 0)play()}, [value])
-
-  // function play(){
-  //   new Audio("/Audio/MainMenuMusic.mp3").play()
-  // //  setMMM(MMM);
-  //   console.log(play)
-    
-  // }
-
-//   function pause(){
-// const [M, setMMM] = useState<void>()
-//     const pause = M.pause();
-//     console.log(pause)
-//   }
-
-
 
   const router = useRouter()
 
@@ -58,16 +31,6 @@ const HomePage = () => {
     router.push('/pages/passAndPlayLobby')
   }
 
-  // function play() {
-  //   try {
-  //     const audio = new Audio("/Audio/MainMenuMusic.mp3");
-  //     audio.play();
-  //   } catch (error) {
-  //     console.error('Error playing audio:', error);
-  //   }
-  // }
-  
-
   return (
 
     <div className='bg-lblue min-h-screen w-full Bg relative'>
@@ -75,9 +38,6 @@ const HomePage = () => {
       <div className={`absolute right-0 pt-24 ${isFriendsOn ? 'block slideLeft' : 'hidden'}`}>
         <FriendsTab />
       </div>
-
-    {/* <VolumeSlider/> */}
-
 
       {/* Check if user is guest or signed in */}
       {/* Title */}
@@ -97,16 +57,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* <button onClick={play} className='bg-red-300'>
-        Play Sound pls!!!
-      </button> */}
-      {/* <MainMenuMusic /> */}
-
-      <Player/>
-
-      {/* <button onClick={pause} className='bg-blue-300 ml-9'>
-        PAUSE THIS MF SOUND RIGHT NOW
-      </button> */}
+      {/* <Player/> */}
 
       <div className='mt-4'>
         {/* Tilted SHORTALK */}

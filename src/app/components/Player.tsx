@@ -1,6 +1,7 @@
-// components/Player.js
-
 import { useState } from "react";
+import Image from 'next/image';
+import MusicalNotePic from '@/app/assets/MusicalNotePic.png'
+
 
 const Player = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -18,7 +19,9 @@ const Player = () => {
           autoPlay={isPlaying}
         />
       }
-      <button onClick={togglePlay}>{isPlaying ? "Pause" : "Play"}</button>
+      <button onClick={togglePlay}>
+        <Image src={MusicalNotePic} alt="MuscialPicture" className="w-[40px] h-[40px]"/>  
+   </button>
     </div>
   );
 };
