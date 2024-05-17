@@ -9,6 +9,7 @@ import LogoutBtn from '@/app/assets/LogoutBtn2.png'
 import FriendsTab from '@/app/components/FriendsTab';
 import { useAppContext } from '@/context/Context';
 import { useRouter } from 'next/navigation';
+import Player from '@/app/components/Player';
 import MainMenuMusic from '@/app/components/AudioPlayer';
 import VolumeSlider from '@/app/components/VolumeSlider';
 
@@ -27,8 +28,8 @@ const HomePage = () => {
   //   if(value % 2 === 0)play()}, [value])
 
   // function play(){
-  //  const MMM = await new Audio("/Audio/MainMenuMusic.mp3").play()
-  //  setMMM(MMM);
+  //   new Audio("/Audio/MainMenuMusic.mp3").play()
+  // //  setMMM(MMM);
   //   console.log(play)
     
   // }
@@ -57,14 +58,14 @@ const HomePage = () => {
     router.push('/pages/passAndPlayLobby')
   }
 
-  function play() {
-    try {
-      const audio = new Audio("/Audio/MainMenuMusic.mp3");
-      audio.play();
-    } catch (error) {
-      console.error('Error playing audio:', error);
-    }
-  }
+  // function play() {
+  //   try {
+  //     const audio = new Audio("/Audio/MainMenuMusic.mp3");
+  //     audio.play();
+  //   } catch (error) {
+  //     console.error('Error playing audio:', error);
+  //   }
+  // }
   
 
   return (
@@ -96,9 +97,12 @@ const HomePage = () => {
         </div>
       </div>
 
-      <button onClick={play} className='bg-red-300'>
+      {/* <button onClick={play} className='bg-red-300'>
         Play Sound pls!!!
-      </button>
+      </button> */}
+      {/* <MainMenuMusic /> */}
+
+      <Player/>
 
       {/* <button onClick={pause} className='bg-blue-300 ml-9'>
         PAUSE THIS MF SOUND RIGHT NOW
