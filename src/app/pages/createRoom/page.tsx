@@ -94,7 +94,7 @@ const CreateRoom = () => {
                         />
                     </div>
                     <div className='text-center p-0 cursor-default'>
-                        <p className={`${successColor ? 'text-green-500' : 'text-red-500'}`}>
+                        <p className={`${successColor ? 'text-green' : 'text-red-500'}`}>
                             {warnText}
                         </p>
                     </div>

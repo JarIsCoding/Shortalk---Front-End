@@ -69,7 +69,7 @@ const JoinRoom = () => {
                         />
                     </div>
                     <div className='text-center p-0'>
-                        <p className={`cursor-default ${successColor ? 'text-green-500' : 'text-red-500'}`}>
+                        <p className={`cursor-default ${successColor ? 'text-green' : 'text-red-500'}`}>
                             {warnText}
                         </p>
                     </div>
