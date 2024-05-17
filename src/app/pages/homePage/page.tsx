@@ -17,6 +17,8 @@ import VolumeSlider from '@/app/components/VolumeSlider';
 
 // ]
 
+// const [M, setMMM] = useState<void>()
+
 const HomePage = () => {
 
   // const [value, setValue] = useState(1);
@@ -24,9 +26,20 @@ const HomePage = () => {
   // useEffect(() =>{
   //   if(value % 2 === 0)play()}, [value])
 
-  function play(){
-    new Audio("/Audio/MainMenuMusic.mp3").play()
-  }
+  // function play(){
+  //  const MMM = await new Audio("/Audio/MainMenuMusic.mp3").play()
+  //  setMMM(MMM);
+  //   console.log(play)
+    
+  // }
+
+//   function pause(){
+// const [M, setMMM] = useState<void>()
+//     const pause = M.pause();
+//     console.log(pause)
+//   }
+
+
 
   const router = useRouter()
 
@@ -44,14 +57,14 @@ const HomePage = () => {
     router.push('/pages/passAndPlayLobby')
   }
 
-  // function play() {
-  //   try {
-  //     const audio = new Audio("/Audio/MainMenuMusic.mp3");
-  //     audio.play();
-  //   } catch (error) {
-  //     console.error('Error playing audio:', error);
-  //   }
-  // }
+  function play() {
+    try {
+      const audio = new Audio("/Audio/MainMenuMusic.mp3");
+      audio.play();
+    } catch (error) {
+      console.error('Error playing audio:', error);
+    }
+  }
   
 
   return (
@@ -86,6 +99,10 @@ const HomePage = () => {
       <button onClick={play} className='bg-red-300'>
         Play Sound pls!!!
       </button>
+
+      {/* <button onClick={pause} className='bg-blue-300 ml-9'>
+        PAUSE THIS MF SOUND RIGHT NOW
+      </button> */}
 
       <div className='mt-4'>
         {/* Tilted SHORTALK */}
