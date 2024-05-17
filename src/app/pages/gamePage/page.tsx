@@ -115,7 +115,6 @@ const GamePage = () => {
             })
 
             conn.on("GoToNextTurn", ()=>{
-                setIsTimeUp(false);
                 initializeRoom();
             })
 
@@ -163,8 +162,12 @@ const GamePage = () => {
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
+            if(guess !== ''){
             SubmitGuess(onePointWord, threePointWord, guess);
             setGuess('');
+            } else {
+                
+            }
         }
     };
 
@@ -238,6 +241,7 @@ const GamePage = () => {
         setTeam2Score(InitGameInfo.Team2Score);
         setHost(InitGameInfo.Host);
         setGameInfo({ ...InitGameInfo })
+        setIsTimeUp(false);
     }
 
     useEffect(() => {
@@ -385,9 +389,9 @@ const GamePage = () => {
                                 <div className='pt-4 pb-2 ps-4 text-[20px] h-full'>
                                     <p>Guesser Box</p>
                                     <hr className='bg-black me-3' />
-                                    <div className=' text-green'></div>
-                                    <div className=' text-yellow'></div>
-                                    <div className=' text-purple'></div>
+                                    <div className=' text-green font-bold'></div>
+                                    <div className=' text-yellow font-bold'></div>
+                                    <div className=' text-purple font-bold'></div>
                                     {
                                         guesses.map((guess, ix) => {
                                             return (

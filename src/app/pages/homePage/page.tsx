@@ -82,7 +82,7 @@ const HomePage = () => {
       </div>
 
       <p className='text-[35px] text-center font-LuckiestGuy text-dblue py-10 cursor-default'>
-        Online Currently not working! Please play Pass and play for now. <br /> Sorry for the inconvinence!
+        Online Working!!! Only the first round though... <br /> Thanks for playing!
       </p>
 
       {/* Modal for logging out */}
