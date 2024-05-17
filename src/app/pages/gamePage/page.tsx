@@ -115,7 +115,6 @@ const GamePage = () => {
             })
 
             conn.on("GoToNextTurn", ()=>{
-                setIsTimeUp(false);
                 initializeRoom();
             })
 
@@ -238,6 +237,7 @@ const GamePage = () => {
         setTeam2Score(InitGameInfo.Team2Score);
         setHost(InitGameInfo.Host);
         setGameInfo({ ...InitGameInfo })
+        setIsTimeUp(false);
     }
 
     useEffect(() => {
