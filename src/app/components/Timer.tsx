@@ -7,20 +7,14 @@ interface TimerProps {
 
 const Timer = ({ initialTime }: TimerProps) => {
 
-  const { isTimeUp, setIsTimeUp } = useAppContext();
+  const { isTimeUp, setIsTimeUp, time, setTime } = useAppContext();
 
   const getInitialTime = () => {
-
-    if (typeof window !== "undefined") {
-      const storedTimeStr = sessionStorage.getItem('currentTimer');
-      return storedTimeStr ? parseInt(storedTimeStr, 10) : initialTime;
-    }
-    return initialTime;
-    // const storedTime = sessionStorage.getItem('currentTimer');
-    // return storedTime && parseInt(storedTime) !== 0 ? parseInt(storedTime) : initialTime;
+    const storedTime = sessionStorage.getItem('currentTimer');
+    return storedTime && parseInt(storedTime) !== 0 ? parseInt(storedTime) : initialTime;
   };
 
-  const [time, setTime] = useState(getInitialTime());
+  // const [time, setTime] = useState(getInitialTime());
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -33,12 +27,12 @@ const Timer = ({ initialTime }: TimerProps) => {
       }
     }, 1000);
 
-    if (time === 0) {
-      setIsTimeUp(true);
-    }
+    // if (time === 0) {
+    //   setIsTimeUp(true);
+    // }
 
     return () => clearInterval(timer);
-  }, [time, setIsTimeUp]);
+  }, [time]);
 
   const formatTime = (seconds: number): string => {
     const m = Math.floor(seconds / 60).toString().padStart(1, '0');

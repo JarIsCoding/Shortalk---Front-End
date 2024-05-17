@@ -28,7 +28,7 @@ const GamePage = () => {
     const [isSpeaker, setIsSpeaker] = useState<boolean>(true)
     const [isDefense, setIsDefense] = useState<boolean>(true)
 
-    const [time, setTime] = useState<number>();
+    // const [time, setTime] = useState<number>();
     const [round, setRound] = useState<number>(0);
     const [roundTotal, setRoundTotal] = useState<number>(0);
     const [role, setRole] = useState<string>('');
@@ -57,7 +57,9 @@ const GamePage = () => {
 
     const [gameInfo, setGameInfo] = useState<IGameInfo>({} as IGameInfo);
 
-    const { userData, lobbyRoomName, isTimeUp, setIsTimeUp } = useAppContext();
+    const { userData, lobbyRoomName, time, setTime } = useAppContext();
+
+    const [isTimeUp, setIsTimeUp] = useState<boolean>(false)
     const [isGameOver, setIsGameOver] = useState<boolean>(false);
     const [Team1Score, setTeam1Score] = useState<number>(0);
     const [Team2Score, setTeam2Score] = useState<number>(0);
@@ -114,8 +116,8 @@ const GamePage = () => {
                 setOpenBuzzModal(true)
             })
 
-            conn.on("GoToNextTurn", ()=>{
-                initializeRoom();
+            conn.on("GoToNextTurn", async ()=>{
+                await initializeRoom();
             })
 
             await conn.start();
@@ -209,7 +211,7 @@ const GamePage = () => {
         let points = AddUpPoints(buzzWords, onePointWords, threePointWords);
         await ChangeScore(lobbyRoomName, teamUp, points);
         setTeamUp(DetermineTeam(teamUp));
-        await GoToNextTurn(lobbyRoomName);
+        // await GoToNextTurn(lobbyRoomName);
         await UpdateSpeaker(lobbyRoomName);
         await ClearWordLists(lobbyRoomName)
     }
@@ -221,13 +223,12 @@ const GamePage = () => {
     const handleNextTurn = async () => {
         await updateRoom();
         await goToNextTurn();
-
     }
 
     const initializeRoom = async () => {
-        const initGameInfo = await getGameInfo(lobbyRoomName);
+        let initGameInfo = await getGameInfo(lobbyRoomName);
         console.log(initGameInfo);
-        const InitGameInfo = Converti2I(initGameInfo);
+        let InitGameInfo = Converti2I(initGameInfo);
         setTime(InitGameInfo.TimeLimit);
         setRound(determineRound(InitGameInfo));
         setRoundTotal(InitGameInfo.NumberOfRounds);
@@ -245,6 +246,7 @@ const GamePage = () => {
     }
 
     useEffect(() => {
+
         connectToGame(userData.username, lobbyRoomName);
         initializeRoom();
     }, [])
@@ -304,7 +306,7 @@ const GamePage = () => {
             </div>
 
             {
-                isTimeUp ?
+                (time == 0) ?
                     isGameOver ?
                         <div className='font-LuckiestGuy tracking-widest'>
                             <div className='text-center pt-32 pb-16 text-[50px] text-dblue flex flex-col'>

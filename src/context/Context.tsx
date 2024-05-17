@@ -28,6 +28,9 @@ interface IContextValue {
     numberOfPeople: number
     setNumberOfPeople: (numberOfPeople: number) => void
 
+    time: number
+    setTime: React.Dispatch<React.SetStateAction<number>>
+
     Team1Name: string
     setTeam1Name: (Team1Name: string) => void
 
@@ -144,6 +147,14 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
         if (typeof window !== "undefined") {
             const numberOfPeopleStr = sessionStorage.getItem('numberOfPeople');
             return numberOfPeopleStr ? parseInt(numberOfPeopleStr, 10) : 0;
+        }
+        return 0;
+    });
+
+    const [time, setTime] = useState<number>(() => {
+        if (typeof window !== "undefined") {
+            const timeStr = sessionStorage.getItem('time');
+            return timeStr ? parseInt(timeStr, 10) : 0;
         }
         return 0;
     });
@@ -333,6 +344,10 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     }, [numberOfPeople]);
 
     useEffect(() => {
+        sessionStorage.setItem('time', time.toString());
+    }, [time]);
+
+    useEffect(() => {
         sessionStorage.setItem('Team1Name', Team1Name.toString());
     }, [Team1Name]);
 
@@ -405,7 +420,7 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     }, [host]);
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages, host, setHost}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages, host, setHost, time, setTime}}>
             {children}
         </Context.Provider>
     )
