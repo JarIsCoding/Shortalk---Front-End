@@ -7,7 +7,7 @@ interface TimerProps {
 
 const Timer = ({ initialTime }: TimerProps) => {
 
-  const { isTimeUp, setIsTimeUp, time, setTime } = useAppContext();
+  const { time, setTime } = useAppContext();
 
   const getInitialTime = () => {
     const storedTime = sessionStorage.getItem('currentTimer');
@@ -15,6 +15,9 @@ const Timer = ({ initialTime }: TimerProps) => {
   };
 
   // const [time, setTime] = useState(getInitialTime());
+  useEffect(()=> {
+    setTime(getInitialTime);
+  },[])
 
   useEffect(() => {
     const timer = setInterval(() => {

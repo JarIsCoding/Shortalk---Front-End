@@ -27,7 +27,7 @@ const config: Config = {
         'lmagenta' : '#F099F2',
         'dmagenta' : '#C500E5',
         'status': 'rgba(255, 255, 255, 0.75)',
-        'green': '#006110',
+        'green': '#04D727',
         'yellow': '#ACA500',
         'purple': '#F300F8',
 
