@@ -21,7 +21,9 @@ const PassAndPlayPage = () => {
   const firstRender2 = useRef(true);
   const firstRender3 = useRef(true);
 
-  const { roundTime, numberOfRounds, Team1Name, Team2Name, team, setTeam, speaker, card, setCard, isTimeUp, setIsTimeUp, turnNumber, setTurnNumber, numberOfTurns, setSpeaker, Team2NameList, Team1NameList, setOnePointWords, OnePointWords, setBuzzWords, BuzzWords, setThreePointWords, ThreePointWords, setSkipWords, SkipWords } = useAppContext();
+  const { roundTime, numberOfRounds, Team1Name, Team2Name, team, setTeam, speaker, card, setCard, isTimeUp, setIsTimeUp, turnNumber, setTurnNumber, numberOfTurns, setSpeaker, Team2NameList, Team1NameList, setOnePointWords, OnePointWords, setBuzzWords, BuzzWords, setThreePointWords, ThreePointWords, setSkipWords, SkipWords, time, setTime } = useAppContext();
+
+  const [isRoundOver, setIsRoundOver] = useState<boolean>(false);
 
   const getNextCard = () => {
     let card = getCard();
@@ -96,8 +98,9 @@ const PassAndPlayPage = () => {
     console.log(firstRender2.current)
     if (firstRender2.current) {
       firstRender2.current = false;
-    } else {
-      setTurnNumber(turnNumber + 1);
+    } 
+    else {
+      setIsRoundOver(true)
     }
 
   }, [speaker])
@@ -110,7 +113,7 @@ const PassAndPlayPage = () => {
       router.push('/pages/finalScorePnpPage');
     }
 
-  }, [turnNumber])
+  }, [isRoundOver])
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -213,7 +216,7 @@ const PassAndPlayPage = () => {
           </Button>
         </div>
         <div className='lg:hidden block w-full bg-dblue ps-4 pe-4 pb-4'>
-          <StatusBar
+          {/* <StatusBar
             time={roundTime}
             teamName={null}
             roundNumber={1}
@@ -223,7 +226,7 @@ const PassAndPlayPage = () => {
             ThreePointWord={null}
             Speaker={null}
             user={null}
-          />
+          /> */}
         </div>
       </div>
 
@@ -247,7 +250,7 @@ const PassAndPlayPage = () => {
           <StatusBar
             time={roundTime}
             teamName={team}
-            roundNumber={1}
+            roundNumber={Math.ceil((turnNumber/numberOfTurns)*numberOfRounds)}
             roundTotal={numberOfRounds}
             role={null}
             OnePointWord={null}

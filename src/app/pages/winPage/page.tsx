@@ -9,7 +9,21 @@ import PlayAgainBtn from '@/app/components/PlayAgainBtn';
 const WinPage = () => {
 
     const router = useRouter();
-    const {Team1Name, Team1Score, Team2Name, Team2Score, turnNumber, setTurnNumber, numberOfTurns} = useAppContext();
+    const {Team1Name, Team1Score, Team2Name, Team2Score, turnNumber, setTurnNumber, numberOfTurns, setTeam1Score, setTeam2Score, numberOfRounds, Team1NameList, Team2NameList} = useAppContext();
+
+    const resetScores = async () => {
+        setTeam1Score(0);
+        setTeam2Score(0)
+    }
+
+    const handleClickToIntermissions = async () => {
+        router.push('/pages/intermissionPnpPage')
+    }
+
+    const handleClickToLobby = async () => {
+        await resetScores();
+        router.push('/pages/passAndPlayLobby')
+    }
 
     if(turnNumber > numberOfTurns){
         return ( 
@@ -46,7 +60,7 @@ const WinPage = () => {
                         </div>
                     </div>
                     {/* push to whatever page is next */}
-                    <div onClick={() => router.push('/pages/passAndPlayLobby')} className='flex justify-center py-16 cursor-pointer'>
+                    <div onClick={handleClickToLobby} className='flex justify-center py-16 cursor-pointer'>
                         <PlayAgainBtn/>
                     </div>
                 </div>
@@ -55,7 +69,10 @@ const WinPage = () => {
     }else{
         return ( 
             <div className='font-LuckiestGuy tracking-widest'>
-                <p className='text-center pt-32 pb-16 text-[50px] text-dblue'>
+                <p className='text-center pt-32 pb-4 text-[50px] text-dblue'>
+                    End of Round {(turnNumber - 1) / (2*(Math.max(Team1NameList.length, Team2NameList.length)))}
+                </p>
+                <p className='text-center pt-10 pb-16 text-[50px] text-dblue'>
                     CURRENT SCORES
                 </p>
                 <div className='grid grid-cols-1'>
@@ -80,7 +97,7 @@ const WinPage = () => {
                         </div>
                     </div>
                     {/* push to whatever page is next */}
-                    <div onClick={() => router.push('/pages/intermissionPnpPage')} className='flex justify-center py-16 cursor-pointer'>
+                    <div onClick={handleClickToIntermissions} className='flex justify-center py-16 cursor-pointer'>
                         <NextRoundBtn />
                     </div>
                 </div>

@@ -15,7 +15,7 @@ const PassAndPlayLobby = () => {
 
   const router = useRouter();
 
-  const { Team1Name, Team2Name, setTeam1Name, setTeam2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, setTurnNumber, setThreePointWords, setOnePointWords, setSkipWords, setBuzzWords } = useAppContext();
+  const { Team1Name, Team2Name, setTeam1Name, setTeam2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, setTurnNumber, setThreePointWords, setOnePointWords, setSkipWords, setBuzzWords, setTime, setTeam1Score, setTeam2Score } = useAppContext();
 
   const [isReady, setIsReady] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('')
@@ -93,6 +93,8 @@ const PassAndPlayLobby = () => {
     setBuzzWords([])
     setOnePointWords([])
     setThreePointWords([])
+    setTeam1Score(0);
+    setTeam2Score(0)
   }, [])
 
   useEffect(() => {
@@ -107,7 +109,9 @@ const PassAndPlayLobby = () => {
     let differenceInPlayers = Math.abs(Team1NameList.length - Team2NameList.length);
     let time = parseInt(selectedMinutes) * 60 + parseInt(selectedSeconds);
     setNumberOfRounds(parseInt(selectedRounds));
+    console.log("The time set is: " + time)
     setRoundTime(time)
+    setTime(time)
     setIsReady(false);
     if (!(Team1Name && Team2Name)) {
       setMessage('Give each team a name');
@@ -124,7 +128,7 @@ const PassAndPlayLobby = () => {
       setIsReady(true);
     }
 
-  }, [Team1Name, Team2Name, Team1NameList, Team2NameList, roundTime, selectedMinutes, selectedSeconds, selectedRounds])
+  }, [Team1Name, Team2Name, Team1NameList, Team2NameList, selectedMinutes, selectedSeconds, selectedRounds])
 
   return (
     <div>

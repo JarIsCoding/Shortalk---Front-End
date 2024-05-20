@@ -18,11 +18,12 @@ const LobbyPage = () => {
 
   const router = useRouter();
 
-  const { Team1Name, Team2Name, Team1NameList, Team2NameList, setTeam1NameList, setTeam2NameList, shuffle, setShuffle, roundTime, setRoundTime, numberOfRounds, setNumberOfRounds, setTeam, setSpeaker, setNumberOfTurns, userData, lobbyRoomName, host, setHost } = useAppContext();
+  const { userData, lobbyRoomName, setIsGameStarting } = useAppContext();
+
+  const [host, setHost] = useState<string>('')
 
   const [conn, setConnection] = useState<HubConnection>()
   const [isReady, setIsReady] = useState<boolean>(false);
-  const [warning, setWarning] = useState<string>('')
   const [message, setMessage] = useState<string>('')
   const [messages, setMessages] = useState<{ username: string; msg: string; }[]>([]);
 
@@ -30,14 +31,9 @@ const LobbyPage = () => {
 
   const [Team2Info, setTeam2Info] = useState<ITeamInfo>({} as ITeamInfo);
 
-  // const [host, setHost] = useState<string>('');
-
-  const [Team1Names, setTeam1Names] = useState<string[]>(Team1NameList);
-  const [Team2Names, setTeam2Names] = useState<string[]>(Team2NameList);
-
   const [selectedRounds, setSelectedRounds] = useState('1');
   const [selectedMinutes, setSelectedMinutes] = useState('1');
-  const [selectedSeconds, setSelectedSeconds] = useState('0');
+  const [selectedSeconds, setSelectedSeconds] = useState('30');
 
   const maxRounds: number = 10;
   const maxMinutes: number = 5;
@@ -243,43 +239,21 @@ const LobbyPage = () => {
 
   }
 
-  const shuffleTeams = () => {
-    let allPlayers = [...Team1NameList, ...Team2NameList];
-    allPlayers = shuffleArray(allPlayers);
-    let coinflip = Math.round(Math.random());
-
-    let team1 = [];
-    let team2 = [];
-
-    for (let i = 0; i < allPlayers.length; i++) {
-      if ((i + coinflip) % 2 == 0) {
-        team1.push(allPlayers[i]);
-      } else {
-        team2.push(allPlayers[i])
-      }
-    }
-    setTeam1NameList(team1);
-    setTeam2NameList(team2);
-  }
-
   const handleChangeRounds = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRounds(e.target.value)
     changeRounds(userData.username, lobbyRoomName, e.target.value)
-
   }
 
   const handleChangeTimeLimitMinutes = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedMinutes(e.target.value)
     const time = parseInt(e.target.value) * 60 + parseInt(selectedSeconds);
     changeTimeLimit(userData.username, lobbyRoomName, time.toString())
-
   }
 
   const handleChangeTimeLimitSeconds = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSeconds(e.target.value)
     const time = parseInt(selectedMinutes) * 60 + parseInt(e.target.value);
     changeTimeLimit(userData.username, lobbyRoomName, time.toString())
-
   }
 
   const handleStartClick = () => {
@@ -307,23 +281,9 @@ const LobbyPage = () => {
   };
 
   useEffect(() => {
-    if (shuffle) {
-      setShuffle(false);
-      shuffleTeams();
-    }
-  }, [shuffle])
-
-  useEffect(() => {
     joinRoom(userData.username, lobbyRoomName)
+    setIsGameStarting(true);
   }, [])
-
-  useEffect(() => {
-    setTeam1NameList(Team1Names)
-  }, [Team1Names])
-
-  useEffect(() => {
-    setTeam2NameList(Team2Names)
-  }, [Team2Names])
 
   useEffect(() => {
     if (userData.username == host) {
@@ -339,7 +299,7 @@ const LobbyPage = () => {
     }
   }, [Team1Info, Team2Info])
 
-  const [openModal, setOpenModal] = useState(false);
+  // const [openModal, setOpenModal] = useState(false);
 
 
   // START OF RETURN CODE

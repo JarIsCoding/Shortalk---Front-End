@@ -10,10 +10,14 @@ import React, { useEffect, useRef } from 'react'
 const FinalScorePage = () => {
 
 
-    const { turnNumber, numberOfTurns, setSkipWords, SkipWords, setBuzzWords, BuzzWords, setOnePointWords, OnePointWords, setThreePointWords, ThreePointWords, Team1Score, setTeam1Score, Team2Score, setTeam2Score, team, Team1Name, Team2Name } = useAppContext();
+    const { turnNumber,setTurnNumber, numberOfTurns, setSkipWords, SkipWords, setBuzzWords, BuzzWords, setOnePointWords, OnePointWords, setThreePointWords, ThreePointWords, Team1Score, setTeam1Score, Team2Score, setTeam2Score, team, Team1Name, Team2Name, setTime, roundTime, Team1NameList, Team2NameList } = useAppContext();
     const router = useRouter();
 
     const clickHandleResultsBtn = () => {
+        setSkipWords([]);
+        setBuzzWords([]);
+        setOnePointWords([]);
+        setThreePointWords([]);
         router.push('/pages/winPage')
     }
 
@@ -39,13 +43,15 @@ const FinalScorePage = () => {
                 setTeam2Score(Team2Score - BuzzWords.length + OnePointWords.length + (ThreePointWords.length * 3))
                 break;
         }
+        setTime(roundTime);
+        setTurnNumber(turnNumber + 1);
     }, [])
 
     return (
         <div>
             <div className='text-center text-dblue text-[50px] font-LuckiestGuy tracking-widest pt-20'>
                 <p>Times Up!!!</p>
-                <p className='pt-5'>Round results</p>
+                <p className='pt-5'>Turn results</p>
             </div>
             <ScoreTable
                 skipWords={SkipWords}
@@ -54,7 +60,7 @@ const FinalScorePage = () => {
                 threePointWords={ThreePointWords}
             />
             {
-                (turnNumber > numberOfTurns)
+                ((turnNumber-1)%(2*Math.max(Team1NameList.length, Team2NameList.length)) == 0)
                     ? <div className='flex justify-center pb-16'>
                         <ResultsBtn click={clickHandleResultsBtn} />
                     </div>

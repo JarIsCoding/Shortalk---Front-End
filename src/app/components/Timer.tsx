@@ -7,35 +7,22 @@ interface TimerProps {
 
 const Timer = ({ initialTime }: TimerProps) => {
 
-  const { time, setTime } = useAppContext();
-
-  const getInitialTime = () => {
-    const storedTime = sessionStorage.getItem('currentTimer');
-    return storedTime && parseInt(storedTime) !== 0 ? parseInt(storedTime) : initialTime;
-  };
-
-  // const [time, setTime] = useState(getInitialTime());
-  useEffect(()=> {
-    setTime(getInitialTime);
-  },[])
+  const { time, setTime, setIsTimeUp, isTimeUp } = useAppContext();
 
   useEffect(() => {
     const timer = setInterval(() => {
       if (time > 0) {
-        setTime((prevTime) => {
-          const newTime = prevTime - 1;
-          sessionStorage.setItem('currentTimer', newTime.toString());
-          return newTime;
-        });
+        setTime((prevTime) => prevTime - 1);
       }
     }, 1000);
 
-    // if (time === 0) {
-    //   setIsTimeUp(true);
-    // }
+    if (time === 0) {
+      setIsTimeUp(true);
+    }
 
     return () => clearInterval(timer);
   }, [time]);
+
 
   const formatTime = (seconds: number): string => {
     const m = Math.floor(seconds / 60).toString().padStart(1, '0');
