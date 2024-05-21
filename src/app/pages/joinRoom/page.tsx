@@ -30,7 +30,7 @@ const JoinRoom = () => {
         if (roomName === '') {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
-        }else if (await joinLobbyRoom(roomName)) {
+        } else if (await joinLobbyRoom(roomName)) {
             setLobbyRoomName(roomName)
         }
     }
@@ -51,7 +51,7 @@ const JoinRoom = () => {
     }, [lobbyRoomName])
 
     return (
-        <div>
+        <div className=' h-[100vh] flex flex-col justify-between'>
             <div className='flex justify-center md:py-20 py-12 cursor-default'>
                 <p className='text-dblue font-LuckiestGuy text-[48px] tracking-widest text-center'>JOIN A ROOM</p>
             </div>
@@ -85,7 +85,10 @@ const JoinRoom = () => {
                     </div>
                 </div>
             </div>
-            <GoHomeBtn />
+            <div className=' w-full flex justify-end mt-20'>
+                <GoHomeBtn />
+            </div>
+
         </div>
     )
 }
