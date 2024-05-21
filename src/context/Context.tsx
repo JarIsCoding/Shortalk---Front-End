@@ -73,6 +73,9 @@ interface IContextValue {
     isGameOver: boolean
     setIsGameOver: (isGameOver: boolean) => void 
 
+    isGuest: boolean
+    setIsGuest: (isGuest: boolean) => void 
+
     turnNumber: number
     setTurnNumber: (turnNumber: number) => void
 
@@ -297,6 +300,14 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
         }
         return false;
     });
+
+    const [isGuest, setIsGuest] = useState<boolean>(() => {
+        if (typeof window !== "undefined") {
+            const isGuestStr = sessionStorage.getItem('isGuest');
+            return isGuestStr ? JSON.parse(isGuestStr) : true;
+        }
+        return false;
+    });
     
     const [conn, setConnection] = useState<HubConnection>(() => {
         if (typeof window !== "undefined") {
@@ -309,9 +320,9 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [lobbyRoomName, setLobbyRoomName] = useState<string>(() => {
         if (typeof window !== "undefined") {
             const lobbyRoomNameStr = sessionStorage.getItem('lobbyRoomName');
-            return lobbyRoomNameStr ? lobbyRoomNameStr : 'Pizza';
+            return lobbyRoomNameStr ? lobbyRoomNameStr : '';
         }
-        return 'Pizza';
+        return '';
     });
     
     const [messages, setMessages] = useState<{ username: string; msg: string;}[]>(() => {
@@ -421,6 +432,9 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
         sessionStorage.setItem('isGameStarting', isGameStarting.toString());
     }, [isGameStarting]);
     useEffect(() => {
+        sessionStorage.setItem('isGuest', isGuest.toString());
+    }, [isGuest]);
+    useEffect(() => {
         sessionStorage.setItem('conn', JSON.stringify(conn));
     }, [conn]);
     useEffect(() => {
@@ -434,7 +448,7 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     }, [host]);
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages, host, setHost, time, setTime, isGameStarting, setIsGameStarting}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages, host, setHost, time, setTime, isGameStarting, setIsGameStarting, isGuest, setIsGuest}}>
             {children}
         </Context.Provider>
     )

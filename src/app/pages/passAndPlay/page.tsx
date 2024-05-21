@@ -8,6 +8,7 @@ import PlusOneAudio from '@/app/components/PlusOneAudio'
 import SkipBtn from '@/app/components/SkipBtn'
 import StatusBar from '@/app/components/StatusBar'
 import ThreePointBtn from '@/app/components/ThreePointBtn'
+import useScreenWidth from '@/app/components/useScreenWidth'
 import { useAppContext } from '@/context/Context'
 import { getCard } from '@/utils/Dataservices'
 import { Button, Modal } from 'flowbite-react'
@@ -20,6 +21,8 @@ const PassAndPlayPage = () => {
   const firstRender1 = useRef(true);
   const firstRender2 = useRef(true);
   const firstRender3 = useRef(true);
+
+  const isLarge = useScreenWidth(1024);
 
   const { roundTime, numberOfRounds, Team1Name, Team2Name, team, setTeam, speaker, card, setCard, isTimeUp, setIsTimeUp, turnNumber, setTurnNumber, numberOfTurns, setSpeaker, Team2NameList, Team1NameList, setOnePointWords, OnePointWords, setBuzzWords, BuzzWords, setThreePointWords, ThreePointWords, setSkipWords, SkipWords, time, setTime } = useAppContext();
 
@@ -98,7 +101,7 @@ const PassAndPlayPage = () => {
     console.log(firstRender2.current)
     if (firstRender2.current) {
       firstRender2.current = false;
-    } 
+    }
     else {
       setIsRoundOver(true)
     }
@@ -216,17 +219,18 @@ const PassAndPlayPage = () => {
           </Button>
         </div>
         <div className='lg:hidden block w-full bg-dblue ps-4 pe-4 pb-4'>
-          {/* <StatusBar
-            time={roundTime}
-            teamName={null}
-            roundNumber={1}
-            roundTotal={numberOfRounds}
-            role={null}
-            OnePointWord={null}
-            ThreePointWord={null}
-            Speaker={null}
-            user={null}
-          /> */}
+          {!isLarge &&
+            <StatusBar
+              time={roundTime}
+              teamName={null}
+              roundNumber={1}
+              roundTotal={numberOfRounds}
+              role={null}
+              OnePointWord={null}
+              ThreePointWord={null}
+              Speaker={null}
+              user={null}
+            />}
         </div>
       </div>
 
@@ -247,17 +251,18 @@ const PassAndPlayPage = () => {
 
       <div className='px-10 flex flex-col items-center space-y-5 lg:pt-10 pt-1'>
         <div className='lg:block hidden w-full'>
-          <StatusBar
-            time={roundTime}
-            teamName={team}
-            roundNumber={Math.ceil((turnNumber/numberOfTurns)*numberOfRounds)}
-            roundTotal={numberOfRounds}
-            role={null}
-            OnePointWord={null}
-            ThreePointWord={null}
-            Speaker={speaker}
-            user={null}
-          />
+          {isLarge &&
+            <StatusBar
+              time={roundTime}
+              teamName={team}
+              roundNumber={Math.ceil((turnNumber / numberOfTurns) * numberOfRounds)}
+              roundTotal={numberOfRounds}
+              role={null}
+              OnePointWord={null}
+              ThreePointWord={null}
+              Speaker={speaker}
+              user={null}
+            />}
         </div>
 
         <div className='lg:static absolute lg:p-0 flex items-center md:pt-20 pt-28 z-10'>

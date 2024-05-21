@@ -44,6 +44,9 @@ const CreateRoom = () => {
             const res = await createLobbyRoom(newLobby);
             if (res) {
                 setLobbyRoomName(roomName)
+            }else{
+                setWarnText('Room name is already taken. Try again.')
+                setSuccessColor(false)
             }
         }
     }
@@ -74,7 +77,7 @@ const CreateRoom = () => {
     })
 
     return (
-        <div>
+        <div className=' h-[100vh] flex flex-col justify-between'>
             <div className='flex justify-center md:py-20 py-12'>
                 <p className='text-dblue font-LuckiestGuy text-[48px] tracking-widest text-center cursor-default'>CREATE YOUR ROOM</p>
             </div>
@@ -110,7 +113,10 @@ const CreateRoom = () => {
                     </div>
                 </div>
             </div>
-            <GoHomeBtn />
+            <div className=' w-full flex justify-end mt-20'>
+                <GoHomeBtn />
+            </div>
+
         </div>
     )
 }
