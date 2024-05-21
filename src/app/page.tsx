@@ -59,7 +59,7 @@ export default function Home() {
 
   return (
     <div className='bg-lblue vh'>
-      <div className='grid grid-flow-row justify-center pb-20'>
+      <div className='pb-20'>
 
         <div className='py-24 text-center'>
           <p className='text-[50px] font-LuckiestGuy tracking-widest text-dblue cursor-default'>
@@ -67,49 +67,55 @@ export default function Home() {
           </p>
         </div>
 
-        <div className='bg-white border-[#00529E] border-t-[20px] w-[500px] h-[500px] rounded-md flex justify-center'>
-          <form className="flex max-w-md flex-col gap-4">
+        <div className='flex justify-center'>
+          <div className='bg-white border-[#00529E] border-t-[20px] w-[500px] h-[500px] rounded-md flex justify-center'>
+            <form className="flex max-w-md flex-col gap-4">
 
-            {/* Top Text */}
-            <div className='text-center py-7 text-[32px] font-LuckiestGuy tracking-widest text-textGray cursor-default'>
-              Login
-            </div>
+              {/* Top Text */}
+              <div className='text-center py-7 text-[32px] font-LuckiestGuy tracking-widest text-textGray cursor-default'>
+                Login
+              </div>
 
-            {/* Username and password Input Field */}
-            <input id="username" type="text" placeholder='Username' className='inputSize rounded-none'
-              onChange={(e) => setUsername(e.target.value)}
-              onKeyDown={handleKeyDown}
-              required />
+              {/* Username and password Input Field */}
+              <div className='sm:w-[350px] w-[300px]'>
+                <input id="username" type="text" placeholder='Username' className='w-full h-[50px] rounded-none'
+                  onChange={(e) => setUsername(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  required />
+              </div>
 
-            <input id="password1" type="password" placeholder='Password' className='inputSize rounded-none'
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={handleKeyDown}
-              required />
+              <div className='sm:w-[350px] w-[300px]'>
+                <input id="password1" type="password" placeholder='Password' className='w-full h-[50px] rounded-none'
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  required />
+              </div>
 
-            <p className='text-end text-red-600 cursor-default'>
-              {wrongText}
-            </p>
-
-            <div className='py-3'>
-
-              <p onClick={() => router.push('/pages/signUpPage')} className='text-center pb-2 cursor-default'>
-                New to WWC? <span className='underline cursor-pointer'>Create an profile!</span>
+              <p className='text-end text-red-600 cursor-default'>
+                {wrongText}
               </p>
 
-              <p onClick={() => { router.push('/pages/homePage'); setUsername(guestNum) }} className='text-center cursor-default'>
-                or <span className='underline cursor-pointer'>Sign in as guest</span>
-              </p>
-            </div>
+              <div className='py-3'>
 
-            <div className='flex justify-center'>
-              <Button onClick={handleSubmit} className='loginBtn bg-dblue '>
-                <p className='text-[36px] text-center font-LuckiestGuy tracking-widest'>
-                  Login
+                <p onClick={() => router.push('/pages/signUpPage')} className='text-center pb-2 cursor-default'>
+                  New to ShorTalk? <span className='underline cursor-pointer'>Create an profile!</span>
                 </p>
-              </Button>
-            </div>
 
-          </form>
+                <p onClick={() => { router.push('/pages/homePage'); setUsername(guestNum) }} className='text-center cursor-default'>
+                  or <span className='underline cursor-pointer'>Sign in as guest</span>
+                </p>
+              </div>
+
+              <div className='flex justify-center'>
+                <Button onClick={handleSubmit} className='loginBtn bg-dblue '>
+                  <p className='text-[36px] text-center font-LuckiestGuy tracking-widest'>
+                    Login
+                  </p>
+                </Button>
+              </div>
+
+            </form>
+          </div>
         </div>
       </div>
     </div>

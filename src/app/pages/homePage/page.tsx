@@ -81,8 +81,8 @@ const HomePage = () => {
         </Button>
       </div>
 
-      <p className='text-[35px] text-center font-LuckiestGuy text-dblue py-10 cursor-default'>
-        Online Working!!! Only the first round though... <br /> Thanks for playing!
+      <p className='text-[35px] text-center font-LuckiestGuy text-dblue py-10 cursor-default px-5'>
+        Online is now functional! Give it a try with your friends, <br /> bugs may be encountered beware!!
       </p>
 
       {/* Modal for logging out */}

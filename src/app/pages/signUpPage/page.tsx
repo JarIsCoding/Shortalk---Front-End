@@ -41,7 +41,7 @@ const SignUpPage = () => {
                 }
 
             } else {
-                setCreatedText("Must have 8 characters minimum.");
+                setCreatedText("Password must have 8 characters minimum.");
                 setSuccess(false)
             }
 
@@ -53,7 +53,7 @@ const SignUpPage = () => {
 
     return (
         <div className='bg-lblue'>
-            <div className='grid grid-flow-row justify-center'>
+            <div className='grid'>
 
                 <div className='py-14 text-center'>
                     <p className='text-[48px] font-LuckiestGuy tracking-widest text-dblue cursor-default'>

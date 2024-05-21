@@ -4,7 +4,7 @@
 
 @font-face {
     font-family: 'LuckiestGuy';
-    src: url('../fonts/LuckiestGuy-Regular.ttf');
+    src: url('../fonts/Galpon-Black.otf');
   }
 
 @font-face {
@@ -28,11 +28,6 @@
 .cardBorder{
   border-top-width: 20px;
   border-color: #00529E;
-}
-
-.inputSize{
-    width: 350px;
-    height: 50px;
 }
 
 .loginBtn{
