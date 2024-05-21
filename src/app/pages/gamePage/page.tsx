@@ -13,7 +13,7 @@ import StatusBar from '@/app/components/StatusBar'
 import ThreePointBtn from '@/app/components/ThreePointBtn'
 import { useAppContext } from '@/context/Context'
 import { AppendBuzzWords, AppendOnePointWords, AppendSkipPointWords, AppendThreePointWords, ChangeScore, ClearWordLists, GoToNextTurn, UpdateSpeaker, getGameInfo } from '@/utils/Dataservices'
-import { AddUpPoints, Converti2I, DetermineInitialTeam, DetermineTeam, String2ICardArray, determineRole, determineRound } from '@/utils/utils'
+import { AddUpPoints, Converti2I, DetermineInitialTeam, DetermineTeam, String2ICardArray, determineNumberOfTurns, determineRole, determineRound } from '@/utils/utils'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
@@ -120,6 +120,10 @@ const GamePage = () => {
                 await initializeRoom();
             })
 
+            conn.on("EndTheGame", async () => {
+                setIsGameOver(true);
+            })
+
             await conn.start();
             await conn.invoke("JoinSpecificGame", { username, lobbyroom });
             setConnection(conn);
@@ -157,6 +161,14 @@ const GamePage = () => {
     const goToNextTurn = async () => {
         try {
             conn && await conn.invoke("GoToNextTurn");
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const endTheGame = async () => {
+        try {
+            conn && await conn.invoke("EndTheGame");
         } catch (e) {
             console.log(e)
         }
@@ -211,13 +223,16 @@ const GamePage = () => {
         let points = AddUpPoints(buzzWords, onePointWords, threePointWords);
         await ChangeScore(lobbyRoomName, teamUp, points);
         setTeamUp(DetermineTeam(teamUp));
-        // await GoToNextTurn(lobbyRoomName);
+        await GoToNextTurn(lobbyRoomName)          
         await UpdateSpeaker(lobbyRoomName);
-        await ClearWordLists(lobbyRoomName)
+        await ClearWordLists(lobbyRoomName);
+        await getNewCard(userData.username, lobbyRoomName);
+        //addpoint, changeScores in backend, switch teamUp (not important), Update speaker backend, clear word list backend
     }
 
     const handleResults = async () => {
-
+        await updateRoom();
+        await endTheGame();
     }
 
     const handleNextTurn = async () => {
@@ -240,13 +255,16 @@ const GamePage = () => {
         setTeam1Score(InitGameInfo.Team1Score);
         setTeam2Score(InitGameInfo.Team2Score);
         setHost(InitGameInfo.Host);
-
+        setIsScoreBoardUp(false);
         setGameInfo({ ...InitGameInfo })
         if (isGameStarting) {
+            setNumberOfTurns(determineNumberOfTurns(InitGameInfo))
             setIsTimeUp(false);
-            setTime(gameInfo.TimeLimit);
+            setTime(InitGameInfo.TimeLimit);
             setIsGameStarting(false);
         }
+        setGuesses([])
+        setDescription("")
 
     }
 
@@ -258,11 +276,16 @@ const GamePage = () => {
     }, [])
 
     useEffect(()=> {
-        if(isTimeUp){
+        if(isTimeUp && !isGameStarting){
+            console.log("Time is Up!!!!")
             setIsScoreBoardUp(true);
         }
     },[isTimeUp])
 
+    if (time === 0) {
+        console.log("Time is Up!!")
+        setIsTimeUp(true);
+      }
 
     return (
 
@@ -353,7 +376,7 @@ const GamePage = () => {
                             {
                                 (userData.username == host) ?
 
-                                    (round > roundTotal)
+                                    (turn >= numberOfTurns)
                                         ? <div className='flex justify-center pb-16'>
                                             <ResultsBtn click={handleResults} />
                                         </div>

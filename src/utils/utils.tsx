@@ -122,15 +122,39 @@ export const determineRound = (game: IGameInfo) => {
         game.TeamMemberB4,
         game.TeamMemberB5,
     ]
-    for (let player in players) {
-        if (player != "") {
+    for (let player of players) {
+        if (player != '') {
             counter++;
         }
     }
-
+    console.log("Turn "+game.Turn);
+    console.log("Number of players "+counter);
     const round = Math.ceil(game.Turn / (Math.ceil(counter/2)*2));
 
     return round;
+}
+
+export const determineNumberOfTurns = (game: IGameInfo) => {
+    let counter = 0;
+    let players = [
+        game.TeamMemberA1,
+        game.TeamMemberA2,
+        game.TeamMemberA3,
+        game.TeamMemberA4,
+        game.TeamMemberA5,
+        game.TeamMemberB1,
+        game.TeamMemberB2,
+        game.TeamMemberB3,
+        game.TeamMemberB4,
+        game.TeamMemberB5,
+    ]
+    for (let player of players) {
+        if (player != '') {
+            counter++;
+        }
+    }
+    
+    return counter*game.NumberOfRounds;
 }
 
 export const Converti2I =  (data: iGameInfo) => {

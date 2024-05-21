@@ -18,7 +18,7 @@ const LobbyPage = () => {
 
   const router = useRouter();
 
-  const { userData, lobbyRoomName, setIsGameStarting } = useAppContext();
+  const { userData, lobbyRoomName, setIsGameStarting , setIsTimeUp} = useAppContext();
 
   const [host, setHost] = useState<string>('')
 
@@ -283,6 +283,7 @@ const LobbyPage = () => {
   useEffect(() => {
     joinRoom(userData.username, lobbyRoomName)
     setIsGameStarting(true);
+    setIsTimeUp(false);
   }, [])
 
   useEffect(() => {

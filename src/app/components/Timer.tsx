@@ -17,6 +17,7 @@ const Timer = ({ initialTime }: TimerProps) => {
     }, 1000);
 
     if (time === 0) {
+      console.log("Time is Up!!")
       setIsTimeUp(true);
     }
 

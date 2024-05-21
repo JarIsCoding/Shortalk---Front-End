@@ -157,9 +157,9 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     const [time, setTime] = useState<number>(() => {
         if (typeof window !== "undefined") {
             const timeStr = sessionStorage.getItem('time');
-            return timeStr ? parseInt(timeStr, 10) : 0;
+            return timeStr ? parseInt(timeStr, 10) : 10;
         }
-        return 0;
+        return 10;
     });
     
     const [Team1Name, setTeam1Name] = useState<string>(() => {
