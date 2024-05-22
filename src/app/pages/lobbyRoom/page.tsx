@@ -18,7 +18,7 @@ const LobbyPage = () => {
 
   const router = useRouter();
 
-  const { userData, lobbyRoomName, setIsGameStarting, setIsTimeUp, isTokenCorrect } = useAppContext();
+  const { userData, lobbyRoomName, setIsGameStarting, setIsTimeUp, isTokenCorrect, isAllReady } = useAppContext();
 
   const [host, setHost] = useState<string>('')
 
@@ -308,6 +308,9 @@ const LobbyPage = () => {
 
   // const [openModal, setOpenModal] = useState(false);
 
+  const consoleNotReady = () => {
+    console.log("Not ready yet")
+  }
 
   // START OF RETURN CODE
   return (
@@ -339,7 +342,7 @@ const LobbyPage = () => {
             <div className='flex justify-center'>
               <DiceBtn />
             </div>
-            <div className='' onClick={handleStartClick}>
+            <div className='' onClick={isAllReady ? handleStartClick : consoleNotReady}>
               <StartBtn isReady={isReady} isHost={(host == userData.username)} />
             </div>
           </div>
