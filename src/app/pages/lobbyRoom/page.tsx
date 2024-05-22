@@ -268,7 +268,11 @@ const LobbyPage = () => {
       setIsReady(!isReady)
       toggleReadiness(userData.username, lobbyRoomName);
     } else {
-      startGame(userData.username, lobbyRoomName);
+      if (isAllReady) {
+        startGame(userData.username, lobbyRoomName);
+      } else {
+        console.log("Not all players are ready")
+      }
       console.log("This guy is our host!")
     }
   }
@@ -342,7 +346,7 @@ const LobbyPage = () => {
             <div className='flex justify-center'>
               <DiceBtn />
             </div>
-            <div className='' onClick={isAllReady ? handleStartClick : consoleNotReady}>
+            <div className='' onClick={handleStartClick}>
               <StartBtn isReady={isReady} isHost={(host == userData.username)} />
             </div>
           </div>

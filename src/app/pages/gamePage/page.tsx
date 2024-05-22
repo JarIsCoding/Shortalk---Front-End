@@ -426,7 +426,7 @@ const GamePage = () => {
                                     {
                                         guesses.map((guess, ix) => {
                                             return (
-                                                <p key={ix} className={' font-Roboto' + guess.color}> <span className=' font-RobotoBold'>{guess.username}</span> {" - "} <span className={'text-' + guess.color}>{guess.msg}</span> </p>
+                                                <p key={ix} className={'overflow-auto font-Roboto' + guess.color}> <span className=' font-RobotoBold'>{guess.username}</span> {" - "} <span className={'text-' + guess.color}>{guess.msg}</span> </p>
                                             )
                                         })
 
