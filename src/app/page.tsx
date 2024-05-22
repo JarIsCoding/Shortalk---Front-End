@@ -9,7 +9,7 @@ import { useAppContext } from '@/context/Context';
 
 export default function Home() {
 
-  const { userData, setUserData } = useAppContext();
+  const { userData, setUserData, isTokenCorrect, setIsTokenCorrect } = useAppContext();
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -18,19 +18,26 @@ export default function Home() {
 
   const router = useRouter()
 
+  useEffect(() => {
+    setIsTokenCorrect(false)
+  }, [])
+
   const handleSubmit = async () => {
-    console.log('enter')
+    // console.log('enter')
     if (username !== '' || password !== '') {
-      console.log(userData)
+      // console.log(userData)
       let token: IToken | string = await login(userData)
 
       if (typeof token !== "string") {
         if (token.token !== null) {
+          console.log(token)
+          setIsTokenCorrect(true)
           localStorage.setItem("Token", token.token)
           // getLoggedInUserData(username)
           router.push('/pages/homePage')
         }
       } else {
+        setIsTokenCorrect(false)
         setWrongText(token)
       }
     } else {
@@ -98,10 +105,10 @@ export default function Home() {
               <div className='py-3'>
 
                 <p onClick={() => router.push('/pages/signUpPage')} className='text-center pb-2 cursor-default'>
-                  New to ShorTalk? <span className='underline cursor-pointer'>Create an profile!</span>
+                  New to ShorTalk? <span className='underline cursor-pointer'>Create a profile!</span>
                 </p>
 
-                <p onClick={() => { router.push('/pages/homePage'); setUsername(guestNum) }} className='text-center cursor-default'>
+                <p onClick={() => { router.push('/pages/homePage'); setUsername(guestNum); setIsTokenCorrect(true)}} className='text-center cursor-default'>
                   or <span className='underline cursor-pointer'>Sign in as guest</span>
                 </p>
               </div>

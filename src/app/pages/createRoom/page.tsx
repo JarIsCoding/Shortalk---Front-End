@@ -13,7 +13,7 @@ const CreateRoom = () => {
 
     const isFirstRender = useRef(true);
 
-    const { userData, conn, setConnection, lobbyRoomName, setLobbyRoomName, messages, setMessages } = useAppContext();
+    const { userData, conn, setConnection, lobbyRoomName, setLobbyRoomName, messages, setMessages, isTokenCorrect } = useAppContext();
 
     // const [messages, setMessages] = useState<{ username: string, msg: string }[]>([]);
 
@@ -24,6 +24,11 @@ const CreateRoom = () => {
 
     const router = useRouter()
 
+    useEffect(() => {
+        if (!isTokenCorrect) {
+          router.push('/');
+        }
+      }, [isTokenCorrect])
 
     //Function telling user it is being made if it takes longer than usual
     const successfunc = () => {

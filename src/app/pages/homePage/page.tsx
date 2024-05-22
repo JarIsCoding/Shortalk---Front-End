@@ -17,11 +17,17 @@ const HomePage = () => {
 
   const router = useRouter()
 
-  const { userData, setUserData } = useAppContext();
+  const { userData, setUserData, isTokenCorrect } = useAppContext();
 
   const [isFriendsOn, setIsFriendsOn] = useState<boolean>(false);
 
   const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    if (!isTokenCorrect) {
+      router.push('/');
+    }
+  }, [isTokenCorrect])
 
   const handleClick = () => {
     setIsFriendsOn(!isFriendsOn);

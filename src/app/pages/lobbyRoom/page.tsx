@@ -18,7 +18,7 @@ const LobbyPage = () => {
 
   const router = useRouter();
 
-  const { userData, lobbyRoomName, setIsGameStarting , setIsTimeUp} = useAppContext();
+  const { userData, lobbyRoomName, setIsGameStarting, setIsTimeUp, isTokenCorrect, isAllReady } = useAppContext();
 
   const [host, setHost] = useState<string>('')
 
@@ -38,6 +38,12 @@ const LobbyPage = () => {
   const maxRounds: number = 10;
   const maxMinutes: number = 5;
   const maxSeconds: number = 59;
+
+  useEffect(() => {
+    if (!isTokenCorrect) {
+      router.push('/');
+    }
+  }, [isTokenCorrect])
 
   const setTeamInfos = (lobby: ILobbyRoomBackEnd) => {
 
@@ -263,14 +269,18 @@ const LobbyPage = () => {
       setIsReady(!isReady)
       toggleReadiness(userData.username, lobbyRoomName);
     } else {
-      startGame(userData.username, lobbyRoomName);
+      if (isAllReady) {
+        startGame(userData.username, lobbyRoomName);
+      } else {
+        console.log("Not all players are ready")
+      }
       console.log("This guy is our host!")
     }
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      
+
       // Check if user input something if so send otherwise nothing
       if (message !== '') {
         sendMessage(message);
@@ -303,6 +313,9 @@ const LobbyPage = () => {
 
   // const [openModal, setOpenModal] = useState(false);
 
+  const consoleNotReady = () => {
+    console.log("Not ready yet")
+  }
 
   // START OF RETURN CODE
   return (
