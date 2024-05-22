@@ -2,14 +2,22 @@
 
 import SmallCard from '@/app/components/SmallCard'
 import NavBar from '@/app/components/NavBar'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import GoHomeBtn from '@/app/components/GoHomeBtn'
+import { useAppContext } from '@/context/Context'
 
 const RulesPage = () => {
 
     const router = useRouter()
+    const {isTokenCorrect} = useAppContext()
+
+    useEffect(() => {
+        if (!isTokenCorrect) {
+            router.push('/');
+        }
+    }, [isTokenCorrect])
 
     return (
         <div className='cursor-default'>

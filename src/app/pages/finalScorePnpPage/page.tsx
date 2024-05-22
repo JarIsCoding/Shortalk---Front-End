@@ -9,9 +9,14 @@ import React, { useEffect, useRef } from 'react'
 
 const FinalScorePage = () => {
 
-
-    const { turnNumber,setTurnNumber, numberOfTurns, setSkipWords, SkipWords, setBuzzWords, BuzzWords, setOnePointWords, OnePointWords, setThreePointWords, ThreePointWords, Team1Score, setTeam1Score, Team2Score, setTeam2Score, team, Team1Name, Team2Name, setTime, roundTime, Team1NameList, Team2NameList } = useAppContext();
+    const { turnNumber,setTurnNumber, numberOfTurns, setSkipWords, SkipWords, setBuzzWords, BuzzWords, setOnePointWords, OnePointWords, setThreePointWords, ThreePointWords, Team1Score, setTeam1Score, Team2Score, setTeam2Score, team, Team1Name, Team2Name, setTime, roundTime, Team1NameList, Team2NameList, isTokenCorrect } = useAppContext();
     const router = useRouter();
+
+    useEffect(() => {
+        if (!isTokenCorrect) {
+          router.push('/');
+        }
+      }, [isTokenCorrect])
 
     const clickHandleResultsBtn = () => {
         setSkipWords([]);

@@ -18,7 +18,7 @@ const LobbyPage = () => {
 
   const router = useRouter();
 
-  const { userData, lobbyRoomName, setIsGameStarting , setIsTimeUp} = useAppContext();
+  const { userData, lobbyRoomName, setIsGameStarting, setIsTimeUp, isTokenCorrect } = useAppContext();
 
   const [host, setHost] = useState<string>('')
 
@@ -38,6 +38,12 @@ const LobbyPage = () => {
   const maxRounds: number = 10;
   const maxMinutes: number = 5;
   const maxSeconds: number = 59;
+
+  useEffect(() => {
+    if (!isTokenCorrect) {
+      router.push('/');
+    }
+  }, [isTokenCorrect])
 
   const setTeamInfos = (lobby: ILobbyRoomBackEnd) => {
 
@@ -269,7 +275,7 @@ const LobbyPage = () => {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      
+
       // Check if user input something if so send otherwise nothing
       if (message !== '') {
         sendMessage(message);

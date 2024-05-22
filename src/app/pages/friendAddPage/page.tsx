@@ -1,15 +1,23 @@
 "use client"
 
+import { useAppContext } from '@/context/Context'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const FriendAddPage = () => {
     const [resultText, setResultText] = useState('')
     const [friendName, setFriendName] = useState('')
     const [success, setSuccess] = useState<boolean>(false)
+    const { isTokenCorrect } = useAppContext()
 
     const router = useRouter()
+
+    useEffect(() => {
+        if (!isTokenCorrect) {
+          router.push('/');
+        }
+      }, [isTokenCorrect])
 
     const handleAddFriend = () => {
         if(friendName === ''){

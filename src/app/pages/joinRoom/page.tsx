@@ -12,13 +12,19 @@ const JoinRoom = () => {
 
     const isFirstRender = useRef(true);
 
-    const { userData, conn, setConnection, lobbyRoomName, setLobbyRoomName, } = useAppContext();
+    const { userData, conn, setConnection, lobbyRoomName, setLobbyRoomName, isTokenCorrect } = useAppContext();
 
     const [roomName, setRoomName] = useState('')
     const [warnText, setWarnText] = useState('')
     const [successColor, setSuccessColor] = useState<boolean>(false)
 
     const router = useRouter()
+
+    useEffect(() => {
+        if (!isTokenCorrect) {
+          router.push('/');
+        }
+      }, [isTokenCorrect])
 
     //Function telling user it is being joined if it takes longer than usual
     const successfunc = () => {

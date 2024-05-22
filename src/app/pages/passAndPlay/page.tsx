@@ -24,9 +24,15 @@ const PassAndPlayPage = () => {
 
   const isLarge = useScreenWidth(1024);
 
-  const { roundTime, numberOfRounds, Team1Name, Team2Name, team, setTeam, speaker, card, setCard, isTimeUp, setIsTimeUp, turnNumber, setTurnNumber, numberOfTurns, setSpeaker, Team2NameList, Team1NameList, setOnePointWords, OnePointWords, setBuzzWords, BuzzWords, setThreePointWords, ThreePointWords, setSkipWords, SkipWords, time, setTime } = useAppContext();
+  const { roundTime, numberOfRounds, Team1Name, Team2Name, team, setTeam, speaker, card, setCard, isTimeUp, setIsTimeUp, turnNumber, setTurnNumber, numberOfTurns, setSpeaker, Team2NameList, Team1NameList, setOnePointWords, OnePointWords, setBuzzWords, BuzzWords, setThreePointWords, ThreePointWords, setSkipWords, SkipWords, time, setTime, isTokenCorrect} = useAppContext();
 
   const [isRoundOver, setIsRoundOver] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isTokenCorrect) {
+        router.push('/');
+    }
+}, [isTokenCorrect])
 
   const getNextCard = () => {
     let card = getCard();

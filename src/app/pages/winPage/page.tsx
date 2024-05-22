@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import NextRoundBtn from '@/app/components/NextRoundBtn';
 import { useAppContext } from '@/context/Context';
@@ -9,7 +9,13 @@ import PlayAgainBtn from '@/app/components/PlayAgainBtn';
 const WinPage = () => {
 
     const router = useRouter();
-    const {Team1Name, Team1Score, Team2Name, Team2Score, turnNumber, setTurnNumber, numberOfTurns, setTeam1Score, setTeam2Score, numberOfRounds, Team1NameList, Team2NameList} = useAppContext();
+    const {Team1Name, Team1Score, Team2Name, Team2Score, turnNumber, setTurnNumber, numberOfTurns, setTeam1Score, setTeam2Score, numberOfRounds, Team1NameList, Team2NameList, isTokenCorrect} = useAppContext();
+
+    useEffect(() => {
+        if (!isTokenCorrect) {
+            router.push('/');
+        }
+    }, [isTokenCorrect])
 
     const resetScores = async () => {
         setTeam1Score(0);

@@ -57,7 +57,7 @@ const GamePage = () => {
 
     const [gameInfo, setGameInfo] = useState<IGameInfo>({} as IGameInfo);
 
-    const { userData, lobbyRoomName, time, setTime, isTimeUp, setIsTimeUp, isGameStarting, setIsGameStarting } = useAppContext();
+    const { userData, lobbyRoomName, time, setTime, isTimeUp, setIsTimeUp, isGameStarting, setIsGameStarting, isTokenCorrect } = useAppContext();
 
     const [isScoreBoardUp, setIsScoreBoardUp] = useState<boolean>(false)
     const [isGameOver, setIsGameOver] = useState<boolean>(false);
@@ -73,6 +73,11 @@ const GamePage = () => {
 
     const [host, setHost] = useState<string>('');
 
+    useEffect(() => {
+        if (!isTokenCorrect) {
+          router.push('/');
+        }
+      }, [isTokenCorrect])
 
     const connectToGame = async (username: string, lobbyroom: string) => {
         try {
@@ -479,13 +484,13 @@ const GamePage = () => {
                                 {/* Text from the Speaker goes here */}
                                 {
 
-                                    <div className='text-[20px] h-full '>
+                                    <div className='text-[20px] h-full'>
                                         {
                                             role == 'Speaker' ?
                                                 < textarea value={description} onChange={handleOnChange} style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg`} />
                                                 :
 
-                                                <div className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg break-all whitespace-pre-line`}>{description}</div>
+                                                <div className={` overflow-auto border-0 w-[100%] h-[573px] px-5 text-[20px] rounded-b-lg break-all whitespace-pre-line`}>{description}</div>
                                         }
 
                                     </div>
