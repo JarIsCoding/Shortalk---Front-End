@@ -76,6 +76,12 @@ interface IContextValue {
     isGuest: boolean
     setIsGuest: (isGuest: boolean) => void 
 
+    isTokenCorrect: boolean
+    setIsTokenCorrect: (isTokenCorrect: boolean) => void
+
+    isAllReady: boolean
+    setIsAllready: (isAllready: boolean) => void
+
     turnNumber: number
     setTurnNumber: (turnNumber: number) => void
 
@@ -308,6 +314,22 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
         }
         return false;
     });
+
+    const [isTokenCorrect, setIsTokenCorrect] = useState<boolean>(() => {
+        if (typeof window !== "undefined") {
+            const isTokenCorrectStr = sessionStorage.getItem('isTokenCorrect');
+            return isTokenCorrectStr ? JSON.parse(isTokenCorrectStr) : false;
+        }
+        return false;
+    });
+
+    const [isAllReady, setIsAllready] = useState<boolean>(() => {
+        if (typeof window !== "undefined") {
+            const isAllReadyStr = sessionStorage.getItem('isAllReady');
+            return isAllReadyStr ? JSON.parse(isAllReadyStr) : false;
+        }
+        return false;
+    });
     
     const [conn, setConnection] = useState<HubConnection>(() => {
         if (typeof window !== "undefined") {
@@ -435,6 +457,9 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
         sessionStorage.setItem('isGuest', isGuest.toString());
     }, [isGuest]);
     useEffect(() => {
+        sessionStorage.setItem('isTokenCorrect', isTokenCorrect.toString());
+    }, [isTokenCorrect]);
+    useEffect(() => {
         sessionStorage.setItem('conn', JSON.stringify(conn));
     }, [conn]);
     useEffect(() => {
@@ -448,7 +473,7 @@ export const AppWrapper = ({ children, }: Readonly<{children: React.ReactNode;}>
     }, [host]);
 
     return(
-        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages, host, setHost, time, setTime, isGameStarting, setIsGameStarting, isGuest, setIsGuest}}>
+        <Context.Provider value={{userData,setUserData,roundTime,setRoundTime,numberOfRounds,setNumberOfRounds,numberOfTurns,setNumberOfTurns,numberOfPeople,setNumberOfPeople,Team1Name,setTeam1Name,Team2Name,setTeam2Name,Team1NameList,setTeam1NameList, Team2NameList, setTeam2NameList, shuffle, setShuffle, speaker, setSpeaker, team, setTeam, BuzzWords, setBuzzWords, OnePointWords, setOnePointWords, ThreePointWords, setThreePointWords, card, setCard,isTimeUp, setIsTimeUp, isGameOver, setIsGameOver, turnNumber, setTurnNumber, Team1Score, setTeam1Score, Team2Score, setTeam2Score,SkipWords, setSkipWords, conn, setConnection,lobbyRoomName, setLobbyRoomName, messages, setMessages, host, setHost, time, setTime, isGameStarting, setIsGameStarting, isGuest, setIsGuest, isTokenCorrect, setIsTokenCorrect, isAllReady, setIsAllready}}>
             {children}
         </Context.Provider>
     )

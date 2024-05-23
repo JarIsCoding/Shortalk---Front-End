@@ -23,11 +23,6 @@ const GamePage = () => {
 
     const [conn, setConnection] = useState<HubConnection>()
 
-    //Change these bools to see inputs/button
-    const [isGuesser, setIsGuesser] = useState<boolean>(true)
-    const [isSpeaker, setIsSpeaker] = useState<boolean>(true)
-    const [isDefense, setIsDefense] = useState<boolean>(true)
-
     // const [time, setTime] = useState<number>();
     const [round, setRound] = useState<number>(0);
     const [roundTotal, setRoundTotal] = useState<number>(0);
@@ -57,7 +52,7 @@ const GamePage = () => {
 
     const [gameInfo, setGameInfo] = useState<IGameInfo>({} as IGameInfo);
 
-    const { userData, lobbyRoomName, time, setTime, isTimeUp, setIsTimeUp, isGameStarting, setIsGameStarting } = useAppContext();
+    const { userData, lobbyRoomName, time, setTime, isTimeUp, setIsTimeUp, isGameStarting, setIsGameStarting, isTokenCorrect } = useAppContext();
 
     const [isScoreBoardUp, setIsScoreBoardUp] = useState<boolean>(false)
     const [isGameOver, setIsGameOver] = useState<boolean>(false);
@@ -73,6 +68,11 @@ const GamePage = () => {
 
     const [host, setHost] = useState<string>('');
 
+    useEffect(() => {
+        if (!isTokenCorrect) {
+          router.push('/');
+        }
+      }, [isTokenCorrect])
 
     const connectToGame = async (username: string, lobbyroom: string) => {
         try {
@@ -421,7 +421,7 @@ const GamePage = () => {
                                     {
                                         guesses.map((guess, ix) => {
                                             return (
-                                                <p key={ix} className={' font-Roboto' + guess.color}> <span className=' font-RobotoBold'>{guess.username}</span> {" - "} <span className={'text-' + guess.color}>{guess.msg}</span> </p>
+                                                <p key={ix} className={'overflow-auto font-Roboto' + guess.color}> <span className=' font-RobotoBold'>{guess.username}</span> {" - "} <span className={'text-' + guess.color}>{guess.msg}</span> </p>
                                             )
                                         })
 
@@ -430,7 +430,7 @@ const GamePage = () => {
 
                                 {
                                     role == 'Guesser' &&
-                                    <div className={` h-[50px] w-full px-2 ${isGuesser ? 'block' : 'hidden'}`}>
+                                    <div className={` h-[50px] w-full px-2`}>
                                         <input onChange={(e) => { setGuess(e.target.value) }} onKeyDown={handleKeyDown} value={guess} type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
                                     </div>
                                 }
@@ -457,7 +457,7 @@ const GamePage = () => {
 
                                         </div>
                                         : role == 'Defense' ?
-                                            <div className={`flex justify-center py-5 ${isDefense ? 'block' : 'hidden'}`}>
+                                            <div className={`flex justify-center py-5`}>
                                                 <BuzzBtn onClick={() => { setBuzzed(true); setOpenBuzzModal(true); handleBuzz() }} />
                                             </div>
                                             :
@@ -479,13 +479,13 @@ const GamePage = () => {
                                 {/* Text from the Speaker goes here */}
                                 {
 
-                                    <div className='text-[20px] h-full '>
+                                    <div className='text-[20px] h-full'>
                                         {
                                             role == 'Speaker' ?
                                                 < textarea value={description} onChange={handleOnChange} style={{ resize: 'none' }} placeholder='Start Typing Description Here...' className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg`} />
                                                 :
 
-                                                <div className={`border-0 w-[100%] h-full px-5 text-[20px] rounded-b-lg break-all whitespace-pre-line`}>{description}</div>
+                                                <div className={` overflow-auto border-0 w-[100%] h-[573px] px-5 text-[20px] rounded-b-lg break-all whitespace-pre-line`}>{description}</div>
                                         }
 
                                     </div>

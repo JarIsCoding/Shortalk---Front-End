@@ -5,13 +5,13 @@ import { useAppContext } from '@/context/Context'
 import { getCard } from '@/utils/Dataservices'
 import { Button, Modal } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const IntermissionPnpPage = () => {
 
   const router = useRouter()
 
-  const {setCard, speaker, team} = useAppContext();
+  const {setCard, speaker, team, isTokenCorrect} = useAppContext();
 
   const [openModal, setOpenModal] = useState(false)
 
@@ -20,6 +20,12 @@ const IntermissionPnpPage = () => {
     setCard(card);
     router.push('/pages/passAndPlay')
   }
+
+  useEffect(() => {
+    if (!isTokenCorrect) {
+      router.push('/');
+    }
+  }, [isTokenCorrect])
 
   return (
     <div>

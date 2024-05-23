@@ -1,6 +1,7 @@
 'use client'
 
 import { IStartButton } from '@/Interfaces/Interfaces'
+import { useAppContext } from '@/context/Context';
 import React, { useEffect, useState } from 'react'
 
 const StartBtn = (props: IStartButton) => {
@@ -11,6 +12,8 @@ const StartBtn = (props: IStartButton) => {
   const [btnText, setBtnText] = useState<string>('')
   const [className, setClassName] = useState<string>(classNameBase);
 
+  const { setIsAllready } = useAppContext()
+
 
   useEffect(() => {
     console.log("isHost: " + props.isHost);
@@ -19,8 +22,10 @@ const StartBtn = (props: IStartButton) => {
       setBtnText('Start');
       if (props.isReady) {
         setClassName(classNameBase + ' bg-dblue border-2 border-black cursor-pointer ')
+        setIsAllready(true)
       } else {
         setClassName(classNameBase + ' bg-[#97B5D9]')
+        setIsAllready(false)
       }
     } else {
       if (props.isReady) {
