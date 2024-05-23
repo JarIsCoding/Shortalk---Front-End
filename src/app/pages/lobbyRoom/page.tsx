@@ -18,7 +18,7 @@ const LobbyPage = () => {
 
   const router = useRouter();
 
-  const { userData, lobbyRoomName, setIsGameStarting , setIsTimeUp} = useAppContext();
+  const { userData, lobbyRoomName, setIsGameStarting, setIsTimeUp } = useAppContext();
 
   const [host, setHost] = useState<string>('')
 
@@ -186,6 +186,13 @@ const LobbyPage = () => {
       await conn.start();
       await conn.invoke("JoinSpecificLobbyRoom", { username, lobbyroom });
 
+      conn.onclose((error) => {
+        console.log(userData.username + " disconnected from the lobby hub");
+        if (error) {
+          console.error("Disconnection error: ", error);
+        }
+      });
+
 
       setConnection(conn);
       console.log('success')
@@ -258,18 +265,18 @@ const LobbyPage = () => {
 
   const handleStartClick = () => {
     if (userData.username != host) {
-      console.log("This guy is not the host")
       setIsReady(!isReady)
       toggleReadiness(userData.username, lobbyRoomName);
     } else {
-      startGame(userData.username, lobbyRoomName);
-      console.log("This guy is our host!")
+      if (isReady) {
+        startGame(userData.username, lobbyRoomName);
+      }
     }
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      
+
       // Check if user input something if so send otherwise nothing
       if (message !== '') {
         sendMessage(message);

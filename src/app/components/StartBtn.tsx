@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 const StartBtn = (props: IStartButton) => {
 
-  const classNameBase = 'cursor-pointer rounded-2xl w-[200px] h-[100px] flex justify-center items-center px-4 ';
+  const classNameBase = ' rounded-2xl w-[200px] h-[100px] flex justify-center items-center px-4 ';
 
 
   const [btnText, setBtnText] = useState<string>('')
@@ -18,16 +18,16 @@ const StartBtn = (props: IStartButton) => {
     if (props.isHost) {
       setBtnText('Start');
       if (props.isReady) {
-        setClassName(classNameBase + ' bg-dblue border-2 border-black')
+        setClassName(classNameBase + ' bg-dblue border-2 border-black cursor-pointer ')
       } else {
         setClassName(classNameBase + ' bg-[#97B5D9]')
       }
     } else {
       if (props.isReady) {
-        setClassName(classNameBase + ' bg-dred')
+        setClassName(classNameBase + ' bg-dred cursor-pointer')
         setBtnText('Not Ready');
       } else {
-        setClassName(classNameBase + ' bg-dblue border-2 border-black')
+        setClassName(classNameBase + ' bg-dblue border-2 border-black cursor-pointer')
         setBtnText('Ready');
       }
     }
