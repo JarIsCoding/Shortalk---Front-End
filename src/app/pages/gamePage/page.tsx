@@ -23,11 +23,6 @@ const GamePage = () => {
 
     const [conn, setConnection] = useState<HubConnection>()
 
-    //Change these bools to see inputs/button
-    const [isGuesser, setIsGuesser] = useState<boolean>(true)
-    const [isSpeaker, setIsSpeaker] = useState<boolean>(true)
-    const [isDefense, setIsDefense] = useState<boolean>(true)
-
     // const [time, setTime] = useState<number>();
     const [round, setRound] = useState<number>(0);
     const [roundTotal, setRoundTotal] = useState<number>(0);
@@ -435,7 +430,7 @@ const GamePage = () => {
 
                                 {
                                     role == 'Guesser' &&
-                                    <div className={` h-[50px] w-full px-2 ${isGuesser ? 'block' : 'hidden'}`}>
+                                    <div className={` h-[50px] w-full px-2`}>
                                         <input onChange={(e) => { setGuess(e.target.value) }} onKeyDown={handleKeyDown} value={guess} type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
                                     </div>
                                 }
@@ -462,7 +457,7 @@ const GamePage = () => {
 
                                         </div>
                                         : role == 'Defense' ?
-                                            <div className={`flex justify-center py-5 ${isDefense ? 'block' : 'hidden'}`}>
+                                            <div className={`flex justify-center py-5`}>
                                                 <BuzzBtn onClick={() => { setBuzzed(true); setOpenBuzzModal(true); handleBuzz() }} />
                                             </div>
                                             :

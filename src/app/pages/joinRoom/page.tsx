@@ -38,6 +38,9 @@ const JoinRoom = () => {
             setSuccessColor(false)
         } else if (await joinLobbyRoom(roomName)) {
             setLobbyRoomName(roomName)
+        }else{
+            setWarnText('Room name either does not exist or is full.')
+            setSuccessColor(false)  
         }
     }
 
