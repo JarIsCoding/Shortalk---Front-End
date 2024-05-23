@@ -264,7 +264,7 @@ const LobbyPage = () => {
 
   const handleStartClick = () => {
     if (userData.username != host) {
-      console.log("This guy is not the host")
+      // console.log("This guy is not the host")
       setIsReady(!isReady)
       toggleReadiness(userData.username, lobbyRoomName);
     } else {
@@ -273,7 +273,7 @@ const LobbyPage = () => {
       } else {
         console.log("Not all players are ready")
       }
-      console.log("This guy is our host!")
+      // console.log("This guy is our host!")
     }
   }
 
