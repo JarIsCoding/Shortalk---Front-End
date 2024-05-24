@@ -14,14 +14,14 @@ const OnlineTeamName = (props: ITeamInfo) => {
   return (
 
 
-    <div className=' justify-between whitespace-nowrap items-center space-y-5 md:w-[400px] w-[50%] lg:px-[25px] text-center lg:gap-0 gap-2'>
+    <div className=' justify-between whitespace-nowrap items-center space-y-5 md:w-[385px] w-[50%] lg:px-[25px] text-center lg:gap-0 gap-2'>
       <h1 className='underline text-dblue font-Roboto lg:text-4xl text-3xl text-center'>{props.teamName}</h1>
       {
         props.members && props.members.map((member, idx) => {
           return (
 
             <div key={idx} className=' flex justify-between'>
-              <h1 className=' text-dblue font-Roboto lg:text-4xl text-2xl text-center overflow-x-auto mx-2'>{member.name}</h1>
+              <h1 className=' text-dblue font-Roboto lg:text-4xl text-2xl text-center overflow-x-auto removeScrollbar mx-5'>{member.name}</h1>
               {
                 (member.name == props.host) ? <Image src={topHat} alt='topHat' className=' w-8 h-8'/> 
                 : member.readyStatus ? <Image src={checkMarck} alt='check mark' />

@@ -13,6 +13,9 @@ import FriendsTab from '@/app/components/FriendsTab'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { ILobbyRoomBackEnd, ITeamInfo } from '@/Interfaces/Interfaces'
 import { createGameRoom } from '@/utils/Dataservices'
+import ShuffleBtn from '@/app/components/Shufflebtn'
+import FriendsPic from '@/app/assets/FriendsPic.png'
+import Image from 'next/image'
 
 const LobbyPage = () => {
 
@@ -131,9 +134,9 @@ const LobbyPage = () => {
         .configureLogging(LogLevel.Information)
         .build();
 
-        // .withUrl("http://localhost:5151/lobby")
-        // .configureLogging(LogLevel.Information)
-        // .build();
+      // .withUrl("http://localhost:5151/lobby")
+      // .configureLogging(LogLevel.Information)
+      // .build();
 
       // set up handler
       conn.on("JoinSpecificLobbyRoom", (username: string, msg: string, json: string) => { // Specify the types for parameters
@@ -373,18 +376,43 @@ const LobbyPage = () => {
     console.log("Not ready yet")
   }
 
+  const [friendOpen, setFriendOpen] = useState<boolean>(false)
+  const [friendImg, setFriendImg] = useState<boolean>(false)
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        setFriendOpen(false);
+        setFriendImg(true)
+      } else {
+        setFriendOpen(true);
+        setFriendImg(false)
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   // START OF RETURN CODE
   return (
     <div>
       {/* Friends Tab */}
-      <div className={`absolute right-0 pt-[10vh] `}>
+      <div className={`absolute right-0 pt-[10vh] ${friendOpen ? 'hidden' : 'block'}`}>
         <FriendsTab onClickLeaveLobby={disconnectFromHub} />
       </div>
 
       {/* Navbar */}
       <div className='relative'>
         <NavBar title={"Room ID: " + lobbyRoomName} />
-        <div className="absolute top-6 right-0 mr-10 flex">
+        <div className={`absolute top-6 right-0 md:mr-10 flex z-50 ${friendImg ? 'hidden' : 'block'}`}>
+          <Button onClick={() => { friendOpen ? setFriendOpen(false) : setFriendOpen(true) }} className={`bg-clear`}>
+            <Image src={FriendsPic} alt="FriendsPicture" className={`w-35px h-30px friendsNav`} />
+          </Button>
         </div>
       </div>
 
@@ -396,13 +424,13 @@ const LobbyPage = () => {
           <OnlineTeamName teamName={Team1Info.teamName} host={Team1Info.host} members={Team1Info.members} />
 
           <div className='lg:block hidden flex-col items-center space-y-10 mx-10'>
-            <Button onClick={handleToggleTeam} size="xl" className='w-[230px] h-[50px] bg-dblue mt-5'>
-              <p className='font-Roboto text-white px-10 flex items-center'>Toggle Team</p>
+            <Button onClick={handleToggleTeam} size="xl" className='w-[230px] h-[50px] bg-dblue mt-5 font-LuckiestGuy flex justify-center'>
+              <p className=' text-white text-center tracking-wider flex items-center'>Toggle Team</p>
             </Button>
             <div className='flex justify-center'>
-              <DiceBtn onClick={handleShuffle}/>
+              <DiceBtn onClick={handleShuffle} />
             </div>
-            <div className='' onClick={handleStartClick}>
+            <div className='flex justify-center' onClick={handleStartClick}>
               <StartBtn isReady={isReady} isHost={(host == userData.username)} />
             </div>
           </div>
@@ -410,17 +438,20 @@ const LobbyPage = () => {
           <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} />
         </div>
 
-        <Button size="xl" className='w-[230px] h-[50px] bg-dblue mt-5 lg:hidden block'>
-          <p className='font-Roboto text-white px-10 flex items-center'>Toggle Team</p>
-        </Button>
+        <div className='lg:hidden flex justify-center gap-4'>
+          <Button size="xl" className='w-[230px] h-[50px] bg-dblue lg:mt-5 mt-0 font-LuckiestGuy flex justify-center'>
+            <p className=' text-white text-center tracking-wider flex items-center'>Toggle Team</p>
+          </Button>
+          <ShuffleBtn />
+        </div>
 
         <div className=' flex flex-col items-center space-y-4'>
-          <div className='lg:flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
-            <div className=' font-LuckiestGuy text-dblue text-3xl mr-5 lg:text-start text-center'>Number of Rounds:</div>
-            <div className='flex lg:justify-center'>
+          <div className='lg:flex flex-row justify-between whitespace-nowrap items-center lg:w-[400px] w-[100%]'>
+            <div className=' font-LuckiestGuy text-dblue text-3xl lg:text-start text-center'>Number of Rounds:</div>
+            <div className='flex lg:justify-end justify-center'>
               {
                 (userData.username == host) ?
-                  <select value={selectedRounds} onChange={(e) => handleChangeRounds(e)} className=' w-[20%] h-10' name='Rounds' id='Rounds'>
+                  <select value={selectedRounds} onChange={(e) => handleChangeRounds(e)} className=' h-10' name='Rounds' id='Rounds'>
                     {renderOptions(1, maxRounds, false)}
                   </select>
                   :
@@ -428,8 +459,8 @@ const LobbyPage = () => {
               }
             </div>
           </div>
-          <div className='lg:flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
-            <div className=' font-LuckiestGuy text-dblue text-3xl mr-5 lg:text-start text-center'>Time Limit:</div>
+          <div className='lg:flex flex-row justify-between whitespace-nowrap items-center lg:w-[400px] w-[100%]'>
+            <div className=' font-LuckiestGuy text-dblue text-3xl lg:text-start text-center'>Time Limit:</div>
             <div className='lg:w-[30%] w-[100%] flex lg:justify-end justify-center space-x-1' >
               {
                 (userData.username == host) ?
@@ -454,6 +485,10 @@ const LobbyPage = () => {
             {/* <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>ScoreKeeper</div>
             <select name="" id=""></select> */}
           </div>
+        </div>
+
+        <div className='lg:hidden flex justify-center' onClick={handleStartClick}>
+          <StartBtn isReady={isReady} isHost={(host == userData.username)} />
         </div>
 
         <div className='w-[88%] h-[224px] bg-lgray border-[#52576F] border-[20px] p-4'>

@@ -136,6 +136,8 @@ const PassAndPlayLobby = () => {
 
   }, [Team1Name, Team2Name, Team1NameList, Team2NameList, selectedMinutes, selectedSeconds, selectedRounds])
 
+  const nothing = () => {}
+
   return (
     <div>
       {/* Navbar */}
@@ -156,7 +158,7 @@ const PassAndPlayLobby = () => {
           <TeamListPNP teamNumber={1} />
           <div className='md:pt-36 pt-10'>
             <div className='lg:flex hidden justify-center'>
-              <DiceBtn />
+              <DiceBtn onClick={nothing} />
             </div>
             <div className='pt-24 lg:flex hidden'>
               <Button className='rounded-xl bg-red-500 text-center text-white p-1 font-LuckiestGuy tracking-widest' onClick={handleReset}>
