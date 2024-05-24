@@ -70,9 +70,9 @@ const GamePage = () => {
 
     useEffect(() => {
         if (!isTokenCorrect) {
-          router.push('/');
+            router.push('/');
         }
-      }, [isTokenCorrect])
+    }, [isTokenCorrect])
 
     const connectToGame = async (username: string, lobbyroom: string) => {
         try {
@@ -99,6 +99,8 @@ const GamePage = () => {
                 setOnePointWords(game.OnePointWords);
                 setThreePointWords(game.ThreePointWords);
                 setSkipWords(game.SkippedWords);
+                setGuesses([]);
+                setDescription("");
             })
 
             conn.on("ReceiveGuess", (username: string, msg: string, color: string, json: string) => {
@@ -220,10 +222,11 @@ const GamePage = () => {
     }
 
     const updateRoom = async () => {
+        console.log(teamUp + " is up")
         let points = AddUpPoints(buzzWords, onePointWords, threePointWords);
         await ChangeScore(lobbyRoomName, teamUp, points);
         setTeamUp(DetermineTeam(teamUp));
-        await GoToNextTurn(lobbyRoomName)          
+        await GoToNextTurn(lobbyRoomName)
         await UpdateSpeaker(lobbyRoomName);
         await ClearWordLists(lobbyRoomName);
         await getNewCard(userData.username, lobbyRoomName);
@@ -251,7 +254,6 @@ const GamePage = () => {
         setThreePointWord(InitGameInfo.ThreePointWord);
         setSpeaker(InitGameInfo.Speaker);
         setTurn(InitGameInfo.Turn);
-        setTeamUp(DetermineInitialTeam(InitGameInfo));
         setTeam1Score(InitGameInfo.Team1Score);
         setTeam2Score(InitGameInfo.Team2Score);
         setHost(InitGameInfo.Host);
@@ -275,17 +277,20 @@ const GamePage = () => {
         initializeRoom();
     }, [])
 
-    useEffect(()=> {
-        if(isTimeUp && !isGameStarting){
+    useEffect(() => {
+        if (isTimeUp && !isGameStarting) {
             console.log("Time is Up!!!!")
             setIsScoreBoardUp(true);
         }
-    },[isTimeUp])
+    }, [isTimeUp])
 
-    if (time === 0) {
-        console.log("Time is Up!!")
-        setIsTimeUp(true);
-      }
+    useEffect(() => {
+        if (time === 0) {
+            console.log("Time is Up!!")
+            setIsTimeUp(true);
+        }
+    }, [time])
+
 
     return (
 
@@ -398,10 +403,10 @@ const GamePage = () => {
                                     roundNumber={round}
                                     roundTotal={roundTotal}
                                     role={role}
-                                    // OnePointWord={onePointWord}
-                                    // ThreePointWord={threePointWord}
-                                    OnePointWord={""}
-                                    ThreePointWord={""}
+                                    OnePointWord={onePointWordHasBeenSaid? onePointWord : '???'}
+                                    ThreePointWord={threePointWordHasBeenSaid? threePointWord: '???'}
+                                    // OnePointWord={""}
+                                    // ThreePointWord={""}
                                     Speaker={speaker}
                                 />
                             )}

@@ -204,6 +204,11 @@ const LobbyPage = () => {
         setTeamInfos(lobby);
       })
 
+      conn.on("OnHostDisconnectedAsync", ()=> {
+        disconnectFromHub();
+        router.push('/pages/homePage')
+      })
+
       conn.on("ShuffleTeams", (json: string) => {
         const lobby: ILobbyRoomBackEnd = JSON.parse(json);
         setTeamInfos(lobby);
