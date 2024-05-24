@@ -150,7 +150,7 @@ const PassAndPlayLobby = () => {
         </div>
       </div>
 
-      <div className='flex flex-col items-center space-y-10 pt-20'>
+      <div className='flex flex-col items-center space-y-10 lg:pt-20 pt-8'>
 
         <div className='md:flex md:flex-row md:justify-between gap-5 md:items-center'>
           <TeamListPNP teamNumber={1} />

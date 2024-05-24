@@ -321,9 +321,9 @@ const LobbyPage = () => {
   return (
     <div>
       {/* Friends Tab */}
-      <div className={`absolute right-0 pt-24 `}>
+      {/* <div className={`absolute right-0 pt-24 `}>
         <FriendsTab />
-      </div>
+      </div> */}
 
       {/* Navbar */}
       <div className='relative'>
@@ -333,14 +333,13 @@ const LobbyPage = () => {
       </div>
 
       {/* Body */}
-      <div className='flex flex-col items-center space-y-16 pt-20 pr-72'>
+      <div className='flex flex-col items-center space-y-16 pt-20 xl:pe-72 pe-0'>
 
         <div className='flex flex-row justify-between'>
 
           <OnlineTeamName teamName={Team1Info.teamName} host={Team1Info.host} members={Team1Info.members} />
 
-
-          <div className=' flex flex-col items-center space-y-10 mx-10'>
+          <div className='lg:block hidden flex-col items-center space-y-10 mx-10'>
             <Button size="xl" className='w-[230px] h-[50px] bg-dblue mt-5'>
               <p className='font-Roboto text-white px-10 flex items-center'>Toggle Team</p>
             </Button>
@@ -351,6 +350,7 @@ const LobbyPage = () => {
               <StartBtn isReady={isReady} isHost={(host == userData.username)} />
             </div>
           </div>
+
           <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} />
         </div>
 
@@ -395,7 +395,7 @@ const LobbyPage = () => {
           </div>
         </div>
 
-        <div className='w-[1003px] h-[224px] bg-lgray border-[#52576F] border-[20px] p-4'>
+        <div className='w-[88%] h-[224px] bg-lgray border-[#52576F] border-[20px] p-4'>
           <div className='h-[70%] overflow-y-auto flex flex-col-reverse'>
             <div>
               {
@@ -408,7 +408,7 @@ const LobbyPage = () => {
               }
             </div>
           </div>
-          <input onChange={(e) => { setMessage(e.target.value) }} onKeyDown={handleKeyDown} value={message} type="text" placeholder='Type to Chat' className='w-[930px] h-[38]' />
+          <input onChange={(e) => { setMessage(e.target.value) }} onKeyDown={handleKeyDown} value={message} type="text" placeholder='Type to Chat' className='w-[99%] h-[38]' />
         </div>
       </div>
     </div>
