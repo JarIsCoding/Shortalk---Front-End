@@ -41,7 +41,7 @@ const HomePage = () => {
 
     <div className='bg-lblue min-h-screen w-full Bg relative'>
 
-      <div className={`absolute right-0 pt-24 ${isFriendsOn ? 'block slideLeft' : 'hidden'}`}>
+      <div className={`absolute bg-[#52576F] right-0 pt-24 ${isFriendsOn ? 'block slideLeft' : 'hidden'}`}>
         <FriendsTab />
       </div>
 
