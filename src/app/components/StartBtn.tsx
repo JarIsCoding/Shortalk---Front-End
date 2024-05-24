@@ -2,6 +2,7 @@
 
 import { IStartButton } from '@/Interfaces/Interfaces'
 import { useAppContext } from '@/context/Context';
+import { useAppContext } from '@/context/Context';
 import React, { useEffect, useState } from 'react'
 
 const StartBtn = (props: IStartButton) => {
@@ -11,6 +12,8 @@ const StartBtn = (props: IStartButton) => {
 
   const [btnText, setBtnText] = useState<string>('')
   const [className, setClassName] = useState<string>(classNameBase);
+
+  const { setIsAllready } = useAppContext()
 
   const { setIsAllready } = useAppContext()
 
@@ -25,6 +28,7 @@ const StartBtn = (props: IStartButton) => {
         setIsAllready(true)
       } else {
         setClassName(classNameBase + ' bg-[#97B5D9]')
+        setIsAllready(false)
         setIsAllready(false)
       }
     } else {

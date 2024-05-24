@@ -48,7 +48,7 @@ const HomePage = () => {
       {/* Check if user is guest or signed in */}
       {/* Title */}
       <div className='relative'>
-        <NavBar title={'Welcome ' + userData.username + ' !'} />
+        <NavBar title={'Welcome ' + userData.username + '!'} />
         <div className="absolute top-6 right-0 md:mr-10 flex z-50">
           {/*NavBar Icons/Buttons*/}
           <Button onClick={() => router.push('rulesPage')} className="bg-clear wiggle">
