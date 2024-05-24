@@ -4,7 +4,11 @@ import { useRouter, usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import BlueArrow from '../assets/BlueArrow.png'
 
-const FriendsTab = () => {
+interface IFriendsTab {
+  onClickLeaveLobby?: ()=>void
+}
+
+const FriendsTab = ({onClickLeaveLobby = () => {}}:IFriendsTab) => {
   const [correctRoom, setCorrectRoom] = useState<boolean>(false)
 
   const { userData, setUserData } = useAppContext();
@@ -27,7 +31,7 @@ const FriendsTab = () => {
   }, [])
 
   return (
-    <div className={`Friends w-[300px] text-white text-[20px] z-30 relative ${correctRoom ? 'h-[790px]' : 'h-[850px]'}`}>
+    <div className={`Friends w-[300px] text-white text-[20px] z-30 relative ${correctRoom ? 'h-[790px]' : 'h-[90vh]'}`}>
       <div className='mx-3 cursor-default'>
         <p className='text-end py-4 font-bold'>{userData.username}</p>
         <p className='text-end pt-2'>Friends</p>
@@ -66,7 +70,7 @@ const FriendsTab = () => {
       </div>
 
       <div className={`absolute bottom-24 w-[100%] flex justify-center ${correctRoom ? 'hidden' : 'block'}`}>
-        <Button className='bg-dblue w-[200px] h-[50px]' onClick={() => router.push('/pages/homePage')}>
+        <Button className='bg-dblue w-[200px] h-[50px]' onClick={() => {onClickLeaveLobby(); router.push('/pages/homePage')}}>
           <p className='text-[16px]'>
             Leave Room
           </p>
@@ -74,7 +78,7 @@ const FriendsTab = () => {
       </div>
 
       <div className='absolute bottom-8 w-[100%] flex justify-center'>
-        <Button className='bg-dblue w-[200px] h-[50px]' onClick={() => router.push('/pages/friendAddPage')}>
+        <Button className='bg-dblue w-[200px] h-[50px]' onClick={() => {onClickLeaveLobby(); router.push('/pages/friendAddPage')}}>
           <p className='text-[16px]'>
             Add a Friend
           </p>

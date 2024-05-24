@@ -48,7 +48,9 @@ export const checkIfPlayersAreReady = (Team1Info: ITeamInfo, Team2Info: ITeamInf
     console.log(Team1Info);
     if ((Object.keys(Team1Info).length != 0) && (Object.keys(Team2Info).length != 0)) {
         Team1Info.members.forEach(member => {
-            if (member.name && !member.readyStatus && (member.name != Team1Info.host)) {
+            if ((member.name != "") && !member.readyStatus && (member.name != Team1Info.host)) {
+                console.log(member.name);
+                console.log(member.readyStatus);
                 return false;
             }
             if (member.name) {
@@ -56,7 +58,7 @@ export const checkIfPlayersAreReady = (Team1Info: ITeamInfo, Team2Info: ITeamInf
             }
         })
         Team2Info.members.forEach(member => {
-            if (member.name && !member.readyStatus && (member.name != Team2Info.host)) {
+            if ((member.name != "") && !member.readyStatus && (member.name != Team2Info.host)) {
                 return false;
             }
             if (member.name) {

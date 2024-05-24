@@ -131,9 +131,9 @@ const LobbyPage = () => {
         .configureLogging(LogLevel.Information)
         .build();
 
-      // .withUrl("http://localhost:5151/lobby")
-      // .configureLogging(LogLevel.Information)
-      // .build();
+        // .withUrl("http://localhost:5151/lobby")
+        // .configureLogging(LogLevel.Information)
+        // .build();
 
       // set up handler
       conn.on("JoinSpecificLobbyRoom", (username: string, msg: string, json: string) => { // Specify the types for parameters
@@ -190,6 +190,22 @@ const LobbyPage = () => {
         router.push('/pages/gamePage')
       })
 
+      conn.on("ToggleTeam", (json: string) => {
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setTeamInfos(lobby);
+      })
+
+      conn.on("OnDisconnectedAsync", (msg: string, json: string) => {
+        console.log(msg);
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setTeamInfos(lobby);
+      })
+
+      conn.on("ShuffleTeams", (json: string) => {
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setTeamInfos(lobby);
+      })
+
       await conn.start();
       await conn.invoke("JoinSpecificLobbyRoom", { username, lobbyroom });
 
@@ -207,6 +223,14 @@ const LobbyPage = () => {
       console.log(e);
     }
   }
+
+  const disconnectFromHub = () => {
+    if (conn) {
+      conn.stop()
+        .then(() => console.log("Disconnected from the hub"))
+        .catch(err => console.error("Error while disconnecting:", err));
+    }
+  };
 
   const sendMessage = async (msg: string) => {
     console.log(conn)
@@ -252,6 +276,31 @@ const LobbyPage = () => {
     }
 
   }
+
+  const toggleTeam = async (username: string, lobbyroom: string) => {
+    try {
+      conn && await conn.invoke("ToggleTeam", { username, lobbyroom });
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const shuffleTeams = async (username: string, lobbyroom: string) => {
+    try {
+      conn && await conn.invoke("ShuffleTeams", { username, lobbyroom });
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const handleShuffle = async () => {
+    shuffleTeams(userData.username, lobbyRoomName)
+  }
+
+  const handleToggleTeam = async () => {
+    await toggleTeam(userData.username, lobbyRoomName);
+  }
+
 
   const handleChangeRounds = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRounds(e.target.value)
@@ -327,8 +376,8 @@ const LobbyPage = () => {
   return (
     <div>
       {/* Friends Tab */}
-      <div className={`absolute right-0 pt-24 `}>
-        <FriendsTab />
+      <div className={`absolute right-0 pt-[10vh] `}>
+        <FriendsTab onClickLeaveLobby={disconnectFromHub} />
       </div>
 
       {/* Navbar */}
@@ -339,7 +388,7 @@ const LobbyPage = () => {
       </div>
 
       {/* Body */}
-      <div className='flex flex-col items-center space-y-16 pt-20 pr-72'>
+      <div className='flex flex-col items-center justify-evenly t-20 pr-72 h-[90vh]'>
 
         <div className='flex flex-row justify-between'>
 
@@ -347,11 +396,11 @@ const LobbyPage = () => {
 
 
           <div className=' flex flex-col items-center space-y-10 mx-10'>
-            <Button size="xl" className='w-[230px] h-[50px] bg-dblue mt-5'>
+            <Button onClick={handleToggleTeam} size="xl" className='w-[230px] h-[50px] bg-dblue mt-5'>
               <p className='font-Roboto text-white px-10 flex items-center'>Toggle Team</p>
             </Button>
             <div className='flex justify-center'>
-              <DiceBtn />
+              <DiceBtn onClick={handleShuffle}/>
             </div>
             <div className='' onClick={handleStartClick}>
               <StartBtn isReady={isReady} isHost={(host == userData.username)} />

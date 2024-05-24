@@ -53,11 +53,15 @@ const JoinRoom = () => {
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
-        } else {
+        } else if (lobbyRoomName != "") {
             router.push('/pages/lobbyRoom')
             setTimeout(successfunc, 500)
         }
     }, [lobbyRoomName])
+
+    useEffect(()=> {
+        setLobbyRoomName("")
+    },[])
 
     return (
         <div className=' h-[100vh] flex flex-col justify-between'>
