@@ -1,6 +1,9 @@
 import { useState } from "react";
 import Image from 'next/image';
-import MusicalNotePic from '@/app/assets/MusicalNotePic.png'
+import FilledMusicNote from '@/app/assets/FilledMusicNote.png'
+import MusicNote from '@/app/assets/MusicNote.png'
+
+
 
 
 const Player = () => {
@@ -8,19 +11,16 @@ const Player = () => {
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
+    return(
+        <Image src={FilledMusicNote} alt="ialPicture" className="w-[40px] h-[40px]"/>  
+    )
   };
 
   return (
     <div>
-      {isPlaying &&
-        <audio
-          src="/Audio/MainMenuMusic.mp3"
-          controls={false}
-          autoPlay={isPlaying}
-        />
-      }
+      {isPlaying &&<audio src="/Audio/MainMenuMusic.mp3" controls={false}autoPlay={isPlaying} />}
       <button onClick={togglePlay}>
-        <Image src={MusicalNotePic} alt="MuscialPicture" className="w-[40px] h-[40px]"/>  
+        <Image src={MusicNote} alt="MuscialPicture" className="w-[35px] h-[35px]"/>  
    </button>
     </div>
   );
