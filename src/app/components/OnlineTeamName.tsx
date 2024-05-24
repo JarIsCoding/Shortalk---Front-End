@@ -14,7 +14,7 @@ const OnlineTeamName = (props: ITeamInfo) => {
   return (
 
 
-    <div className=' justify-between whitespace-nowrap items-center space-y-5 md:w-[385px] w-[50%] lg:px-[25px] text-center lg:gap-0 gap-2'>
+    <div className=' justify-between whitespace-nowrap items-center space-y-5 md:w-[385px] w-[150px] lg:px-[25px] text-center lg:gap-0 gap-2'>
       <h1 className='underline text-dblue font-Roboto lg:text-4xl text-3xl text-center'>{props.teamName}</h1>
       {
         props.members && props.members.map((member, idx) => {
