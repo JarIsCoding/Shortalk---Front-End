@@ -189,7 +189,6 @@ const LobbyPage = () => {
       });
 
       conn.on("StartGame", () => {
-        conn.stop();
         router.push('/pages/gamePage')
       })
 
