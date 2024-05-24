@@ -410,22 +410,27 @@ const LobbyPage = () => {
           <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} />
         </div>
 
-        <div className=' flex flex-col items-center space-y-4'>
-          <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
-            <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Number of Rounds:</div>
-            {
-              (userData.username == host) ?
-                <select value={selectedRounds} onChange={(e) => handleChangeRounds(e)} className=' w-[20%] h-10' name='Rounds' id='Rounds'>
-                  {renderOptions(1, maxRounds, false)}
-                </select>
-                :
-                <div className=' text-dblue font-LuckiestGuy text-3xl'>{selectedRounds} </div>
-            }
+        <Button size="xl" className='w-[230px] h-[50px] bg-dblue mt-5 lg:hidden block'>
+          <p className='font-Roboto text-white px-10 flex items-center'>Toggle Team</p>
+        </Button>
 
+        <div className=' flex flex-col items-center space-y-4'>
+          <div className='lg:flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
+            <div className=' font-LuckiestGuy text-dblue text-3xl mr-5 lg:text-start text-center'>Number of Rounds:</div>
+            <div className='flex lg:justify-center'>
+              {
+                (userData.username == host) ?
+                  <select value={selectedRounds} onChange={(e) => handleChangeRounds(e)} className=' w-[20%] h-10' name='Rounds' id='Rounds'>
+                    {renderOptions(1, maxRounds, false)}
+                  </select>
+                  :
+                  <div className=' text-dblue font-LuckiestGuy text-3xl'>{selectedRounds} </div>
+              }
+            </div>
           </div>
-          <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
-            <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Time Limit:</div>
-            <div className='w-[30%] flex justify-end space-x-1' >
+          <div className='lg:flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
+            <div className=' font-LuckiestGuy text-dblue text-3xl mr-5 lg:text-start text-center'>Time Limit:</div>
+            <div className='lg:w-[30%] w-[100%] flex lg:justify-end justify-center space-x-1' >
               {
                 (userData.username == host) ?
                   <select className='h-10' value={selectedMinutes} onChange={(e) => handleChangeTimeLimitMinutes(e)}>
