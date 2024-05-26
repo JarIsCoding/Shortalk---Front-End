@@ -295,7 +295,7 @@ const GamePage = () => {
 
     return (
 
-        <div className='relative h-[100vh]'>
+        <div className='relative'>
 
             <div className='relative h-[9.25%]'>
                 <NavBar title='ShorTalk' />
@@ -327,11 +327,14 @@ const GamePage = () => {
                 </Modal.Body>
             </Modal>
 
-            <div className={`absolute rounded-lg bg-black inset-0 bg-opacity-25 flex items-center justify-center ${openBuzzModal ? 'block' : 'hidden'}`} onClick={() => setOpenBuzzModal(false)}>
+            <div className={`absolute rounded-lg bg-black inset-0 bg-opacity-25 flex items-center justify-center md:py-24 py-16 ${openBuzzModal ? 'block' : 'hidden'}`} onClick={() => setOpenBuzzModal(false)}>
                 <div className="text-center text-red-600 text-[100px] font-LuckiestGuy leading-none tracking-widest -rotate-12 animateText">
                     BUZZED
                     <br />
                     -1
+                    <p className='text-[20px] pt-20'>
+                    click to continue
+                    </p>
                 </div>
             </div>
 
