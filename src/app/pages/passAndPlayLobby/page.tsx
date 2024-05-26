@@ -127,7 +127,7 @@ const PassAndPlayLobby = () => {
       setMessage('At least 4 players must be playing');
     } else if (differenceInPlayers > 1) {
       setMessage('Teams can only vary by max 1 player')
-    } else if (time < 5) {
+    } else if (time < 30) {
       setMessage('Rounds must take a minimum of 30 seconds')
     } else {
       setMessage('')
