@@ -406,14 +406,14 @@ const LobbyPage = () => {
   return (
     <div>
       {/* Friends Tab */}
-      <div className={`absolute right-0 pt-[10vh] ${friendOpen ? 'hidden' : 'block'}`}>
+      <div className={`absolute right-0 md:pt-24 pt-16 md:pb-0 pb-10 bg-[#52576F] ${friendOpen ? 'hidden' : 'block'}`}>
         <FriendsTab onClickLeaveLobby={disconnectFromHub} />
       </div>
 
       {/* Navbar */}
       <div className='relative'>
         <NavBar title={"Room ID: " + lobbyRoomName} />
-        <div className={`absolute top-6 right-0 md:mr-10 flex z-50 ${friendImg ? 'hidden' : 'block'}`}>
+        <div className={`absolute md:top-6 top-4 right-0 md:mr-10 flex z-50 ${friendImg ? 'hidden' : 'block'}`}>
           <Button onClick={() => { friendOpen ? setFriendOpen(false) : setFriendOpen(true) }} className={`bg-clear`}>
             <Image src={FriendsPic} alt="FriendsPicture" className={`w-35px h-30px friendsNav`} />
           </Button>
@@ -421,9 +421,9 @@ const LobbyPage = () => {
       </div>
 
       {/* Body */}
-      <div className='flex flex-col items-center justify-evenly t-20 xl:pe-72 pe-0 h-[90vh]'>
+      <div className='flex flex-col items-center justify-evenly t-20 xl:pe-72 pe-0 h-[90vh] pt-3'>
 
-        <div className='flex flex-row justify-between'>
+        <div className='md:flex flex-row justify-between'>
 
           <OnlineTeamName teamName={Team1Info.teamName} host={Team1Info.host} members={Team1Info.members} />
 
@@ -443,13 +443,13 @@ const LobbyPage = () => {
         </div>
 
         <div className='lg:hidden flex justify-center gap-4'>
-          <Button size="xl" className='w-[230px] h-[50px] bg-dblue lg:mt-5 mt-0 font-LuckiestGuy flex justify-center'>
+          <Button size="xl" className='w-[180px] h-[50px] bg-dblue lg:mt-5 mt-0 font-LuckiestGuy flex justify-center'>
             <p className=' text-white text-center tracking-wider flex items-center'>Toggle Team</p>
           </Button>
           <ShuffleBtn />
         </div>
 
-        <div className=' flex flex-col items-center space-y-4'>
+        <div className=' flex flex-col items-center space-y-4 pt-5'>
           <div className='lg:flex flex-row justify-between whitespace-nowrap items-center lg:w-[400px] w-[100%]'>
             <div className=' font-LuckiestGuy text-dblue text-3xl lg:text-start text-center'>Number of Rounds:</div>
             <div className='flex lg:justify-end justify-center'>
@@ -463,7 +463,7 @@ const LobbyPage = () => {
               }
             </div>
           </div>
-          <div className='lg:flex flex-row justify-between whitespace-nowrap items-center lg:w-[400px] w-[100%]'>
+          <div className='lg:flex flex-row justify-between whitespace-nowrap items-center lg:w-[400px] w-[300px]'>
             <div className=' font-LuckiestGuy text-dblue text-3xl lg:text-start text-center'>Time Limit:</div>
             <div className='lg:w-[30%] w-[100%] flex lg:justify-end justify-center space-x-1' >
               {
@@ -485,17 +485,17 @@ const LobbyPage = () => {
               }
             </div>
           </div>
-          <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
+          <div className='flex flex-row justify-between whitespace-nowrap items-center lg:w-[400px] w-[300px]'>
             {/* <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>ScoreKeeper</div>
             <select name="" id=""></select> */}
           </div>
         </div>
 
-        <div className='lg:hidden flex justify-center' onClick={handleStartClick}>
+        <div className='lg:hidden flex justify-center py-8' onClick={handleStartClick}>
           <StartBtn isReady={isReady} isHost={(host == userData.username)} />
         </div>
 
-        <div className='w-[88%] h-[224px] bg-lgray border-[#52576F] border-[20px] p-4'>
+        <div className='w-[88%] h-[224px] bg-lgray border-[#52576F] border-[20px] md:p-4 p-2 '>
           <div className='h-[70%] overflow-y-auto flex flex-col-reverse'>
             <div>
               {
