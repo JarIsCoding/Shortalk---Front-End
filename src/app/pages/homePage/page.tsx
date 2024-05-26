@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import Player from '@/app/components/Player';
 import MainMenuMusic from '@/app/components/AudioPlayer';
 import VolumeSlider from '@/app/components/VolumeSlider';
+import PlayAgainBtn from '@/app/components/PlayAgainBtn';
 
 const HomePage = () => {
 
