@@ -63,9 +63,7 @@ const FriendsTab = ({onClickLeaveLobby = () => {}}:IFriendsTab) => {
       <div className='mx-3'>
         <p className='underline py-2 tracking-widest cursor-default'>Pending</p>
         <div onClick={() => router.push('/pages/friendAccept')} className='text-end cursor-pointer hover:text-green-500'>
-          <p>
-            Grog
-          </p>
+          <p></p>
         </div>
       </div>
 
@@ -78,7 +76,7 @@ const FriendsTab = ({onClickLeaveLobby = () => {}}:IFriendsTab) => {
       </div>
 
       <div className='absolute bottom-8 w-[100%] flex justify-center'>
-        <Button className='bg-dblue w-[200px] h-[50px]' onClick={() => {onClickLeaveLobby(); router.push('/pages/friendAddPage')}}>
+        <Button className='bg-dblue w-[200px] h-[50px] hidden' onClick={() => {onClickLeaveLobby(); router.push('/pages/friendAddPage')}}>
           <p className='text-[16px]'>
             Add a Friend
           </p>

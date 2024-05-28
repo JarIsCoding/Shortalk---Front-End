@@ -12,7 +12,7 @@ import OnlineTeamName from '@/app/components/OnlineTeamName'
 import FriendsTab from '@/app/components/FriendsTab'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { ILobbyRoomBackEnd, ITeamInfo } from '@/Interfaces/Interfaces'
-import { createGameRoom } from '@/utils/Dataservices'
+import { DeleteGame, checkIfGameExists, createGameRoom } from '@/utils/Dataservices'
 import ShuffleBtn from '@/app/components/Shufflebtn'
 import FriendsPic from '@/app/assets/FriendsPic.png'
 import Image from 'next/image'
@@ -37,6 +37,9 @@ const LobbyPage = () => {
   const [selectedRounds, setSelectedRounds] = useState('1');
   const [selectedMinutes, setSelectedMinutes] = useState('1');
   const [selectedSeconds, setSelectedSeconds] = useState('30');
+
+  const [warningText, setWarningText] = useState(' ');
+  const [isTimeOk, setIsTimeOk] = useState(true);
 
   const maxRounds: number = 10;
   const maxMinutes: number = 5;
@@ -214,6 +217,18 @@ const LobbyPage = () => {
         setTeamInfos(lobby);
       })
 
+      conn.on("RemovePlayer", (playerName: string, json:string) => {
+        // console.log("This player is being removed:" + playerName)
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setTeamInfos(lobby);
+        
+        if(userData.username == playerName)
+          {
+            disconnectFromHub();
+            router.push('/pages/homePage')
+          }
+      })
+
       await conn.start();
       await conn.invoke("JoinSpecificLobbyRoom", { username, lobbyroom });
 
@@ -301,6 +316,18 @@ const LobbyPage = () => {
     }
   }
 
+  const removePlayer = async (playerName: string, lobbyroom: string) => {
+    try {
+      conn && await conn.invoke("RemovePlayer", playerName, lobbyroom );
+    } catch (e) {
+      console.log(e)
+    }  
+  }
+
+  const handleRemove = async (playerName: string) => {
+    removePlayer(playerName, lobbyRoomName);
+  }
+
   const handleShuffle = async () => {
     shuffleTeams(userData.username, lobbyRoomName)
   }
@@ -318,23 +345,45 @@ const LobbyPage = () => {
   const handleChangeTimeLimitMinutes = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedMinutes(e.target.value)
     const time = parseInt(e.target.value) * 60 + parseInt(selectedSeconds);
+    if(time < 30)
+      {
+        setWarningText("Time Must at least be 30 seconds")
+        setIsTimeOk(false);
+      }else{
+        setWarningText(" ")
+        setIsTimeOk(true);
+      }
     changeTimeLimit(userData.username, lobbyRoomName, time.toString())
   }
 
   const handleChangeTimeLimitSeconds = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSeconds(e.target.value)
     const time = parseInt(selectedMinutes) * 60 + parseInt(e.target.value);
+    if(time < 30)
+      {
+        setWarningText("Time Must at least be 30 seconds")
+        setIsTimeOk(false);
+      }else{
+        setWarningText(" ")
+        setIsTimeOk(true);
+      }
     changeTimeLimit(userData.username, lobbyRoomName, time.toString())
   }
 
-  const handleStartClick = () => {
+  const handleStartClick = async () => {
     if (userData.username != host) {
       // console.log("This guy is not the host")
       setIsReady(!isReady)
       toggleReadiness(userData.username, lobbyRoomName);
     } else {
-      if (isAllReady) {
-        startGame(userData.username, lobbyRoomName);
+      if (isAllReady && isTimeOk) {
+        let res = await checkIfGameExists(lobbyRoomName)
+        if(res){
+          await DeleteGame(lobbyRoomName);
+          startGame(userData.username, lobbyRoomName);  
+        }else{
+        startGame(userData.username, lobbyRoomName);          
+        }
       } else {
         console.log("Not all players are ready")
       }
@@ -370,10 +419,11 @@ const LobbyPage = () => {
         if (res) {
           console.log("The players are ready!!!")
         }
-        setIsReady(res)
+
+        setIsReady(res && isTimeOk)
       }
     }
-  }, [Team1Info, Team2Info])
+  }, [Team1Info, Team2Info, isTimeOk])
 
   // const [openModal, setOpenModal] = useState(false);
 
@@ -407,7 +457,7 @@ const LobbyPage = () => {
   return (
     <div>
       {/* Friends Tab */}
-      <div className={`absolute right-0 md:pt-24 pt-16 md:pb-0 pb-10 bg-[#52576F] ${friendOpen ? 'hidden' : 'block'}`}>
+      <div className={`absolute h-screen right-0 md:pt-24 pt-16 md:pb-0 pb-10 bg-[#52576F] ${friendOpen ? 'hidden' : 'block'}`}>
         <FriendsTab onClickLeaveLobby={disconnectFromHub} />
       </div>
 
@@ -426,7 +476,7 @@ const LobbyPage = () => {
 
         <div className='md:flex flex-row justify-between'>
 
-          <OnlineTeamName teamName={Team1Info.teamName} host={Team1Info.host} members={Team1Info.members} />
+          <OnlineTeamName teamName={Team1Info.teamName} host={Team1Info.host} members={Team1Info.members} handleRemove={handleRemove} />
 
           <div className='lg:block hidden flex-col items-center space-y-10 mx-10'>
             <Button onClick={handleToggleTeam} size="xl" className='w-[230px] h-[50px] bg-dblue mt-5 font-LuckiestGuy flex justify-center'>
@@ -440,7 +490,7 @@ const LobbyPage = () => {
             </div>
           </div>
 
-          <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} />
+          <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} handleRemove={handleRemove} />
         </div>
 
         <div className='lg:hidden flex justify-center gap-4'>
@@ -486,6 +536,7 @@ const LobbyPage = () => {
               }
             </div>
           </div>
+          <p className=' text-dred'>{warningText}</p>
           <div className='flex flex-row justify-between whitespace-nowrap items-center lg:w-[400px] w-[300px]'>
             {/* <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>ScoreKeeper</div>
             <select name="" id=""></select> */}

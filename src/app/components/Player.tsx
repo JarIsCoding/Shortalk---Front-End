@@ -20,7 +20,7 @@ const Player = () => {
         />
       }
       <button onClick={togglePlay}>
-        <Image src={MusicalNotePic} alt="MuscialPicture" className="w-[40px] h-[40px]"/>  
+        <Image src={MusicalNotePic} alt="MusicalPicture" className="w-[40px] h-[40px] hidden md:block"/>  
    </button>
     </div>
   );

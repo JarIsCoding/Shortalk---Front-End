@@ -10,7 +10,7 @@ const GoHomeBtn = () => {
 
     return (
         <div className='cursor-pointer pb-10 font-LuckiestGuy tracking-widest'>
-            <Button className='md:px-16 py-2 md:me-7 bg-dblue' onClick={() => { router.push('/pages/homePage') }}>
+            <Button className='md:px-16 py-2 bg-dblue' onClick={() => { router.push('/pages/homePage') }}>
                 <p className='text-[36px]'>Back to Home</p>
             </Button>
         </div>

@@ -86,7 +86,7 @@ const CreateRoom = () => {
     })
 
     return (
-        <div className=' h-[100vh] flex flex-col justify-between'>
+        <div className=' h-[100vh] flex flex-col justify-between mx-4 md:mx-16'>
             <div className='flex justify-center md:py-20 py-12'>
                 <p className='text-dblue font-LuckiestGuy text-[48px] tracking-widest text-center cursor-default'>CREATE YOUR ROOM</p>
             </div>

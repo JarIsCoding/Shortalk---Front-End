@@ -6,7 +6,8 @@ import GoHomeBtn from '@/app/components/GoHomeBtn'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
-import { joinLobbyRoom } from '@/utils/Dataservices'
+import { getGameInfo, getLobbyInfo, joinLobbyRoom } from '@/utils/Dataservices'
+import { ILobbyRoomBackEnd, iLobbyRoomBackEnd } from '@/Interfaces/Interfaces'
 
 const JoinRoom = () => {
 
@@ -37,9 +38,26 @@ const JoinRoom = () => {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
         } else if (await joinLobbyRoom(roomName)) {
-            setLobbyRoomName(roomName)
+            let lobby:iLobbyRoomBackEnd = await getLobbyInfo(roomName);
+            console.log(lobby)
+            if(lobby.teamMemberA1 == "" || 
+            lobby.teamMemberA2 == "" || 
+            lobby.teamMemberA3 == "" || 
+            lobby.teamMemberA4 == "" || 
+            lobby.teamMemberA5 == "" || 
+            lobby.teamMemberB1 == "" || 
+            lobby.teamMemberB2 == "" || 
+            lobby.teamMemberB3 == "" || 
+            lobby.teamMemberB4 == "" || 
+            lobby.teamMemberB5 == "" 
+            ){
+                setLobbyRoomName(roomName) 
+            }else{
+                setWarnText('Seems like this lobby is full /:')
+            }
+
         }else{
-            setWarnText('Room name either does not exist or is full.')
+            setWarnText('Room name does not exist')
             setSuccessColor(false)  
         }
     }
@@ -64,13 +82,13 @@ const JoinRoom = () => {
     },[])
 
     return (
-        <div className=' h-[100vh] flex flex-col justify-between'>
+        <div className=' h-[100vh] flex flex-col justify-between mx-4 md:mx-16'>
             <div className='flex justify-center md:py-20 py-12 cursor-default'>
                 <p className='text-dblue font-LuckiestGuy text-[48px] tracking-widest text-center'>JOIN A ROOM</p>
             </div>
 
             <div className='flex justify-center'>
-                <div className='cardBorder bg-white w-[500px] h-[380px] rounded-lg'>
+                <div className='cardBorder bg-white w-[500px] pb-4 md:h-[380px] rounded-lg'>
                     <p className='flex justify-center font-LuckiestGuy text-[32px] text-center tracking-widest text-dgray py-8 cursor-default'>
                         Room Name
                     </p>

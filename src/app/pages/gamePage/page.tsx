@@ -13,7 +13,7 @@ import SkipBtn from '@/app/components/SkipBtn'
 import StatusBar from '@/app/components/StatusBar'
 import ThreePointBtn from '@/app/components/ThreePointBtn'
 import { useAppContext } from '@/context/Context'
-import { AppendBuzzWords, AppendOnePointWords, AppendSkipPointWords, AppendThreePointWords, ChangeScore, ClearWordLists, GoToNextTurn, UpdateSpeaker, getGameInfo } from '@/utils/Dataservices'
+import { AppendBuzzWords, AppendOnePointWords, AppendSkipPointWords, AppendThreePointWords, ChangeScore, ClearWordLists, DeleteGame, GoToNextTurn, UpdateSpeaker, getGameInfo } from '@/utils/Dataservices'
 import { AddUpPoints, Converti2I, DetermineInitialTeam, DetermineTeam, String2ICardArray, determineNumberOfTurns, determineRole, determineRound } from '@/utils/utils'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { Button, Modal } from 'flowbite-react'
@@ -60,6 +60,9 @@ const GamePage = () => {
     const [Team1Score, setTeam1Score] = useState<number>(0);
     const [Team2Score, setTeam2Score] = useState<number>(0);
 
+    const [Team1Members, setTeam1Members] = useState<string[]>([])
+    const [Team2Members, setTeam2Members] = useState<string[]>([])
+
     const [Team1Name, setTeam1Name] = useState<string>('Team 1');
     const [Team2Name, setTeam2Name] = useState<string>('Team 2');
 
@@ -75,6 +78,21 @@ const GamePage = () => {
         }
     }, [isTokenCorrect])
 
+    const setUpTeamMembers = (lobby: IGameInfo) => {
+        const team1init = [lobby.TeamMemberA1, lobby.TeamMemberA2, lobby.TeamMemberA3, lobby.TeamMemberA4, lobby.TeamMemberA5];
+        let team1: string[] = []
+        team1init.forEach(member => {
+            member && team1.push(member)
+        })
+        const team2init = [lobby.TeamMemberB1, lobby.TeamMemberB2, lobby.TeamMemberB3, lobby.TeamMemberB4, lobby.TeamMemberB5];
+        let team2: string[] = []
+        team2init.forEach(member => {
+            member && team2.push(member)
+        })
+        setTeam1Members(team1);
+        setTeam2Members(team2);
+    }
+
     const connectToGame = async (username: string, lobbyroom: string) => {
         try {
             const conn = new HubConnectionBuilder()
@@ -82,9 +100,9 @@ const GamePage = () => {
                 // .configureLogging(LogLevel.Information)
                 // .build();
 
-            .withUrl("http://localhost:5151/game")
-            .configureLogging(LogLevel.Information)
-            .build();
+                .withUrl("http://localhost:5151/game")
+                .configureLogging(LogLevel.Information)
+                .build();
 
             conn.on("JoinSpecificGame", (username: string, msg: string) => {
                 console.log(username + ": " + msg)
@@ -222,6 +240,13 @@ const GamePage = () => {
         await getNewCard(userData.username, lobbyRoomName)
     }
 
+    const handlePlayAgain = () => {
+        // if (userData.username == host) {
+        //     DeleteGame(lobbyRoomName);
+        // }
+        router.push('/pages/lobbyRoom')
+    }
+
     const updateRoom = async () => {
         console.log(teamUp + " is up")
         let points = AddUpPoints(buzzWords, onePointWords, threePointWords);
@@ -265,6 +290,7 @@ const GamePage = () => {
             setIsTimeUp(false);
             setTime(InitGameInfo.TimeLimit);
             setIsGameStarting(false);
+            setUpTeamMembers(InitGameInfo)
         }
         setGuesses([])
         setDescription("")
@@ -333,7 +359,7 @@ const GamePage = () => {
                     <br />
                     -1
                     <p className='text-[20px] pt-20'>
-                    click to continue
+                        click to continue
                     </p>
                 </div>
             </div>
@@ -345,9 +371,37 @@ const GamePage = () => {
                             <div className='text-center pt-32 pb-16 text-[50px] text-dblue flex flex-col'>
                                 {
                                     Team1Score > Team2Score
-                                        ? <p>{Team1Name} WINS</p>
+                                        ? <div>
+                                            <p>{Team1Name} WINS</p>
+                                            <p>Congaratulations to:</p>
+                                            <div className=' break-words w-full flex justify-center'>                                            
+                                                {
+                                                Team1Members.map((member, idx) => {
+                                                    return (
+                                                        (idx == 0) ?
+                                                            <div>{member}</div>
+                                                            :
+                                                            <div>{", " + member}</div>
+                                                    )
+                                                })
+                                            }</div>
+                                        </div>
                                         : Team2Score > Team1Score
-                                            ? <p>{Team2Name} WINS</p>
+                                            ? <div>
+                                                <p>{Team2Name} WINS</p>
+                                                <p>Congaratulations to:</p>
+                                                <span className=' break-words w-full flex justify-center'>                                                {
+                                                    Team2Members.map((member, idx) => {
+                                                        return (
+                                                            (idx == 0) ?
+                                                                <div>{member}</div>
+                                                                :
+                                                                <div>{", " + member}</div>
+                                                        )
+                                                    })
+                                                }
+                                                </span>
+                                            </div>
                                             : <p>{"IT'S A TIE!"}</p>
                                 }
                                 <p>Final Score</p>
@@ -380,7 +434,7 @@ const GamePage = () => {
                                     </div>
                                 </div>
                                 {/* push to whatever page is next */}
-                                <div onClick={() => router.push('/pages/lobbyRoom')} className='flex justify-center py-16 cursor-pointer'>
+                                <div onClick={handlePlayAgain} className='flex justify-center py-16 cursor-pointer'>
                                     <PlayAgainBtn />
                                 </div>
                             </div>
@@ -445,7 +499,7 @@ const GamePage = () => {
 
                                 {
                                     role == 'Guesser' &&
-                                    <div className={` h-[50px] w-full px-2`}>
+                                    <div className={` h-[50px] mb-2 w-full px-2`}>
                                         <input onChange={(e) => { setGuess(e.target.value) }} onKeyDown={handleKeyDown} value={guess} type="text" placeholder='Type Your Guesses Here...' className='rounded-md w-full text-[20px]' />
                                     </div>
                                 }

@@ -165,6 +165,13 @@ export const createGameRoom = async (lobbyRoomName: string) => {
     return data
 }
 
+export const getLobbyInfo = async (lobbyRoomName:string) => {
+    const promise = await fetch(url + `/Lobby/GetLobby/${lobbyRoomName}`);
+    const lobbyData:ILobbyRoomBackEnd = await promise.json();
+    console.log(lobbyData)
+    return lobbyData;
+}
+
 export const getGameInfo = async (lobbyRoomName:string) => {
 
     const promise = await fetch(url + `/Game/GetGameInfo/${lobbyRoomName}`);
@@ -267,4 +274,23 @@ export const ClearWordLists = async (lobbyName:string) => {
     }
     const result = await res.text();
     return result.toLowerCase() === 'true'; 
+}
+
+export const DeleteGame = async (lobbyName:string) => {
+    const res = await fetch(url +`/Game/DeleteGame/${lobbyName}`, {
+        method: 'DELETE'
+    })
+    if (!res.ok) {
+        const message = "An error has occured " + res.status;
+        throw new Error(message);
+    }
+    const result = await res.text();
+    return result.toLowerCase() === 'true'; 
+}
+
+export const checkIfGameExists = async (lobbyName:string) => {
+    const promise = await fetch(url +`/Game/DoesGameExist/${lobbyName}`)
+    const res = await promise.json()
+
+    return res
 }

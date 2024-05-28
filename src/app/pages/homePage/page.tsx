@@ -42,7 +42,7 @@ const HomePage = () => {
 
     <div className='bg-lblue min-h-screen w-full Bg relative'>
 
-      <div className={`absolute bg-[#52576F] right-0 md:pt-24 pt-16 ${isFriendsOn ? 'block slideLeft' : 'hidden'}`}>
+      <div className={`absolute bg-[#52576F] h-screen  md:pb-24 pb-16 right-0 top-[75px] md:top-[90px] ${isFriendsOn ? 'block slideLeft' : 'hidden'}`}>
         <FriendsTab />
       </div>
 
@@ -52,7 +52,7 @@ const HomePage = () => {
         <NavBar title={'Welcome ' + userData.username + '!'} />
         <div className="absolute md:top-6 top-4 right-0 md:mr-10 flex z-50">
           {/*NavBar Icons/Buttons*/}
-          <Button onClick={() => router.push('rulesPage')} className="bg-clear wiggle">
+          <Button onClick={() => router.push('rulesPage')} className="bg-clear wiggle hidden md:block">
             <Image src={RulesPic} alt="RulesPicture" className="w-35px h-30px rulesNav" />
           </Button>
           <Button onClick={() => { isFriendsOn ? setIsFriendsOn(false) : setIsFriendsOn(true) }} className={`bg-clear`}>
@@ -88,9 +88,9 @@ const HomePage = () => {
         </Button>
       </div>
 
-      <p className='md:text-[35px] text-[20px] text-center font-LuckiestGuy text-dblue py-10 cursor-default px-5'>
+      {/* <p className='md:text-[35px] text-[20px] text-center font-LuckiestGuy text-dblue py-10 cursor-default px-5'>
         Online is now functional! Give it a try with your friends, <br /> bugs may be encountered beware!!
-      </p>
+      </p> */}
 
       {/* Modal for logging out */}
       <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>

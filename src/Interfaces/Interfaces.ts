@@ -109,6 +109,33 @@ export interface ILobbyRoomBackEnd {
     ReadyStatusB5: boolean
 }
 
+export interface iLobbyRoomBackEnd {
+    lobbyName: string
+    host: string
+    numberOfRounds: number
+    timeLimit: number
+    teamMemberA1: string
+    teamMemberA2: string
+    teamMemberA3: string
+    teamMemberA4: string
+    teamMemberA5: string
+    teamMemberB1: string
+    teamMemberB2: string
+    teamMemberB3: string
+    teamMemberB4: string
+    teamMemberB5: string
+    readyStatusA1: boolean
+    readyStatusA2: boolean
+    readyStatusA3: boolean
+    readyStatusA4: boolean
+    readyStatusA5: boolean
+    readyStatusB1: boolean
+    readyStatusB2: boolean
+    readyStatusB3: boolean
+    readyStatusB4: boolean
+    readyStatusB5: boolean
+}
+
 export interface iGameInfo {
     lobbyName: string
     host: string
