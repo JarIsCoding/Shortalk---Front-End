@@ -190,6 +190,40 @@ export const ConvertLobbyi2I =  (data: iLobbyRoomBackEnd) => {
 }
 
 
+export const ConvertLobbyI2i =  (data: ILobbyRoomBackEnd) => {
+    let lobby: iLobbyRoomBackEnd = {} as iLobbyRoomBackEnd;
+
+    lobby.lobbyName = data.LobbyName;
+    lobby.host = data.Host;
+    lobby.numberOfRounds = data.NumberOfRounds;
+    lobby.timeLimit = data.TimeLimit;
+    lobby.teamMemberA1 = data.TeamMemberA1;
+    lobby.teamMemberA2 = data.TeamMemberA2;
+    lobby.teamMemberA3 = data.TeamMemberA3;
+    lobby.teamMemberA4 = data.TeamMemberA4;
+    lobby.teamMemberA5 = data.TeamMemberA5;
+    lobby.teamMemberB1 = data.TeamMemberB1;
+    lobby.teamMemberB2 = data.TeamMemberB2;
+    lobby.teamMemberB3 = data.TeamMemberB3;
+    lobby.teamMemberB4 = data.TeamMemberB4;
+    lobby.teamMemberB5 = data.TeamMemberB5;
+    lobby.readyStatusA1 = data.ReadyStatusA1;
+    lobby.readyStatusA2 = data.ReadyStatusA2;
+    lobby.readyStatusA3 = data.ReadyStatusA3;
+    lobby.readyStatusA4 = data.ReadyStatusA4;
+    lobby.readyStatusA5 = data.ReadyStatusA5;
+    lobby.readyStatusB1 = data.ReadyStatusB1;
+    lobby.readyStatusB2 = data.ReadyStatusB2;
+    lobby.readyStatusB3 = data.ReadyStatusB3;
+    lobby.readyStatusB4 = data.ReadyStatusB4;
+    lobby.readyStatusB5 = data.ReadyStatusB5;
+
+    return lobby;
+     
+
+}
+
+
 export const Converti2I =  (data: iGameInfo) => {
     let game: IGameInfo = {} as IGameInfo;
     game.LobbyName = data.lobbyName;

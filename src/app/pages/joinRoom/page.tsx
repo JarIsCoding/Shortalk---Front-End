@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { getGameInfo, getLobbyInfo, joinLobbyRoom } from '@/utils/Dataservices'
 import { ILobbyRoomBackEnd, iLobbyRoomBackEnd } from '@/Interfaces/Interfaces'
+import { ConvertLobbyI2i } from '@/utils/utils'
 
 const JoinRoom = () => {
 
@@ -38,7 +39,8 @@ const JoinRoom = () => {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
         } else if (await joinLobbyRoom(roomName)) {
-            let lobby:iLobbyRoomBackEnd = await getLobbyInfo(roomName);
+            let Lobby:ILobbyRoomBackEnd = await getLobbyInfo(roomName);
+            let lobby = ConvertLobbyI2i(Lobby)
             console.log(lobby)
             if(lobby.teamMemberA1 == "" || 
             lobby.teamMemberA2 == "" || 
