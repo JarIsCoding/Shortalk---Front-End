@@ -493,7 +493,7 @@ const LobbyPage = () => {
           <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} handleRemove={handleRemove} />
         </div>
 
-        <div className='lg:hidden flex justify-center gap-4'>
+        <div className='lg:hidden flex justify-center gap-4 sm:py-0 py-5'>
           <Button size="xl" className='w-[180px] h-[50px] bg-dblue lg:mt-5 mt-0 font-LuckiestGuy flex justify-center'>
             <p className=' text-white text-center tracking-wider flex items-center'>Toggle Team</p>
           </Button>
