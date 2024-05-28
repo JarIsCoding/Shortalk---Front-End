@@ -96,13 +96,13 @@ const GamePage = () => {
     const connectToGame = async (username: string, lobbyroom: string) => {
         try {
             const conn = new HubConnectionBuilder()
-                // .withUrl("https://shortalkapi.azurewebsites.net/game")
-                // .configureLogging(LogLevel.Information)
-                // .build();
-
-                .withUrl("http://localhost:5151/game")
+                .withUrl("https://shortalkapi.azurewebsites.net/game")
                 .configureLogging(LogLevel.Information)
                 .build();
+
+                // .withUrl("http://localhost:5151/game")
+                // .configureLogging(LogLevel.Information)
+                // .build();
 
             conn.on("JoinSpecificGame", (username: string, msg: string) => {
                 console.log(username + ": " + msg)
