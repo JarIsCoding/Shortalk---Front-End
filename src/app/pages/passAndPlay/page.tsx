@@ -176,36 +176,9 @@ const PassAndPlayPage = () => {
       setIsSwiping(false)
       setSwipeUp(false)
       SkipBtnHandle()
-    }
+    },
+    preventScrollOnSwipe: (true)
   })
-
-  const animCheck = () => {
-    if (swipeUp) {
-      setAnim(true)
-      setAnim2(false)
-      setAnim3(false)
-      setAnim4(false)
-      console.log('anim1')
-    } else if (swipeRight) {
-      setAnim2(true)
-      setAnim(false)
-      setAnim3(false)
-      setAnim4(false)
-      console.log('anim2')
-    } else if (swipeDown) {
-      setAnim3(true)
-      setAnim(false)
-      setAnim2(false)
-      setAnim4(false)
-      console.log('anim3')
-    } else if (swipeLeft) {
-      setAnim4(true)
-      setAnim(false)
-      setAnim2(false)
-      setAnim3(false)
-      console.log('anim4')
-    }
-  }
 
   // useEffect(() => {
   //   animCheck()
@@ -243,7 +216,7 @@ const PassAndPlayPage = () => {
       <div className='lg:hidden block'>
         <div {...handleSwipe} className='w-full h-screen absolute z-20'>
           <div className='flex justify-center h-[10%]'>
-            <div className='rounded-b-full h-[20%] bg-red-600 text-red-600 w-[80%]'>.</div>
+            <div className='rounded-b-full h-[25%] bg-red-600 text-red-600 w-[80%]'>.</div>
           </div>
           <div className='flex justify-between items-center h-[80%]'>
             <div className='rounded-e-full h-[80%] bg-green text-green w-5'>.</div>

@@ -373,7 +373,7 @@ const GamePage = () => {
                                     Team1Score > Team2Score
                                         ? <div>
                                             <p>{Team1Name} WINS</p>
-                                            <p>Congaratulations to:</p>
+                                            <p>Congratulations to:</p>
                                             <div className=' break-words w-full flex justify-center'>                                            
                                                 {
                                                 Team1Members.map((member, idx) => {
@@ -389,7 +389,7 @@ const GamePage = () => {
                                         : Team2Score > Team1Score
                                             ? <div>
                                                 <p>{Team2Name} WINS</p>
-                                                <p>Congaratulations to:</p>
+                                                <p>Congratulations to:</p>
                                                 <span className=' break-words w-full flex justify-center'>                                                {
                                                     Team2Members.map((member, idx) => {
                                                         return (
@@ -409,8 +409,8 @@ const GamePage = () => {
 
                             <div className='grid grid-cols-1'>
                                 <div className='flex justify-center'>
-                                    <div className='flex justify-center bg-white border-[1px] border-black text-[48px] w-[60%]'>
-                                        <div className='grid md:grid-cols-2 grid-cols-1 py-10 w-[100%] px-16'>
+                                    <div className='flex justify-center bg-white border-[1px] border-black text-[48px] sm:w-[60%] w-full'>
+                                        <div className='grid md:grid-cols-2 grid-cols-1 py-10 w-[100%] sm:px-16 px-5'>
                                             <div className='md:text-start text-center'>
                                                 Team {Team1Name}:
                                             </div>
@@ -422,8 +422,8 @@ const GamePage = () => {
                                 </div>
 
                                 <div className='flex justify-center'>
-                                    <div className='flex justify-center bg-white border-[1px] border-black text-[48px] w-[60%]'>
-                                        <div className='grid md:grid-cols-2 grid-cols-1 py-10 w-[100%] px-16'>
+                                    <div className='flex justify-center bg-white border-[1px] border-black text-[48px] sm:w-[60%] w-full'>
+                                        <div className='grid md:grid-cols-2 grid-cols-1 py-10 w-[100%] sm:px-16 px-5'>
                                             <div className='md:text-start text-center'>
                                                 Team {Team2Name}:
                                             </div>
