@@ -35,12 +35,15 @@ const JoinRoom = () => {
     }
 
     const handleJoin = async () => {
+        let res = await joinLobbyRoom(roomName)
+        console.log(res);
         if (roomName === '') {
             setWarnText('Please enter a room name.')
             setSuccessColor(false)
-        } else if (await joinLobbyRoom(roomName)) {
-            let Lobby:ILobbyRoomBackEnd = await getLobbyInfo(roomName);
-            let lobby = ConvertLobbyI2i(Lobby)
+        } else if (res) {
+            let lobby:iLobbyRoomBackEnd = await getLobbyInfo(roomName);
+            // let lobby = ConvertLobbyI2i(Lobby)
+            // console.log(Lobby)
             console.log(lobby)
             if(lobby.teamMemberA1 == "" || 
             lobby.teamMemberA2 == "" || 

@@ -1,4 +1,4 @@
-import { ICard, ICardData, ICreateLobbyRoomDTO, IGameInfo, ILobbyRoom, ILobbyRoomBackEnd, IToken, IUserData, IUserInfo, iGameInfo } from "@/Interfaces/Interfaces"
+import { ICard, ICardData, ICreateLobbyRoomDTO, IGameInfo, ILobbyRoom, ILobbyRoomBackEnd, IToken, IUserData, IUserInfo, iGameInfo, iLobbyRoomBackEnd } from "@/Interfaces/Interfaces"
 import { Context } from "@/context/Context"
 import * as wordData from '../words.json';
 
@@ -167,7 +167,7 @@ export const createGameRoom = async (lobbyRoomName: string) => {
 
 export const getLobbyInfo = async (lobbyRoomName:string) => {
     const promise = await fetch(url + `/Lobby/GetLobby/${lobbyRoomName}`);
-    const lobbyData:ILobbyRoomBackEnd = await promise.json();
+    const lobbyData:iLobbyRoomBackEnd = await promise.json();
     console.log(lobbyData)
     return lobbyData;
 }
