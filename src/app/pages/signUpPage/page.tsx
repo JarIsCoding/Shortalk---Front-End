@@ -6,66 +6,63 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const SignUpPage = () => {
-
-    const [username, setUsername] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const [createdText, setCreatedText] = useState<string>('')
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [createdText, setCreatedText] = useState<string>('');
     const [openModal, setOpenModal] = useState(false);
     const [success, setSuccess] = useState<boolean>(false);
-    const [security, setSecurity] = useState<string>('')
+    const [security, setSecurity] = useState<string>('');
 
     let router = useRouter();
 
     const handleSubmit = async () => {
-
         let userData = {
             username: username,
             password: password
+        };
+
+        const specialCharRegex = /[,;]/;
+
+        if (specialCharRegex.test(username)) {
+            setCreatedText("Some special characters are not allowed.");
+            setSuccess(false);
+            setOpenModal(true);
+            return;
         }
 
-        //Reset text on click cause its being annoying
-        setCreatedText('')
-
-        if (password !== '' && security !== '' && username !== '') {
-
-            //Check for long enough password
+        if (password !== '' && username !== '') {
             if (password.length >= 8) {
-
                 const isCreated = await createAccount(userData);
                 if (isCreated) {
                     setCreatedText("User created successfully!");
-                    setSuccess(true)
+                    setSuccess(true);
                 } else {
                     setCreatedText("Failed to create user. Please try again.");
-                    setSuccess(false)
+                    setSuccess(false);
                 }
-
             } else {
-                setCreatedText("Must have 8 characters minimum.");
-                setSuccess(false)
+                setCreatedText("Password must have 8 characters minimum.");
+                setSuccess(false);
             }
-
         } else {
             setCreatedText("Please fill out all fields!");
-            setSuccess(false)
+            setSuccess(false);
         }
-    }
+
+        setOpenModal(true);
+    };
 
     return (
         <div className='bg-lblue'>
-            <div className='grid grid-flow-row justify-center'>
-
+            <div className='grid'>
                 <div className='py-14 text-center'>
                     <p className='text-[48px] font-LuckiestGuy tracking-widest text-dblue cursor-default'>
                         CREATE YOUR USERNAME <br /> AND PASSWORD
                     </p>
                 </div>
-
                 <div className='flex justify-center pb-36'>
                     <div className='bigCardBg rounded-md flex justify-center pb-16'>
                         <form className="flex max-w-md flex-col ">
-
-                            {/* Username and password Input Field */}
                             <p className='text-center text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
                                 USERNAME
                             </p>
@@ -77,7 +74,8 @@ const SignUpPage = () => {
                             <input id="password1" type="password" placeholder='Password' className='inputSize rounded-md' onChange={(e) => setPassword(e.target.value)} required />
                             <p className='text-center cursor-default'>More than one syllable reccomended</p>
 
-                            <p className='text-center text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
+                            {/* never got to creating the forgotpassword :/ */}
+                            {/* <p className='text-center text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
                                 Security Question
                             </p>
 
@@ -87,14 +85,14 @@ const SignUpPage = () => {
                                 <option value="question3">What is your favorite color?</option>
                             </select>
 
-                            <input onChange={(e) => setSecurity(e.target.value)} type='text' placeholder="Enter your answer" className='rounded-b-md' />
+                            <input onChange={(e) => setSecurity(e.target.value)} type='text' placeholder="Enter your answer" className='rounded-b-md' /> */}
 
                             <p onClick={() => router.push('/')} className='text-center pt-5 cursor-pointer underline'>
                                 Already have an account?
                             </p>
 
                             <div className='flex justify-center pt-8 p-0 m-0'>
-                                <Button onClick={() => { handleSubmit(); setOpenModal(true) }} className='loginBtn p-0 m-0 bg-dblue'>
+                                <Button onClick={() => handleSubmit()} className='loginBtn p-0 m-0 bg-dblue'>
                                     <p className='text-[20px] text-center font-LuckiestGuy tracking-wider'>
                                         Create Account
                                     </p>
@@ -125,7 +123,7 @@ const SignUpPage = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default SignUpPage
+export default SignUpPage;

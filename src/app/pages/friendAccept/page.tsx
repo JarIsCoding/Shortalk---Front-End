@@ -1,15 +1,24 @@
 'use client'
 
 import GoHomeBtn from '@/app/components/GoHomeBtn'
+import { useAppContext } from '@/context/Context'
 import { Button } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const FriendAccept = () => {
     const [resultText, setResultText] = useState('')
     const [textColor, setTextColor] = useState<Boolean>(false)
 
+    const {isTokenCorrect} = useAppContext()
+
     const router = useRouter()
+
+    useEffect(() => {
+        if (!isTokenCorrect) {
+          router.push('/');
+        }
+      }, [isTokenCorrect])
 
     const t = () => {
         router.back()

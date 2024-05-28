@@ -12,13 +12,16 @@ import OnlineTeamName from '@/app/components/OnlineTeamName'
 import FriendsTab from '@/app/components/FriendsTab'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 import { ILobbyRoomBackEnd, ITeamInfo } from '@/Interfaces/Interfaces'
-import { createGameRoom } from '@/utils/Dataservices'
+import { DeleteGame, checkIfGameExists, createGameRoom } from '@/utils/Dataservices'
+import ShuffleBtn from '@/app/components/Shufflebtn'
+import FriendsPic from '@/app/assets/FriendsPic.png'
+import Image from 'next/image'
 
 const LobbyPage = () => {
 
   const router = useRouter();
 
-  const { userData, lobbyRoomName, setIsGameStarting , setIsTimeUp} = useAppContext();
+  const { userData, lobbyRoomName, setIsGameStarting, setIsTimeUp, isTokenCorrect, isAllReady } = useAppContext();
 
   const [host, setHost] = useState<string>('')
 
@@ -35,9 +38,18 @@ const LobbyPage = () => {
   const [selectedMinutes, setSelectedMinutes] = useState('1');
   const [selectedSeconds, setSelectedSeconds] = useState('30');
 
+  const [warningText, setWarningText] = useState(' ');
+  const [isTimeOk, setIsTimeOk] = useState(true);
+
   const maxRounds: number = 10;
   const maxMinutes: number = 5;
   const maxSeconds: number = 59;
+
+  useEffect(() => {
+    if (!isTokenCorrect) {
+      router.push('/');
+    }
+  }, [isTokenCorrect])
 
   const setTeamInfos = (lobby: ILobbyRoomBackEnd) => {
 
@@ -180,11 +192,52 @@ const LobbyPage = () => {
       });
 
       conn.on("StartGame", () => {
+        conn.stop();
         router.push('/pages/gamePage')
+      })
+
+      conn.on("ToggleTeam", (json: string) => {
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setTeamInfos(lobby);
+      })
+
+      conn.on("OnDisconnectedAsync", (msg: string, json: string) => {
+        console.log(msg);
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setTeamInfos(lobby);
+      })
+
+      conn.on("OnHostDisconnectedAsync", ()=> {
+        disconnectFromHub();
+        router.push('/pages/homePage')
+      })
+
+      conn.on("ShuffleTeams", (json: string) => {
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setTeamInfos(lobby);
+      })
+
+      conn.on("RemovePlayer", (playerName: string, json:string) => {
+        // console.log("This player is being removed:" + playerName)
+        const lobby: ILobbyRoomBackEnd = JSON.parse(json);
+        setTeamInfos(lobby);
+        
+        if(userData.username == playerName)
+          {
+            disconnectFromHub();
+            router.push('/pages/homePage')
+          }
       })
 
       await conn.start();
       await conn.invoke("JoinSpecificLobbyRoom", { username, lobbyroom });
+
+      conn.onclose((error) => {
+        console.log(userData.username + " disconnected from the lobby hub");
+        if (error) {
+          console.error("Disconnection error: ", error);
+        }
+      });
 
 
       setConnection(conn);
@@ -193,6 +246,14 @@ const LobbyPage = () => {
       console.log(e);
     }
   }
+
+  const disconnectFromHub = () => {
+    if (conn) {
+      conn.stop()
+        .then(() => console.log("Disconnected from the hub"))
+        .catch(err => console.error("Error while disconnecting:", err));
+    }
+  };
 
   const sendMessage = async (msg: string) => {
     console.log(conn)
@@ -239,6 +300,43 @@ const LobbyPage = () => {
 
   }
 
+  const toggleTeam = async (username: string, lobbyroom: string) => {
+    try {
+      conn && await conn.invoke("ToggleTeam", { username, lobbyroom });
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const shuffleTeams = async (username: string, lobbyroom: string) => {
+    try {
+      conn && await conn.invoke("ShuffleTeams", { username, lobbyroom });
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const removePlayer = async (playerName: string, lobbyroom: string) => {
+    try {
+      conn && await conn.invoke("RemovePlayer", playerName, lobbyroom );
+    } catch (e) {
+      console.log(e)
+    }  
+  }
+
+  const handleRemove = async (playerName: string) => {
+    removePlayer(playerName, lobbyRoomName);
+  }
+
+  const handleShuffle = async () => {
+    shuffleTeams(userData.username, lobbyRoomName)
+  }
+
+  const handleToggleTeam = async () => {
+    await toggleTeam(userData.username, lobbyRoomName);
+  }
+
+
   const handleChangeRounds = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRounds(e.target.value)
     changeRounds(userData.username, lobbyRoomName, e.target.value)
@@ -247,29 +345,55 @@ const LobbyPage = () => {
   const handleChangeTimeLimitMinutes = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedMinutes(e.target.value)
     const time = parseInt(e.target.value) * 60 + parseInt(selectedSeconds);
+    if(time < 30)
+      {
+        setWarningText("Time Must at least be 30 seconds")
+        setIsTimeOk(false);
+      }else{
+        setWarningText(" ")
+        setIsTimeOk(true);
+      }
     changeTimeLimit(userData.username, lobbyRoomName, time.toString())
   }
 
   const handleChangeTimeLimitSeconds = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSeconds(e.target.value)
     const time = parseInt(selectedMinutes) * 60 + parseInt(e.target.value);
+    if(time < 30)
+      {
+        setWarningText("Time Must at least be 30 seconds")
+        setIsTimeOk(false);
+      }else{
+        setWarningText(" ")
+        setIsTimeOk(true);
+      }
     changeTimeLimit(userData.username, lobbyRoomName, time.toString())
   }
 
-  const handleStartClick = () => {
+  const handleStartClick = async () => {
     if (userData.username != host) {
-      console.log("This guy is not the host")
+      // console.log("This guy is not the host")
       setIsReady(!isReady)
       toggleReadiness(userData.username, lobbyRoomName);
     } else {
-      startGame(userData.username, lobbyRoomName);
-      console.log("This guy is our host!")
+      if (isAllReady && isTimeOk) {
+        let res = await checkIfGameExists(lobbyRoomName)
+        if(res){
+          await DeleteGame(lobbyRoomName);
+          startGame(userData.username, lobbyRoomName);  
+        }else{
+        startGame(userData.username, lobbyRoomName);          
+        }
+      } else {
+        console.log("Not all players are ready")
+      }
+      // console.log("This guy is our host!")
     }
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      
+
       // Check if user input something if so send otherwise nothing
       if (message !== '') {
         sendMessage(message);
@@ -295,67 +419,104 @@ const LobbyPage = () => {
         if (res) {
           console.log("The players are ready!!!")
         }
-        setIsReady(res)
+
+        setIsReady(res && isTimeOk)
       }
     }
-  }, [Team1Info, Team2Info])
+  }, [Team1Info, Team2Info, isTimeOk])
 
   // const [openModal, setOpenModal] = useState(false);
 
+  const consoleNotReady = () => {
+    console.log("Not ready yet")
+  }
+
+  const [friendOpen, setFriendOpen] = useState<boolean>(false)
+  const [friendImg, setFriendImg] = useState<boolean>(false)
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        setFriendOpen(false);
+        setFriendImg(true)
+      } else {
+        setFriendOpen(true);
+        setFriendImg(false)
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // START OF RETURN CODE
   return (
     <div>
       {/* Friends Tab */}
-      <div className={`absolute right-0 pt-24 `}>
-        <FriendsTab />
+      <div className={`absolute h-screen right-0 md:pt-24 pt-16 md:pb-0 pb-10 bg-[#52576F] ${friendOpen ? 'hidden' : 'block'}`}>
+        <FriendsTab onClickLeaveLobby={disconnectFromHub} />
       </div>
 
       {/* Navbar */}
       <div className='relative'>
         <NavBar title={"Room ID: " + lobbyRoomName} />
-        <div className="absolute top-6 right-0 mr-10 flex">
+        <div className={`absolute md:top-6 top-4 right-0 md:mr-10 flex z-50 ${friendImg ? 'hidden' : 'block'}`}>
+          <Button onClick={() => { friendOpen ? setFriendOpen(false) : setFriendOpen(true) }} className={`bg-clear`}>
+            <Image src={FriendsPic} alt="FriendsPicture" className={`w-35px h-30px friendsNav`} />
+          </Button>
         </div>
       </div>
 
       {/* Body */}
-      <div className='flex flex-col items-center space-y-16 pt-20 pr-72'>
+      <div className='flex flex-col items-center justify-evenly t-20 xl:pe-72 pe-0 h-[90vh] pt-3'>
 
-        <div className='flex flex-row justify-between'>
+        <div className='md:flex flex-row justify-between'>
 
-          <OnlineTeamName teamName={Team1Info.teamName} host={Team1Info.host} members={Team1Info.members} />
+          <OnlineTeamName teamName={Team1Info.teamName} host={Team1Info.host} members={Team1Info.members} handleRemove={handleRemove} />
 
-
-          <div className=' flex flex-col items-center space-y-10 mx-10'>
-            <Button size="xl" className='w-[230px] h-[50px] bg-dblue mt-5'>
-              <p className='font-Roboto text-white px-10 flex items-center'>Toggle Team</p>
+          <div className='lg:block hidden flex-col items-center space-y-10 mx-10'>
+            <Button onClick={handleToggleTeam} size="xl" className='w-[230px] h-[50px] bg-dblue mt-5 font-LuckiestGuy flex justify-center'>
+              <p className=' text-white text-center tracking-wider flex items-center'>Toggle Team</p>
             </Button>
             <div className='flex justify-center'>
-              <DiceBtn />
+              <DiceBtn onClick={handleShuffle} />
             </div>
-            <div className='' onClick={handleStartClick}>
+            <div className='flex justify-center' onClick={handleStartClick}>
               <StartBtn isReady={isReady} isHost={(host == userData.username)} />
             </div>
           </div>
-          <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} />
+
+          <OnlineTeamName teamName={Team2Info.teamName} host={Team2Info.host} members={Team2Info.members} handleRemove={handleRemove} />
         </div>
 
-        <div className=' flex flex-col items-center space-y-4'>
-          <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
-            <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Number of Rounds:</div>
-            {
-              (userData.username == host) ?
-                <select value={selectedRounds} onChange={(e) => handleChangeRounds(e)} className=' w-[20%] h-10' name='Rounds' id='Rounds'>
-                  {renderOptions(1, maxRounds, false)}
-                </select>
-                :
-                <div className=' text-dblue font-LuckiestGuy text-3xl'>{selectedRounds} </div>
-            }
+        <div className='lg:hidden flex justify-center gap-4'>
+          <Button size="xl" className='w-[180px] h-[50px] bg-dblue lg:mt-5 mt-0 font-LuckiestGuy flex justify-center'>
+            <p className=' text-white text-center tracking-wider flex items-center'>Toggle Team</p>
+          </Button>
+          <ShuffleBtn />
+        </div>
 
+        <div className=' flex flex-col items-center space-y-4 pt-5'>
+          <div className='lg:flex flex-row justify-between whitespace-nowrap items-center lg:w-[400px] w-[100%]'>
+            <div className=' font-LuckiestGuy text-dblue text-3xl lg:text-start text-center'>Number of Rounds:</div>
+            <div className='flex lg:justify-end justify-center'>
+              {
+                (userData.username == host) ?
+                  <select value={selectedRounds} onChange={(e) => handleChangeRounds(e)} className=' h-10' name='Rounds' id='Rounds'>
+                    {renderOptions(1, maxRounds, false)}
+                  </select>
+                  :
+                  <div className=' text-dblue font-LuckiestGuy text-3xl'>{selectedRounds} </div>
+              }
+            </div>
           </div>
-          <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
-            <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>Time Limit:</div>
-            <div className='w-[30%] flex justify-end space-x-1' >
+          <div className='lg:flex flex-row justify-between whitespace-nowrap items-center lg:w-[400px] w-[300px]'>
+            <div className=' font-LuckiestGuy text-dblue text-3xl lg:text-start text-center'>Time Limit:</div>
+            <div className='lg:w-[30%] w-[100%] flex lg:justify-end justify-center space-x-1' >
               {
                 (userData.username == host) ?
                   <select className='h-10' value={selectedMinutes} onChange={(e) => handleChangeTimeLimitMinutes(e)}>
@@ -375,13 +536,18 @@ const LobbyPage = () => {
               }
             </div>
           </div>
-          <div className='flex flex-row justify-between whitespace-nowrap items-center w-[400px]'>
+          <p className=' text-dred'>{warningText}</p>
+          <div className='flex flex-row justify-between whitespace-nowrap items-center lg:w-[400px] w-[300px]'>
             {/* <div className=' font-LuckiestGuy text-dblue text-3xl mr-5'>ScoreKeeper</div>
             <select name="" id=""></select> */}
           </div>
         </div>
 
-        <div className='w-[1003px] h-[224px] bg-lgray border-[#52576F] border-[20px] p-4'>
+        <div className='lg:hidden flex justify-center py-8' onClick={handleStartClick}>
+          <StartBtn isReady={isReady} isHost={(host == userData.username)} />
+        </div>
+
+        <div className='w-[88%] h-[224px] bg-lgray border-[#52576F] border-[20px] md:p-4 p-2 '>
           <div className='h-[70%] overflow-y-auto flex flex-col-reverse'>
             <div>
               {
@@ -394,7 +560,7 @@ const LobbyPage = () => {
               }
             </div>
           </div>
-          <input onChange={(e) => { setMessage(e.target.value) }} onKeyDown={handleKeyDown} value={message} type="text" placeholder='Type to Chat' className='w-[930px] h-[38]' />
+          <input onChange={(e) => { setMessage(e.target.value) }} onKeyDown={handleKeyDown} value={message} type="text" placeholder='Type to Chat' className='w-[99%] h-[38]' />
         </div>
       </div>
     </div>

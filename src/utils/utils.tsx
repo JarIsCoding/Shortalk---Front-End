@@ -1,4 +1,4 @@
-import { ICard, IGameInfo, ITeamInfo, iGameInfo } from "@/Interfaces/Interfaces";
+import { ICard, IGameInfo, ILobbyRoomBackEnd, ITeamInfo, iGameInfo, iLobbyRoomBackEnd } from "@/Interfaces/Interfaces";
 
 
 export function shuffleArray(array: string[]): string[] {
@@ -46,17 +46,18 @@ export const checkIfPlayersAreReady = (Team1Info: ITeamInfo, Team2Info: ITeamInf
     let Team2Counter = 0;
     //Object.keys(obj).length === 0
     console.log(Team1Info);
+    console.log(Team2Info);
     if ((Object.keys(Team1Info).length != 0) && (Object.keys(Team2Info).length != 0)) {
-        Team1Info.members.forEach(member => {
-            if (member.name && !member.readyStatus && (member.name != Team1Info.host)) {
+        Team1Info.members.map(member => {
+            if ((member.name != '') && !member.readyStatus) {
                 return false;
             }
             if (member.name) {
                 Team1Counter++;
             }
         })
-        Team2Info.members.forEach(member => {
-            if (member.name && !member.readyStatus && (member.name != Team2Info.host)) {
+        Team2Info.members.map(member => {
+            if ((member.name != '') && !member.readyStatus) {
                 return false;
             }
             if (member.name) {
@@ -156,6 +157,72 @@ export const determineNumberOfTurns = (game: IGameInfo) => {
     
     return counter*game.NumberOfRounds;
 }
+export const ConvertLobbyi2I =  (data: iLobbyRoomBackEnd) => {
+    let lobby: ILobbyRoomBackEnd = {} as ILobbyRoomBackEnd;
+    lobby.LobbyName = data.lobbyName;
+    lobby.Host = data.host;
+    lobby.NumberOfRounds = data.numberOfRounds;
+    lobby.TimeLimit = data.timeLimit;
+    lobby.TeamMemberA1 = data.teamMemberA1;
+    lobby.TeamMemberA2 = data.teamMemberA2;
+    lobby.TeamMemberA3 = data.teamMemberA3;
+    lobby.TeamMemberA4 = data.teamMemberA4;
+    lobby.TeamMemberA5 = data.teamMemberA5;
+    lobby.TeamMemberB1 = data.teamMemberB1;
+    lobby.TeamMemberB2 = data.teamMemberB2;
+    lobby.TeamMemberB3 = data.teamMemberB3;
+    lobby.TeamMemberB4 = data.teamMemberB4;
+    lobby.TeamMemberB5 = data.teamMemberB5;
+    lobby.ReadyStatusA1 = data.readyStatusA1;
+    lobby.ReadyStatusA2 = data.readyStatusA2;
+    lobby.ReadyStatusA3 = data.readyStatusA3;
+    lobby.ReadyStatusA4 = data.readyStatusA4;
+    lobby.ReadyStatusA5 = data.readyStatusA5;
+    lobby.ReadyStatusB1 = data.readyStatusB1;
+    lobby.ReadyStatusB2 = data.readyStatusB2;
+    lobby.ReadyStatusB3 = data.readyStatusB3;
+    lobby.ReadyStatusB4 = data.readyStatusB4;
+    lobby.ReadyStatusB5 = data.readyStatusB5;
+
+    return lobby;
+     
+
+}
+
+
+export const ConvertLobbyI2i =  (data: ILobbyRoomBackEnd) => {
+    let lobby: iLobbyRoomBackEnd = {} as iLobbyRoomBackEnd;
+
+    lobby.lobbyName = data.LobbyName;
+    lobby.host = data.Host;
+    lobby.numberOfRounds = data.NumberOfRounds;
+    lobby.timeLimit = data.TimeLimit;
+    lobby.teamMemberA1 = data.TeamMemberA1;
+    lobby.teamMemberA2 = data.TeamMemberA2;
+    lobby.teamMemberA3 = data.TeamMemberA3;
+    lobby.teamMemberA4 = data.TeamMemberA4;
+    lobby.teamMemberA5 = data.TeamMemberA5;
+    lobby.teamMemberB1 = data.TeamMemberB1;
+    lobby.teamMemberB2 = data.TeamMemberB2;
+    lobby.teamMemberB3 = data.TeamMemberB3;
+    lobby.teamMemberB4 = data.TeamMemberB4;
+    lobby.teamMemberB5 = data.TeamMemberB5;
+    lobby.readyStatusA1 = data.ReadyStatusA1;
+    lobby.readyStatusA2 = data.ReadyStatusA2;
+    lobby.readyStatusA3 = data.ReadyStatusA3;
+    lobby.readyStatusA4 = data.ReadyStatusA4;
+    lobby.readyStatusA5 = data.ReadyStatusA5;
+    lobby.readyStatusB1 = data.ReadyStatusB1;
+    lobby.readyStatusB2 = data.ReadyStatusB2;
+    lobby.readyStatusB3 = data.ReadyStatusB3;
+    lobby.readyStatusB4 = data.ReadyStatusB4;
+    lobby.readyStatusB5 = data.ReadyStatusB5;
+
+    return lobby;
+     
+
+}
+
 
 export const Converti2I =  (data: iGameInfo) => {
     let game: IGameInfo = {} as IGameInfo;

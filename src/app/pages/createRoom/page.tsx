@@ -13,7 +13,7 @@ const CreateRoom = () => {
 
     const isFirstRender = useRef(true);
 
-    const { userData, conn, setConnection, lobbyRoomName, setLobbyRoomName, messages, setMessages } = useAppContext();
+    const { userData, conn, setConnection, lobbyRoomName, setLobbyRoomName, messages, setMessages, isTokenCorrect } = useAppContext();
 
     // const [messages, setMessages] = useState<{ username: string, msg: string }[]>([]);
 
@@ -24,6 +24,11 @@ const CreateRoom = () => {
 
     const router = useRouter()
 
+    useEffect(() => {
+        if (!isTokenCorrect) {
+          router.push('/');
+        }
+      }, [isTokenCorrect])
 
     //Function telling user it is being made if it takes longer than usual
     const successfunc = () => {
@@ -44,6 +49,9 @@ const CreateRoom = () => {
             const res = await createLobbyRoom(newLobby);
             if (res) {
                 setLobbyRoomName(roomName)
+            }else{
+                setWarnText('Room name is already taken. Try again.')
+                setSuccessColor(false)
             }
         }
     }
@@ -57,11 +65,15 @@ const CreateRoom = () => {
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
-        } else {
+        } else if(lobbyRoomName != "") {
             router.push('/pages/lobbyRoom')
             setTimeout(successfunc, 500)
         }
     }, [lobbyRoomName])
+
+    useEffect(()=> {
+        setLobbyRoomName("")
+    },[])
 
     useEffect(() => {
         let timer;
@@ -74,7 +86,7 @@ const CreateRoom = () => {
     })
 
     return (
-        <div>
+        <div className=' h-[100vh] flex flex-col justify-between mx-4 md:mx-16'>
             <div className='flex justify-center md:py-20 py-12'>
                 <p className='text-dblue font-LuckiestGuy text-[48px] tracking-widest text-center cursor-default'>CREATE YOUR ROOM</p>
             </div>
@@ -110,7 +122,10 @@ const CreateRoom = () => {
                     </div>
                 </div>
             </div>
-            <GoHomeBtn />
+            <div className=' w-full flex justify-end mt-20'>
+                <GoHomeBtn />
+            </div>
+
         </div>
     )
 }
