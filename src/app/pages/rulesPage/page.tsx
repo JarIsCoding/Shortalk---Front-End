@@ -11,7 +11,7 @@ import { useAppContext } from '@/context/Context'
 const RulesPage = () => {
 
     const router = useRouter()
-    const {isTokenCorrect} = useAppContext()
+    const { isTokenCorrect } = useAppContext()
 
     useEffect(() => {
         if (!isTokenCorrect) {
@@ -59,7 +59,9 @@ const RulesPage = () => {
                 <li className='py-1'>
                     The game ends when everyone has had the chance to be <span className='font-bold text-dgreen'>Speaker</span> for the <br /> number of rounds designated in the game lobby room.
                 </li>
-                <GoHomeBtn />
+                <div className='pt-6'>
+                    <GoHomeBtn />
+                </div>
             </ul>
 
         </div>

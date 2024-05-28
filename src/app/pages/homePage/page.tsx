@@ -40,9 +40,9 @@ const HomePage = () => {
 
   return (
 
-    <div className='bg-lblue min-h-screen w-full Bg relative'>
+    <div className='bg-lblue w-full Bg relative'>
 
-      <div className={`absolute bg-[#52576F] h-screen  md:pb-24 pb-16 right-0 top-[75px] md:top-[90px] ${isFriendsOn ? 'block slideLeft' : 'hidden'}`}>
+      <div className={`absolute bg-[#52576F] h-screen md:pb-24 pb-16 right-0 top-[75px] md:top-[90px] ${isFriendsOn ? 'block slideLeft' : 'hidden'}`}>
         <FriendsTab />
       </div>
 
