@@ -31,7 +31,7 @@ const FriendsTab = ({onClickLeaveLobby = () => {}}:IFriendsTab) => {
   }, [])
 
   return (
-    <div className={`Friends w-[300px] text-white text-[20px] z-30 relative ${correctRoom ? 'h-[790px]' : 'h-[90vh]'}`}>
+    <div className={`Friends w-[300px] text-white text-[20px] z-30 relative ${correctRoom ? 'h-[90vh]' : 'h-[90vh]'}`}>
       <div className='mx-3 cursor-default'>
         <p className='text-end py-4 font-bold'>{userData.username}</p>
         <p className='text-end pt-2'>Friends</p>

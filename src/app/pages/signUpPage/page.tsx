@@ -15,6 +15,13 @@ const SignUpPage = () => {
 
     let router = useRouter();
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleSubmit();
+        }
+    };
+
     const handleSubmit = async () => {
         let userData = {
             username: username,
@@ -66,12 +73,12 @@ const SignUpPage = () => {
                             <p className='text-center text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
                                 USERNAME
                             </p>
-                            <input id="username" maxLength={20} type="text" placeholder='Username' className='inputSize rounded-md' onChange={(e) => setUsername(e.target.value)} required />
+                            <input id="username" maxLength={20} type="text" placeholder='Username' className='inputSize rounded-md' onChange={(e) => setUsername(e.target.value)} onKeyDown={handleKeyDown} required />
 
                             <p className='text-center text-[32px] pt-7 pb-2 font-LuckiestGuy tracking-widest text-textGray cursor-default'>
                                 PASSWORD
                             </p>
-                            <input id="password1" type="password" placeholder='Password' className='inputSize rounded-md' onChange={(e) => setPassword(e.target.value)} required />
+                            <input id="password1" type="password" placeholder='Password' className='inputSize rounded-md' onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown} required />
                             <p className='text-center cursor-default'>More than one syllable reccomended</p>
 
                             {/* never got to creating the forgotpassword :/ */}
