@@ -177,7 +177,6 @@ const PassAndPlayPage = () => {
       setSwipeUp(false)
       SkipBtnHandle()
     },
-    preventScrollOnSwipe: (true)
   })
 
   // useEffect(() => {
