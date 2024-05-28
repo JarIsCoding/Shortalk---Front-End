@@ -1,3 +1,14 @@
+SHORTALK
+
+Start Date: 3/14/2024
+Last Date Revised: 5/28/2024
+
+CREDIT -
+Joseph Poncini
+Jared Ly
+Xavier Hoppkins
+
+MUSIC -
 ### Possible music for the game
 1.  Main Menu Theme -  https://www.youtube.com/watch?v=coDz69v91l0&ab_channel=Infraction-NoCopyrightMusic
 2. Background music while guessing     https://www.youtube.com/watch?v=_JAMcQyRRIQ&ab_channel=Waderman-RoyaltyFreeMusic
