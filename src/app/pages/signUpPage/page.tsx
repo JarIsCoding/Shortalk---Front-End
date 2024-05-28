@@ -30,7 +30,7 @@ const SignUpPage = () => {
             return;
         }
 
-        if (password !== '' && security !== '' && username !== '') {
+        if (password !== '' && username !== '') {
             if (password.length >= 8) {
                 const isCreated = await createAccount(userData);
                 if (isCreated) {
