@@ -1516,7 +1516,6 @@
       "band",
       "spender",
       "toe",
-      "butt",
       "business",
       "dipper",
       "brother",
@@ -7819,7 +7818,6 @@
     "Top": "front",
     "Bottom": [
       "runner",
-      "butt",
       "door",
       "cover",
       "counter",
@@ -16836,12 +16834,6 @@
     ]
   },
   {
-    "Top": "dependency",
-    "Bottom": [
-      "hell"
-    ]
-  },
-  {
     "Top": "classic",
     "Bottom": [
       "car",
@@ -20860,8 +20852,7 @@
     "Top": "butt",
     "Bottom": [
       "head",
-      "wipe",
-      "sore"
+      "wipe"
     ]
   },
   {
