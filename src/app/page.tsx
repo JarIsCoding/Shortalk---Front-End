@@ -67,7 +67,15 @@ export default function Home() {
 
   return (
     <div className='bg-lblue vh'>
-      <div className='pb-20'>
+
+      <div className='h-screen flex flex-col justify-center align-middle mx-4 md:mx-16 space-y-10 '>
+        <div className='flex justify-center'>
+          <p className='text-dblue font-LuckiestGuy text-[48px] tracking-widest text-center cursor-default'>Loading...</p>
+        </div>
+      </div>
+
+
+      {/* <div className='pb-20'>
 
         <div className='py-24 text-center'>
           <p className='text-[50px] font-LuckiestGuy tracking-widest text-dblue cursor-default'>
@@ -79,12 +87,12 @@ export default function Home() {
           <div className='bg-white border-[#00529E] border-t-[20px] w-[500px] h-[500px] rounded-md flex justify-center'>
             <form className="flex max-w-md flex-col gap-4">
 
-              {/* Top Text */}
+
               <div className='text-center py-7 text-[32px] font-LuckiestGuy tracking-widest text-textGray cursor-default'>
                 Login
               </div>
 
-              {/* Username and password Input Field */}
+
               <div className='sm:w-[350px] w-[300px]'>
                 <input id="username" type="text" placeholder='Username' className='w-full h-[50px] rounded-none'
                   onChange={(e) => setUsername(e.target.value)}
@@ -109,7 +117,7 @@ export default function Home() {
                   New to ShorTalk? <span className='underline cursor-pointer'>Create a profile!</span>
                 </p>
 
-                <p onClick={() => { router.push('/pages/homePage'); setUsername(guestNum); setIsTokenCorrect(true)}} className='text-center cursor-default'>
+                <p onClick={() => { router.push('/pages/homePage'); setUsername(guestNum); setIsTokenCorrect(true) }} className='text-center cursor-default'>
                   or <span className='underline cursor-pointer'>Sign in as guest</span>
                 </p>
               </div>
@@ -125,7 +133,10 @@ export default function Home() {
             </form>
           </div>
         </div>
-      </div>
+      </div> */}
+
+
+      
     </div>
   );
 }
