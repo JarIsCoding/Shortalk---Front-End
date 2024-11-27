@@ -19,7 +19,8 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
-    setIsTokenCorrect(false)
+    router.push('https://shortalkv2.vercel.app/');
+    // setIsTokenCorrect(false)
   }, [])
 
   const handleSubmit = async () => {
